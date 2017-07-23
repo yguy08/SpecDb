@@ -12,12 +12,19 @@ public class DbLoader {
 		//create table if does not exist
 		new CreateTable().insertIfNotExists();
 		
+		//get last update date
 		long lastUpdateDate = getLastDate();
+        System.out.println("Last update " + lastUpdateDate);
 		
 		if(lastUpdateDate > 0){
+	        System.out.println("Db populated. Updating last recorded entry @ " + lastUpdateDate);
 			new UpdateDb(lastUpdateDate).updateLastRecord();
+	        System.out.println("Last recorded entry updated...");
+	        System.out.println("Fetching new data...");
 			new FetchNewDb(lastUpdateDate).fetchNewRecords();
+	        System.out.println("Done...");
 		}else{
+	        System.out.println("Db full init...");
 			new DbInit().batchInsertMarkets();
 		}
 	}

@@ -57,32 +57,22 @@ public class DbInit {
 	        preparedStatement = connection.prepareStatement(compiledQuery);
 	        for(int i = 0; i < priceList.size();i++){
 	        	PriceData p = priceList.get(i);
-	        	if(i % 10000 == 0){
-	        		preparedStatement.setString(1, p.getMarketName());
-		        	preparedStatement.setLong(2,p.getDate().getTime());
-		        	preparedStatement.setBigDecimal(3, p.getOpen());
-		        	preparedStatement.setBigDecimal(4, p.getHigh());
-		        	preparedStatement.setBigDecimal(5,p.getLow());
-		        	preparedStatement.setBigDecimal(6, p.getClose());
-		        	preparedStatement.setInt(7, p.getVolume().intValue());
-		            preparedStatement.addBatch();
+	        	preparedStatement.setString(1, p.getMarketName());
+	        	preparedStatement.setLong(2,p.getDate().getTime() / 1000);
+	        	preparedStatement.setBigDecimal(3, p.getOpen());
+	        	preparedStatement.setBigDecimal(4, p.getHigh());
+	        	preparedStatement.setBigDecimal(5,p.getLow());
+	        	preparedStatement.setBigDecimal(6, p.getClose());
+	        	preparedStatement.setInt(7, p.getVolume().intValue());
+	            preparedStatement.addBatch();
+	        	if((i % 10000 == 0 && i != 0) || i == priceList.size() - 1){
 	    	        System.out.println("adding batch + " + i /10000 + "...");
 	        		long start = System.currentTimeMillis();
 	    	        preparedStatement.executeBatch();
 	    	        long end = System.currentTimeMillis();
 	    	        System.out.println("total time taken to insert the batch = " + (end - start) + " ms");
-	        	}else{
-	        		preparedStatement.setString(1, p.getMarketName());
-		        	preparedStatement.setLong(2,p.getDate().getTime());
-		        	preparedStatement.setBigDecimal(3, p.getOpen());
-		        	preparedStatement.setBigDecimal(4, p.getHigh());
-		        	preparedStatement.setBigDecimal(5,p.getLow());
-		        	preparedStatement.setBigDecimal(6, p.getClose());
-		        	preparedStatement.setInt(7, p.getVolume().intValue());
-		            preparedStatement.addBatch();	        		
 	        	}
 	        }
-	        
 	        preparedStatement.close();
 	        connection.close();
 		}catch (SQLException ex) {

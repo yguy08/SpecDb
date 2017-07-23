@@ -23,7 +23,7 @@ public class UpdateDb {
 	long lastUpdateDate;
 	
 	public UpdateDb(long lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate / 1000;
+		this.lastUpdateDate = lastUpdateDate;
 	}
 	
 	public void updateLastRecord(){
@@ -68,7 +68,7 @@ public class UpdateDb {
 	        	preparedStatement.setBigDecimal(3,p.getLow());
 	        	preparedStatement.setBigDecimal(4, p.getClose());
 	        	preparedStatement.setInt(5,p.getVolume().intValue());
-	        	preparedStatement.setDate(6,new java.sql.Date(lastUpdateDate*1000));
+	        	preparedStatement.setDate(6,new java.sql.Date(lastUpdateDate));
 	        	preparedStatement.setString(7,p.getMarketName().toString());
 	            preparedStatement.addBatch();
         	}
