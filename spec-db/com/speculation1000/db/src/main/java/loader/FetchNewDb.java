@@ -30,6 +30,7 @@ public class FetchNewDb {
 	
 	public void fetchNewRecords(){
 		long fetchDate = lastUpdateDate + 24 * 60 * 60;
+		System.out.println("Fetch date: " + fetchDate);
 		long farFuture = 9999999999L;
 		
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
@@ -52,8 +53,8 @@ public class FetchNewDb {
 			for(CurrencyPair currencyPair : currencyPairList){
 				try {
 					priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-							.getPoloniexChartData(currencyPairList.get(currencyPairList.indexOf(CurrencyPair.ETH_BTC)), fetchDate,
-									lastUpdateDate, PoloniexChartDataPeriodType.PERIOD_86400));
+							.getPoloniexChartData(currencyPair, fetchDate,
+									farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
 					
 						for(PoloniexChartData dayData : priceListRaw){
 							priceData = new PriceData(currencyPair.toString(),dayData.getDate(),dayData.getHigh(),dayData.getLow(),dayData.getOpen(),dayData.getClose(),dayData.getVolume());
@@ -72,7 +73,7 @@ public class FetchNewDb {
 		        preparedStatement = connection.prepareStatement(compiledQuery);
 		        for(PriceData p : priceList){
 	        		preparedStatement.setString(1, p.getMarketName());
-		        	preparedStatement.setLong(2,p.getDate().getTime());
+		        	preparedStatement.setLong(2,p.getDate().getTime()/1000);
 		        	preparedStatement.setBigDecimal(3, p.getOpen());
 		        	preparedStatement.setBigDecimal(4, p.getHigh());
 		        	preparedStatement.setBigDecimal(5,p.getLow());
