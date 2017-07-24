@@ -12,7 +12,7 @@ public class Connect {
 	
     public Connection getConnection() {
         // SQLite connection string
-        String url = "jdbc:sqlite:com/speculation1000/dbloader/src/main/resources/db/Speculation1000.db";
+        String url = "jdbc:sqlite:src/main/resources/db/Speculation1000.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);

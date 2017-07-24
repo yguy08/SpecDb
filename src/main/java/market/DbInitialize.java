@@ -52,6 +52,7 @@ public class DbInitialize {
 						priceData = new PriceData(currencyPair.toString(),dayData.getDate(),dayData.getHigh(),dayData.getLow(),dayData.getOpen(),dayData.getClose(),dayData.getVolume());
 						priceList.add(priceData);
 					}
+					System.out.println("Loaded " + currencyPair.toString());
 			}catch (IOException e) {
 				throw new ExchangeException(e.getMessage());
 			}
@@ -61,7 +62,7 @@ public class DbInitialize {
 	}
 
 	public void batchInsertMarketsOffline() {
-		File folder = new File("com/speculation1000/dbloader/src/main/resources/offline/");
+		File folder = new File("src/main/resources/offline/");
 		File[] listOfFiles = folder.listFiles();
 		
 		List<String> currencyPairList = new ArrayList<>();

@@ -36,39 +36,6 @@ public class UpdateMarketTable {
 		System.out.println("Last record updated...");
 	}
 	
-	private void updateLastRecordOffline() {
-		File folder = new File("com/speculation1000/dbloader/src/main/resources/offline/");
-		File[] listOfFiles = folder.listFiles();
-		
-		List<String> currencyPairList = new ArrayList<>();
-	    for (int i = 0; i < listOfFiles.length; i++) {
-	      if (listOfFiles[i].isFile()) {
-	    	currencyPairList.add(listOfFiles[i].getName());
-	      }
-	    }
-	    
-	    List<String> priceDataFromFile;
-	    PriceData priceData;
-	    List<PriceData> priceList = new ArrayList<>();
-		for(String currencyPair : currencyPairList){			
-			try {
-				priceDataFromFile = Files.readAllLines(Paths.get("com/speculation1000/dbloader/src/main/resources/offline/" + currencyPair));
-				for(int i = priceDataFromFile.size() - 1; i > 0; i--){
-					priceData = new PriceData(currencyPair.toString(),priceDataFromFile.get(i).split(","));
-					if(priceData.getDate().getTime() == lastUpdateDate){
-						priceList.add(priceData);
-					}else if(priceData.getDate().getTime() < lastUpdateDate){
-						break;
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-		}		
-		
-		new UpdateUtils().updateLatestRecord(priceList, lastUpdateDate);
-	}
-
 	public void updateLastRecord(){
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
 		List<CurrencyPair> currencyPairList = exchange.getExchangeSymbols();
@@ -91,6 +58,39 @@ public class UpdateMarketTable {
 				throw new ExchangeException(e.getMessage());
 			}
 		}
+		
+		new UpdateUtils().updateLatestRecord(priceList, lastUpdateDate);
+	}
+	
+	private void updateLastRecordOffline() {
+		File folder = new File("src/main/resources/offline/");
+		File[] listOfFiles = folder.listFiles();
+		
+		List<String> currencyPairList = new ArrayList<>();
+	    for (int i = 0; i < listOfFiles.length; i++) {
+	      if (listOfFiles[i].isFile()) {
+	    	currencyPairList.add(listOfFiles[i].getName());
+	      }
+	    }
+	    
+	    List<String> priceDataFromFile;
+	    PriceData priceData;
+	    List<PriceData> priceList = new ArrayList<>();
+		for(String currencyPair : currencyPairList){			
+			try {
+				priceDataFromFile = Files.readAllLines(Paths.get("src/main/resources/offline/" + currencyPair));
+				for(int i = priceDataFromFile.size() - 1; i > 0; i--){
+					priceData = new PriceData(currencyPair.toString(),priceDataFromFile.get(i).split(","));
+					if(priceData.getDate().getTime() == lastUpdateDate){
+						priceList.add(priceData);
+					}else if(priceData.getDate().getTime() < lastUpdateDate){
+						break;
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}		
 		
 		new UpdateUtils().updateLatestRecord(priceList, lastUpdateDate);
 	}
