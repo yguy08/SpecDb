@@ -3,7 +3,10 @@ package loader;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,56 +15,72 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import market.CreateMarketTable;
-import market.DbInitialize;
-import market.FetchNewMarketRecords;
-import market.UpdateMarketTable;
-import utils.SelectUtils;
 
 public class DbLoader {
 	
 	private static boolean netConnected;
 		
 	public DbLoader() {
-		//test connection
-		testNetworkConnection();
 		
 		//create table if does not exist
 		new CreateMarketTable().insertIfNotExists();
 		
-		//get last update date
-		long lastUpdateDate = new SelectUtils().selectLastUpdate();
-		System.out.println("Db populated up to " + lastUpdateDate);
-        
-        if(lastUpdateDate > 0){
-        	System.out.println("Updating last update date " + lastUpdateDate);
-        	new UpdateMarketTable(lastUpdateDate);
-        	System.out.println("Updated complete...");
-        	
-        	long daysMissing = (new Date().getTime() / 1000 / 24 / 60 / 60) - (lastUpdateDate / 1000 / 24 / 60 / 60);
-    		System.out.println("Days missing data: " + daysMissing);
-	        
-	        if(daysMissing > 0){
-	        	System.out.println("Need next " + ((new Date().getTime() - lastUpdateDate) / 24 * 60 * 60) + " day data");
-    			new FetchNewMarketRecords(lastUpdateDate);
-    	        System.out.println("Done...");
-	        }else{
-	        	System.out.println("Already up to date. Skipping fetch... ");
-	        }
-        }else{
-    		System.out.println("Db full init required.");
-			new DbInitialize();
-        }
-		System.out.println("Db loader complete.");
-	}
-	
-	public static void main(String[] args) {
-		new DbLoader();
-	}
-	
-	public static boolean isConnected() {
-		return netConnected;
-	}
+		testNetworkConnection();
+		
+		if(isConnected()){			
+			//polo loader
+			new PoloniexLoader();
 
+			//gdax
+			
+			//bittrex
+		}else{
+			System.out.println("No network connection!");
+			long lastUpdate = lastUpdate();
+			if(lastUpdate > 0){
+				System.out.println("Markets populated up to: " + lastUpdate);
+				System.out.println("Connect to a network and try again to get latest market updates.");
+			}else{
+				System.out.println("No markets are loaded.");
+				System.out.println("Connect to a network and try again to populate markets");
+			}
+			
+		}
+		
+	}
+	
+	private long lastUpdate(){
+		PreparedStatement preparedStatement;
+		Connection connection = new Connect().getConnection();
+		try{	        
+	        String compiledQuery = "SELECT MAX (Date) AS Date FROM markets;"; 
+	        preparedStatement = connection.prepareStatement(compiledQuery);
+	        long lastUpdateDate;
+	        long start = System.currentTimeMillis();
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        long end = System.currentTimeMillis();
+	        System.out.println("total time taken to find latest date = " + (end - start) + " ms");
+	        
+	        resultSet.getLong("Date");
+	        if(resultSet.wasNull()){
+	        	lastUpdateDate = 0;
+	        }else{
+	        	lastUpdateDate = resultSet.getLong("Date");
+	        }	        
+	        preparedStatement.close();
+        	connection.close();
+        	
+        	return lastUpdateDate;
+        }catch(SQLException ex){
+			System.err.println("SQLException information");
+	        while (ex != null) {
+	            System.err.println("Error msg: " + ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+		}
+	}
+	
 	private void testNetworkConnection() {
 		final Runnable stuffToDo = new Thread() {
 			  @Override 
@@ -91,6 +110,14 @@ public class DbLoader {
 			if (!executor.isTerminated()){
 				executor.shutdownNow();
 			}
-			    
 	}
+	
+	public static boolean isConnected() {
+		return netConnected;
+	}
+	
+	public static void main(String[] args) {
+		new DbLoader();
+	}
+	
 }
