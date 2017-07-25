@@ -26,4 +26,8 @@ hs_err_pid*
 
 #mac
 .DS_Store
-/target/
+
+#eclipse
+.classpath
+.project
+.settings
