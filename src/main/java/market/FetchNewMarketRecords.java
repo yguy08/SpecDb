@@ -48,7 +48,7 @@ public class FetchNewMarketRecords {
 		
 		try {
 				priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-						.getPoloniexChartData(currencyPairList.get(currencyPairList.indexOf(CurrencyPair.ETH_BTC)), fetchDate,
+						.getPoloniexChartData(currencyPairList.get(currencyPairList.indexOf(CurrencyPair.ETH_BTC)), fetchDate / 1000,
 								farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
 				System.out.println("Checking " + CurrencyPair.ETH_BTC.toString() + " to see if pull is needed");
 				System.out.println((CurrencyPair.ETH_BTC.toString()) + priceListRaw.toString().substring(0, 65));
@@ -60,7 +60,7 @@ public class FetchNewMarketRecords {
 			for(CurrencyPair currencyPair : currencyPairList){
 				try {
 					priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-							.getPoloniexChartData(currencyPair, fetchDate,
+							.getPoloniexChartData(currencyPair, fetchDate / 1000,
 									farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
 					
 						for(PoloniexChartData dayData : priceListRaw){

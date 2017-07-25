@@ -42,7 +42,7 @@ public class DbLoader {
 	        
 	        if(daysMissing > 0){
 	        	System.out.println("Need next " + ((new Date().getTime() - lastUpdateDate) / 24 * 60 * 60) + " day data");
-    			new FetchNewMarketRecords(lastUpdateDate).fetchNewRecords();
+    			new FetchNewMarketRecords(lastUpdateDate);
     	        System.out.println("Done...");
 	        }else{
 	        	System.out.println("Already up to date. Skipping fetch... ");
