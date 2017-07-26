@@ -87,7 +87,7 @@ public class PoloniexLoader {
 						for(PoloniexChartData dayData : priceListRaw){
 							String base = currencyPair.toString().substring(0, currencyPair.toString().indexOf("/"));
 							String counter = currencyPair.toString().substring(currencyPair.toString().indexOf("/")+1);
-							market = new Market(base,counter,"POLO",dayData.getDate().getTime(),dayData.getHigh(),dayData.getLow(),dayData.getOpen(),dayData.getClose(),dayData.getVolume().intValue());
+							market = new Market(base,counter,"POLO",SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()),dayData.getHigh(),dayData.getLow(),dayData.getOpen(),dayData.getClose(),dayData.getVolume().intValue());
 							marketList.add(market);
 						}					
 				}catch (IOException e) {
@@ -102,15 +102,15 @@ public class PoloniexLoader {
 	        try{
 		        preparedStatement = connection.prepareStatement(compiledQuery);
 				for(Market m : marketList){
-		        	preparedStatement.setBigDecimal(1, m.getOpen());
-		        	preparedStatement.setBigDecimal(2, m.getHigh());
-		        	preparedStatement.setBigDecimal(3,m.getLow());
-		        	preparedStatement.setBigDecimal(4, m.getClose());
-		        	preparedStatement.setInt(5,m.getVolume());
-		        	preparedStatement.setLong(6,lastUpdateDate);
-		        	preparedStatement.setString(7,m.getBase());
-		        	preparedStatement.setString(8,m.getCounter());
-		        	preparedStatement.setString(9,m.getExchange());
+		        	preparedStatement.setString(1,m.getBase());
+		        	preparedStatement.setString(2,m.getCounter());
+		        	preparedStatement.setString(3,m.getExchange());
+		        	preparedStatement.setLong(4,lastUpdateDate);
+		        	preparedStatement.setBigDecimal(5, m.getOpen());
+		        	preparedStatement.setBigDecimal(6, m.getHigh());
+		        	preparedStatement.setBigDecimal(7,m.getLow());
+		        	preparedStatement.setBigDecimal(8, m.getClose());
+		        	preparedStatement.setInt(9,m.getVolume());
 		            preparedStatement.addBatch();
 	        	}
 		        System.out.println("adding new updates...");
@@ -138,7 +138,7 @@ public class PoloniexLoader {
 		PreparedStatement preparedStatement;
 		Connection connection = new Connect().getConnection();
 		try{	        
-	        String compiledQuery = "SELECT MAX (Date) AS Date FROM markets WHERE exchange = POLO"; 
+	        String compiledQuery = "SELECT MAX (Date) AS Date FROM markets WHERE exchange = "+"'POLO'"; 
 	        preparedStatement = connection.prepareStatement(compiledQuery);
 	        long lastUpdateDate;
 	        long start = System.currentTimeMillis();
