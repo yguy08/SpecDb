@@ -87,9 +87,8 @@ public class PoloniexLoader {
 									farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
 					
 						for(PoloniexChartData dayData : priceListRaw){
-							String base = currencyPair.toString().substring(0, currencyPair.toString().indexOf("/"));
-							String counter = currencyPair.toString().substring(currencyPair.toString().indexOf("/")+1);
-							market = new Market(base,counter,"POLO",SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()),
+							String symbol = currencyPair.base.toString() + currencyPair.counter.toString();
+							market = new Market(symbol,"POLO",SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()),
 									dayData.getHigh(),dayData.getLow(),dayData.getOpen(),
 									dayData.getClose(),dayData.getVolume().intValue());
 							marketList.add(market);
@@ -102,19 +101,18 @@ public class PoloniexLoader {
 			PreparedStatement preparedStatement;
 			Connection connection = new Connect().getConnection();
 			
-	        String compiledQuery = "INSERT INTO markets(Base,Counter,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?,?)"; 
+	        String compiledQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)"; 
 	        try{
 		        preparedStatement = connection.prepareStatement(compiledQuery);
 				for(Market m : marketList){
-		        	preparedStatement.setString(1,m.getBase());
-		        	preparedStatement.setString(2,m.getCounter());
-		        	preparedStatement.setString(3,m.getExchange());
-		        	preparedStatement.setLong(4,m.getDate());
-		        	preparedStatement.setBigDecimal(5, m.getHigh());
-		        	preparedStatement.setBigDecimal(6, m.getLow());
-		        	preparedStatement.setBigDecimal(7,m.getOpen());
-		        	preparedStatement.setBigDecimal(8, m.getClose());
-		        	preparedStatement.setInt(9,m.getVolume());
+		        	preparedStatement.setString(1, m.getSymbol());
+		        	preparedStatement.setString(2, m.getExchange());
+		        	preparedStatement.setLong(3,m.getDate());
+		        	preparedStatement.setBigDecimal(4, m.getHigh());
+		        	preparedStatement.setBigDecimal(5, m.getLow());
+		        	preparedStatement.setBigDecimal(6,m.getOpen());
+		        	preparedStatement.setBigDecimal(7, m.getClose());
+		        	preparedStatement.setInt(8,m.getVolume());
 		            preparedStatement.addBatch();
 	        	}
 		        System.out.println("adding new updates...");
