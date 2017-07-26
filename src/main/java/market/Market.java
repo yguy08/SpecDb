@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 
 public class Market {
 	
-	private String base;
-	
-	private String counter;
-	
+	private String symbol;
+		
 	private String exchange;
 	
 	private long date;
@@ -22,10 +20,9 @@ public class Market {
 	
 	private int volume;
 	
-	public Market(String base,String counter,String exchange,long date,
+	public Market(String symbol,String exchange,long date,
 			BigDecimal high,BigDecimal low,BigDecimal open,BigDecimal close,int volume){
-		this.base = base;
-		this.counter = counter;
+		this.symbol = symbol;
 		this.exchange = exchange;
 		this.date = date;
 		this.high = high;
@@ -35,12 +32,8 @@ public class Market {
 		this.volume = volume;
 	}
 	
-	public String getBase() {
-		return base;
-	}
-
-	public String getCounter() {
-		return counter;
+	public String getSymbol(){
+		return symbol;
 	}
 
 	public String getExchange() {
@@ -73,7 +66,7 @@ public class Market {
 	
 	@Override
 	public String toString(){
-		return base + counter + ":" + exchange;
+		return symbol + ":" + exchange;
 	}
 	
 }
