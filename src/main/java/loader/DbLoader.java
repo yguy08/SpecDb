@@ -30,10 +30,6 @@ public class DbLoader {
 		if(isConnected()){			
 			//polo loader
 			new PoloniexLoader();
-
-			//gdax
-			
-			//bittrex
 		}else{
 			System.out.println("No network connection!");
 			long lastUpdate = lastUpdate();
