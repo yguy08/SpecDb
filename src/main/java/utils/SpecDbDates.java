@@ -35,7 +35,7 @@ public class SpecDbDates {
 	}
 	
 	public static long normalizeLongToUtcMidnightSeconds(long date){
-		return 99L;
+		return date;
 	}
 	
 	public static void main(String[]args){
