@@ -24,7 +24,8 @@ public class OfflineUtils {
 			marketListFromFile = Files.readAllLines(Paths.get("marketlist.csv"));
 			for(String marketStr : marketListFromFile){
 				String marketArr[] = marketStr.split(",");
-				market = new Market(marketArr[0].trim(),marketArr[1].trim(),marketArr[2].trim(),
+				String symbol = marketArr[0].concat(marketArr[1]);
+				market = new Market(symbol,marketArr[2].trim(),
 						Long.parseLong(marketArr[3]),new BigDecimal(marketArr[6].trim()),new BigDecimal(marketArr[4].trim()),
 						new BigDecimal(marketArr[5].trim()),new BigDecimal(marketArr[7].trim()),
 						Integer.parseInt(marketArr[8].trim()));
@@ -37,21 +38,20 @@ public class OfflineUtils {
 	    
 		PreparedStatement preparedStatement;
 		Connection connection = new Connect().getConnection();
-        String compiledQuery = "INSERT INTO markets(Base,Counter,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?,?)"; 
+        String compiledQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)"; 
 
         try{
 	        preparedStatement = connection.prepareStatement(compiledQuery);
 	        for(int i = 0; i < marketList.size();i++){
 	        	Market m = marketList.get(i);
-	        	preparedStatement.setString(1, m.getBase());
-	        	preparedStatement.setString(2, m.getCounter());
-	        	preparedStatement.setString(3, m.getExchange());
-	        	preparedStatement.setLong(4,m.getDate());
-	        	preparedStatement.setBigDecimal(5, m.getHigh());
-	        	preparedStatement.setBigDecimal(6, m.getLow());
-	        	preparedStatement.setBigDecimal(7,m.getOpen());
-	        	preparedStatement.setBigDecimal(8, m.getClose());
-	        	preparedStatement.setInt(9, m.getVolume());
+	        	preparedStatement.setString(1, m.getSymbol());
+	        	preparedStatement.setString(2, m.getExchange());
+	        	preparedStatement.setLong(3,m.getDate());
+	        	preparedStatement.setBigDecimal(4, m.getHigh());
+	        	preparedStatement.setBigDecimal(5, m.getLow());
+	        	preparedStatement.setBigDecimal(6,m.getOpen());
+	        	preparedStatement.setBigDecimal(7, m.getClose());
+	        	preparedStatement.setInt(8, m.getVolume());
 	            preparedStatement.addBatch();
 	        	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
 	    	        System.out.println("adding batch: " + (i-10000) + "-" + i);
