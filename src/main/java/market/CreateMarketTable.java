@@ -10,8 +10,7 @@ public class CreateMarketTable {
 	
 	public void insertIfNotExists() {        
         String sql = "CREATE TABLE IF NOT EXISTS markets (\n"
-                + "	Base character NOT NULL,\n"
-                + "	Counter character NOT NULL,\n"
+                + "	Symbol character NOT NULL,\n"
                 + "	Exchange character NOT NULL,\n"
                 + "	Date int NOT NULL,\n"
                 + " High decimal,\n"
