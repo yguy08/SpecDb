@@ -16,9 +16,9 @@ public class SpecDbDates {
 		int day = Integer.parseInt(dateSplit[2]);
 		LocalDateTime closeTime = LocalDateTime.of(year, month, day, 0, 0, 0);
 		ZoneId closeZone = ZoneId.of("Etc/UTC"); 
-		ZonedDateTime departure = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
-		System.out.println(departure);
-		return departure.toInstant().getEpochSecond();
+		ZonedDateTime utcMidnight = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
+		System.out.println(utcMidnight);
+		return utcMidnight.toEpochSecond();
 	}
 	
 	public static long dateToUtcMidnightSeconds(Date date){
@@ -29,9 +29,9 @@ public class SpecDbDates {
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		LocalDateTime closeTime = LocalDateTime.of(year, month, day, 0, 0, 0);
 		ZoneId closeZone = ZoneId.of("Etc/UTC"); 
-		ZonedDateTime departure = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
-		System.out.println(departure);
-		return departure.toInstant().getEpochSecond();
+		ZonedDateTime utcMidnight = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
+		System.out.println(utcMidnight);
+		return utcMidnight.toEpochSecond();
 	}
 	
 	public static long normalizeLongToUtcMidnightSeconds(long date){
