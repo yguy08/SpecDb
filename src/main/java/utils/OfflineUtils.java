@@ -21,31 +21,15 @@ public class OfflineUtils {
 	    List<Market> marketList = new ArrayList<>();		
 		
 	    try {
-			marketListFromFile = Files.readAllLines(Paths.get("src/main/resources/offline/markets.csv"));
+			marketListFromFile = Files.readAllLines(Paths.get("marketlist.csv"));
 			for(String marketStr : marketListFromFile){
 				String marketArr[] = marketStr.split(",");
-				String baseStr = marketArr[0].substring(0, marketArr[0].indexOf(":"));
-				String base;
-				String counter;
-				if(baseStr.endsWith("BTC")){
-					base = baseStr.substring(0, baseStr.lastIndexOf("BTC"));
-					counter = baseStr.substring(baseStr.lastIndexOf("BTC"));
-				}else if(baseStr.endsWith("ETH")){
-					base = baseStr.substring(0, baseStr.lastIndexOf("ETH"));
-					counter = baseStr.substring(baseStr.lastIndexOf("ETH"));
-				}else if(baseStr.endsWith("USDT")){
-					base = baseStr.substring(0, baseStr.lastIndexOf("USDT"));
-					counter = baseStr.substring(baseStr.lastIndexOf("USDT"));
-				}else{
-					base = baseStr.substring(0, baseStr.lastIndexOf("XMR"));
-					counter = baseStr.substring(baseStr.lastIndexOf("XMR"));
-				}
-				
-				market = new Market(base,counter,"POLO",SpecDbDates.simpleDateToUtcMidnightSeconds(marketArr[1].trim()),
-						new BigDecimal(marketArr[2].trim()),new BigDecimal(marketArr[3].trim()),
-						new BigDecimal(marketArr[4].trim()),new BigDecimal(marketArr[5].trim()),
-						Integer.parseInt(marketArr[6].trim()));
+				market = new Market(marketArr[0].trim(),marketArr[1].trim(),marketArr[2].trim(),
+						Long.parseLong(marketArr[3]),new BigDecimal(marketArr[6].trim()),new BigDecimal(marketArr[4].trim()),
+						new BigDecimal(marketArr[5].trim()),new BigDecimal(marketArr[7].trim()),
+						Integer.parseInt(marketArr[8].trim()));
 				marketList.add(market);
+				System.out.println("Added market: " + market.toString());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,7 +37,7 @@ public class OfflineUtils {
 	    
 		PreparedStatement preparedStatement;
 		Connection connection = new Connect().getConnection();
-        String compiledQuery = "INSERT INTO markets(Base,Counter,Exchange,Date,Open,High,Low,Close,Volume) VALUES(?,?,?,?,?,?,?,?,?)"; 
+        String compiledQuery = "INSERT INTO markets(Base,Counter,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?,?)"; 
 
         try{
 	        preparedStatement = connection.prepareStatement(compiledQuery);
@@ -63,9 +47,9 @@ public class OfflineUtils {
 	        	preparedStatement.setString(2, m.getCounter());
 	        	preparedStatement.setString(3, m.getExchange());
 	        	preparedStatement.setLong(4,m.getDate());
-	        	preparedStatement.setBigDecimal(5, m.getOpen());
-	        	preparedStatement.setBigDecimal(6, m.getHigh());
-	        	preparedStatement.setBigDecimal(7,m.getLow());
+	        	preparedStatement.setBigDecimal(5, m.getHigh());
+	        	preparedStatement.setBigDecimal(6, m.getLow());
+	        	preparedStatement.setBigDecimal(7,m.getOpen());
 	        	preparedStatement.setBigDecimal(8, m.getClose());
 	        	preparedStatement.setInt(9, m.getVolume());
 	            preparedStatement.addBatch();
