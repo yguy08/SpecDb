@@ -14,9 +14,9 @@ public class CreateMarketTable {
                 + "	Counter character NOT NULL,\n"
                 + "	Exchange character NOT NULL,\n"
                 + "	Date int NOT NULL,\n"
-                + " Open decimal,\n"
                 + " High decimal,\n"
                 + " Low decimal,\n"
+                + " Open decimal,\n"
                 + " Close decimal,\n"
                 + " Volume int\n"
                 + ");";
