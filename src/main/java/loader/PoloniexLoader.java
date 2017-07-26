@@ -104,8 +104,9 @@ public class PoloniexLoader {
 	        String compiledQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)"; 
 	        try{
 		        preparedStatement = connection.prepareStatement(compiledQuery);
-				for(Market m : marketList){
-		        	preparedStatement.setString(1, m.getSymbol());
+		        for(int i = 0; i < marketList.size();i++){
+	        		Market m = marketList.get(i);
+	        		preparedStatement.setString(1, m.getSymbol());
 		        	preparedStatement.setString(2, m.getExchange());
 		        	preparedStatement.setLong(3,m.getDate());
 		        	preparedStatement.setBigDecimal(4, m.getHigh());
@@ -113,13 +114,15 @@ public class PoloniexLoader {
 		        	preparedStatement.setBigDecimal(6,m.getOpen());
 		        	preparedStatement.setBigDecimal(7, m.getClose());
 		        	preparedStatement.setInt(8,m.getVolume());
-		            preparedStatement.addBatch();
+	            	preparedStatement.addBatch();
+	        	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
+	    	        System.out.println("adding batch: " + i);
+	        		long start = System.currentTimeMillis();
+	    	        preparedStatement.executeBatch();
+	    	        long end = System.currentTimeMillis();
+	    	        System.out.println("total time taken to insert the batch = " + (end - start) + " ms");
 	        	}
-		        System.out.println("adding new updates...");
-        		long start = System.currentTimeMillis();
-    	        preparedStatement.executeBatch();
-    	        long end = System.currentTimeMillis();
-    	        System.out.println("total time taken to insert the batch = " + (end - start) + " ms");
+	        }
 		        
 		        preparedStatement.close();
 		        connection.close();
