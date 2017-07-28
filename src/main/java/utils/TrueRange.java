@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 import loader.Connect;
-import market.Market;
 
 public class TrueRange {
 	
@@ -21,11 +20,26 @@ public class TrueRange {
 	private long date;
 	
 	private BigDecimal trueRange;
+	
+	private BigDecimal high;
+	
+	private BigDecimal low;
+	
+	private BigDecimal close;
 
 	public TrueRange(String symbol, long date, BigDecimal trueRange) {
 		this.symbol = symbol;
 		this.date = date;
 		this.trueRange = trueRange;
+	}
+	
+	public TrueRange(String symbol, long date, BigDecimal high, BigDecimal low, BigDecimal close, BigDecimal trueRange){
+		this.symbol = symbol;
+		this.date = date;
+		this.trueRange = trueRange;
+		this.high = high;
+		this.low = low;
+		this.close = close;
 	}
 	
 	public TrueRange(){
@@ -45,26 +59,93 @@ public class TrueRange {
 	}	
 
 	public static void main(String[] args) {
-        String sql = "ALTER TABLE markets ADD COLUMN ATR decimal";
-        try{
-        	Connection conn = new Connect().getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.executeUpdate();
-            System.out.println("Table created...");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-		new TrueRange().setTrueRange();
-		
+		List<TrueRange> trList = new TrueRange().getTrueRangeList();	
+		updateTrueRange(trList);
 	}
 	
-	public void setTrueRange(){
+	public BigDecimal getHigh(){
+		return this.high;
+	}
+	
+	public BigDecimal getLow(){
+		return this.low;
+	}
+	
+	public BigDecimal getClose(){
+		return this.close;
+	}
+	
+	private static void updateTrueRange(List<TrueRange> trList) {
+		BigDecimal trueRange = new BigDecimal(0.00);
+		List<TrueRange> trueRangeObjList = new ArrayList<>();
+		for(int i = 1;i < trList.size();i++){
+			if(trList.get(i).getSymbol().equals(trList.get(i-1).getSymbol())){
+				if(trList.get(i-1).getTrueRange()!= null){
+					trueRange = trList.get(i-1).getTrueRange();
+				}
+				List<BigDecimal> tList = Arrays.asList(
+						trList.get(i).getHigh().subtract(trList.get(i).getLow().abs(), MathContext.DECIMAL32),
+						trList.get(i).getHigh().subtract(trList.get(i-1).getClose().abs(), MathContext.DECIMAL32),
+						trList.get(i-1).getClose().subtract(trList.get(i).getLow().abs(), MathContext.DECIMAL32));
+				trueRange = trueRange.multiply(new BigDecimal(20 - 1), MathContext.DECIMAL32)
+						.add((Collections.max(tList)), MathContext.DECIMAL32).
+						divide(new BigDecimal(20), MathContext.DECIMAL32);
+				trueRangeObjList.add(new TrueRange(trList.get(i).getSymbol(),trList.get(i).getDate(),trueRange));
+			}
+		}
+				
+			Connection connection = new Connect().getConnection();
+			String compiledQuery = "UPDATE markets SET ATR = ? WHERE Symbol = ? AND Date = ?";
+		    PreparedStatement preparedStatement;
+				
+		    try {
+					preparedStatement = connection.prepareStatement(compiledQuery);
+					for(TrueRange tr : trueRangeObjList){
+			        	preparedStatement.setBigDecimal(1, tr.getTrueRange());
+			        	preparedStatement.setString(2, tr.getSymbol());;
+			        	preparedStatement.setLong(3,tr.getDate());
+			        	preparedStatement.addBatch();
+		        	}
+		        	preparedStatement.executeBatch();
+					System.out.println("Updated true range!");
+					preparedStatement.close();
+		        	connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+
+	public List<TrueRange> getTrueRangeList(){
 		PreparedStatement preparedStatement;
-		Connection connection = new loader.Connect().getConnection();
+		Connection connection = new Connect().getConnection();
+		System.out.println("Connected!"); 
+		
+	    String compiledQuery = "SELECT * FROM markets WHERE Date >= (Select Date from markets where ATR is null order by Date ASC limit 1) - '86400' order by Symbol,Date ASC";
+		try {
+			preparedStatement = connection.prepareStatement(compiledQuery);
+	        ResultSet rs = preparedStatement.executeQuery();
+		    
+		    List<TrueRange> trueRangeList = new ArrayList<>();
+		    while(rs.next()){
+		    	trueRangeList.add(new TrueRange(rs.getString("Symbol"),rs.getLong("Date"),rs.getBigDecimal("High"),
+		    			rs.getBigDecimal("Low"),rs.getBigDecimal("Close"),rs.getBigDecimal("ATR")));
+		    }
+		  
+		    preparedStatement.close();
+        	connection.close();
+        	return trueRangeList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;		
+	}
+	
+	public void setTrueRangeAllTime(){
+		PreparedStatement preparedStatement;
+		Connection connection = new Connect().getConnection();
 		System.out.println("Connected!");
 		try{	        
-	        
-			String compiledQuery = "SELECT DISTINCT Symbol from markets";
+	        String compiledQuery = "SELECT DISTINCT Symbol from markets";
 	        preparedStatement = connection.prepareStatement(compiledQuery);
 	        ResultSet rs = preparedStatement.executeQuery();
 	        
@@ -148,7 +229,8 @@ public class TrueRange {
 			List<BigDecimal> trList = Arrays.asList(
 					high.get(x).subtract(low.get(x).abs(), MathContext.DECIMAL32),
 					high.get(x).subtract(close.get(x-1).abs(), MathContext.DECIMAL32),
-					close.get(x-1).subtract(low.get(x).abs(), MathContext.DECIMAL32));					
+					close.get(x-1).subtract(low.get(x).abs(), MathContext.DECIMAL32));
+				
 					tR = tR.multiply(new BigDecimal(movingAvg - 1), MathContext.DECIMAL32)
 					.add((Collections.max(trList)), MathContext.DECIMAL32).
 					divide(new BigDecimal(movingAvg), MathContext.DECIMAL32);					
