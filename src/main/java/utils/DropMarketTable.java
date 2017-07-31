@@ -1,4 +1,4 @@
-package market;
+package utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -4,12 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class Connect {
-
-	public Connect() {
-		
-	}
 	
     public Connection getConnection() {
         // SQLite connection string
@@ -21,10 +16,9 @@ public class Connect {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         return conn;
     }
-
+    
 }

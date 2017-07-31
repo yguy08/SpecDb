@@ -85,8 +85,7 @@ public class PoloniexLoader {
 				priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
 							.getPoloniexChartData(currencyPair, lastUpdateDate,
 									farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
-					
-						for(PoloniexChartData dayData : priceListRaw){
+					for(PoloniexChartData dayData : priceListRaw){
 							String symbol = currencyPair.base.toString() + currencyPair.counter.toString();
 							market = new Market(symbol,"POLO",SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()),
 									dayData.getHigh(),dayData.getLow(),dayData.getOpen(),

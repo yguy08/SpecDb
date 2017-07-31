@@ -1,4 +1,4 @@
-package market;
+package utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +18,7 @@ public class CreateMarketTable {
                 + " Open decimal,\n"
                 + " Close decimal,\n"
                 + " Volume int,\n"
-                + " ATR decimal,\n"
-                + " H_L int\n"
+                + " ATR decimal\n"
                 + ");";
  
         try{

@@ -17,7 +17,6 @@ public class SpecDbDates {
 		LocalDateTime closeTime = LocalDateTime.of(year, month, day, 0, 0, 0);
 		ZoneId closeZone = ZoneId.of("Etc/UTC"); 
 		ZonedDateTime utcMidnight = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
-		System.out.println(utcMidnight);
 		return utcMidnight.toEpochSecond();
 	}
 	
@@ -30,12 +29,7 @@ public class SpecDbDates {
 		LocalDateTime closeTime = LocalDateTime.of(year, month, day, 0, 0, 0);
 		ZoneId closeZone = ZoneId.of("Etc/UTC"); 
 		ZonedDateTime utcMidnight = ZonedDateTime.of(closeTime, closeZone).plusDays(1);
-		System.out.println(utcMidnight);
 		return utcMidnight.toEpochSecond();
-	}
-	
-	public static long normalizeLongToUtcMidnightSeconds(long date){
-		return date;
 	}
 	
 	public static void main(String[]args){
