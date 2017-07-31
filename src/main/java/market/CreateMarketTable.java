@@ -17,7 +17,9 @@ public class CreateMarketTable {
                 + " Low decimal,\n"
                 + " Open decimal,\n"
                 + " Close decimal,\n"
-                + " Volume int\n"
+                + " Volume int,\n"
+                + " ATR decimal,\n"
+                + " H_L int\n"
                 + ");";
  
         try{

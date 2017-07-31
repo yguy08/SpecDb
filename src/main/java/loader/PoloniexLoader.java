@@ -96,6 +96,8 @@ public class PoloniexLoader {
 				}catch (IOException e) {
 					throw new ExchangeException(e.getMessage());
 				}
+			
+			System.out.println(currencyPair.toString());
 			}
 			
 			PreparedStatement preparedStatement;

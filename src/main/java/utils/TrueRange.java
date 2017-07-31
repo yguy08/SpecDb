@@ -100,12 +100,20 @@ public class TrueRange {
 				
 		    try {
 					preparedStatement = connection.prepareStatement(compiledQuery);
+					int i = 0;
 					for(TrueRange tr : trueRangeObjList){
 			        	preparedStatement.setBigDecimal(1, tr.getTrueRange());
 			        	preparedStatement.setString(2, tr.getSymbol());;
 			        	preparedStatement.setLong(3,tr.getDate());
 			        	preparedStatement.addBatch();
+			        	i++;
+			        	if(i % 10000 == 0){
+							System.out.println("Adding batch " + i);
+				        	preparedStatement.executeBatch();
+							System.out.println("Added batch " + i);
+			        	}
 		        	}
+					System.out.println("Added last batch " + i);
 		        	preparedStatement.executeBatch();
 					System.out.println("Updated true range!");
 					preparedStatement.close();
@@ -130,7 +138,7 @@ public class TrueRange {
 		    	trueRangeList.add(new TrueRange(rs.getString("Symbol"),rs.getLong("Date"),rs.getBigDecimal("High"),
 		    			rs.getBigDecimal("Low"),rs.getBigDecimal("Close"),rs.getBigDecimal("ATR")));
 		    }
-		  
+			System.out.println("Got last ATR update...");
 		    preparedStatement.close();
         	connection.close();
         	return trueRangeList;
