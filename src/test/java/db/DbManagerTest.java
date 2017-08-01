@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import dao.MarketDAO;
 
-public class DbManagerJunit {
+public class DbManagerTest {
 	
 	@Test
 	public void testGenericMarketQuery(){

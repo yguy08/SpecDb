@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import org.junit.Test;
 
-public class SpecDbDatesJunit {
+public class SpecDbDatesTest {
 	
 	@Test
 	public void testDateToUtcMidnightSeconds(){
