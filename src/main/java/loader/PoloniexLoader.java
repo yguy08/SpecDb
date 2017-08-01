@@ -1,10 +1,6 @@
 package loader;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,51 +18,29 @@ import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
 import org.knowm.xchange.poloniex.service.PoloniexChartDataPeriodType;
 import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 
-import market.Market;
+import dao.MarketDAO;
+import db.DbManager;
 import utils.SpecDbDates;
 
 public class PoloniexLoader {
 	
 	public PoloniexLoader(){
 		//get last update date
-		long lastUpdateDate = lastPoloUpdate();
+		String lastUpdateSql = "SELECT MAX (Date) AS Date FROM markets WHERE exchange = "+"'POLO'";
+		List<MarketDAO> marketList = new DbManager().genericMarketQuery(lastUpdateSql);
+		long lastUpdateDate = marketList.get(0).getDate();
 		System.out.println("Db populated up to " + lastUpdateDate);
 		
 		//delete last record before updating all
-		deleteRecords(lastUpdateDate);
+		String deleteSql = "DELETE from markets WHERE Date = " + lastUpdateDate;
+		int recordsDeleted = new DbManager().deleteRecords(deleteSql);
+		System.out.println("Records deleted: " + recordsDeleted);
 		
 		//fetch!
     	long daysMissing = ((Instant.now().getEpochSecond() - lastUpdateDate) / 86400);
 		System.out.println("Need next " + daysMissing + " day data");
 		fetchNewPoloRecords(lastUpdateDate);
         System.out.println("Db loader complete.");
-	}
-	
-	private void deleteRecords(long lastUpdateDate){
-		PreparedStatement preparedStatement;
-		Connection connection = new Connect().getConnection();
-		
-		String deleteQuery = "DELETE from markets WHERE Date = " + lastUpdateDate; 
-		
-		try{
-			preparedStatement = connection.prepareStatement(deleteQuery);
-		
-			long start = System.currentTimeMillis();
-			System.out.println("deleting last record before updating...");
-			int i = preparedStatement.executeUpdate();
-			long end = System.currentTimeMillis();
-			System.out.println("total time taken to delete = " + (end - start) + " ms");
-			System.out.println("total records deleted: " + i);
-			preparedStatement.close();
-			connection.close();
-		}catch(SQLException ex){
-			System.err.println("SQLException information");
-		while (ex != null) {
-			System.err.println("Error msg: " + ex.getMessage());
-			ex = ex.getNextException();
-		}
-			throw new RuntimeException("Error");
-		}		
 	}
 	
 	private void fetchNewPoloRecords(long lastUpdateDate){
@@ -76,98 +50,33 @@ public class PoloniexLoader {
 		
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
 		List<CurrencyPair> currencyPairList = exchange.getExchangeSymbols();
-		Market market;
-		List<Market> marketList = new ArrayList<>();
-		List<PoloniexChartData> priceListRaw = new ArrayList<>();
+		List<MarketDAO> marketList = new ArrayList<>();
 		
 		for(CurrencyPair currencyPair : currencyPairList){
 			try {
-				priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-							.getPoloniexChartData(currencyPair, lastUpdateDate,
-									farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
-					for(PoloniexChartData dayData : priceListRaw){
-							String symbol = currencyPair.base.toString() + currencyPair.counter.toString();
-							market = new Market(symbol,"POLO",SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()),
-									dayData.getHigh(),dayData.getLow(),dayData.getOpen(),
-									dayData.getClose(),dayData.getVolume().intValue());
-							marketList.add(market);
-						}					
-				}catch (IOException e) {
-					throw new ExchangeException(e.getMessage());
-				}
-			
-			System.out.println(currencyPair.toString());
+				List<PoloniexChartData> priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
+											.getPoloniexChartData(currencyPair, lastUpdateDate,
+											farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
+					
+				for(PoloniexChartData dayData : priceListRaw){
+					MarketDAO market = new MarketDAO();
+					market.setSymbol(currencyPair.base.toString() + currencyPair.counter.toString());
+					market.setExchange("POLO");
+					market.setDate(SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()));
+					market.setHigh(dayData.getHigh());
+					market.setLow(dayData.getLow());
+					market.setOpen(dayData.getOpen());
+					market.setClose(dayData.getClose());
+					market.setVolume(dayData.getVolume().intValue());
+					marketList.add(market);
+				}					
+				
+			}catch (IOException e) {
+				throw new ExchangeException(e.getMessage());
 			}
-			
-			PreparedStatement preparedStatement;
-			Connection connection = new Connect().getConnection();
-			
-	        String compiledQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)"; 
-	        try{
-		        preparedStatement = connection.prepareStatement(compiledQuery);
-		        for(int i = 0; i < marketList.size();i++){
-	        		Market m = marketList.get(i);
-	        		preparedStatement.setString(1, m.getSymbol());
-		        	preparedStatement.setString(2, m.getExchange());
-		        	preparedStatement.setLong(3,m.getDate());
-		        	preparedStatement.setBigDecimal(4, m.getHigh());
-		        	preparedStatement.setBigDecimal(5, m.getLow());
-		        	preparedStatement.setBigDecimal(6,m.getOpen());
-		        	preparedStatement.setBigDecimal(7, m.getClose());
-		        	preparedStatement.setInt(8,m.getVolume());
-	            	preparedStatement.addBatch();
-	        	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
-	    	        System.out.println("adding batch: " + i);
-	        		long start = System.currentTimeMillis();
-	    	        preparedStatement.executeBatch();
-	    	        long end = System.currentTimeMillis();
-	    	        System.out.println("total time taken to insert the batch = " + (end - start) + " ms");
-	        	}
-	        }
-		        
-		        preparedStatement.close();
-		        connection.close();
-			}catch (SQLException ex) {
-		        System.err.println("SQLException information");
-		        while (ex != null) {
-		            System.err.println("Error msg: " + ex.getMessage());
-		            ex = ex.getNextException();
-		        }
-		        throw new RuntimeException("Error");
-		    }
-		
-	}
-	
-	private long lastPoloUpdate(){
-		PreparedStatement preparedStatement;
-		Connection connection = new Connect().getConnection();
-		try{	        
-	        String compiledQuery = "SELECT MAX (Date) AS Date FROM markets WHERE exchange = "+"'POLO'"; 
-	        preparedStatement = connection.prepareStatement(compiledQuery);
-	        long lastUpdateDate;
-	        long start = System.currentTimeMillis();
-	        ResultSet resultSet = preparedStatement.executeQuery();
-	        long end = System.currentTimeMillis();
-	        System.out.println("total time taken to find latest date = " + (end - start) + " ms");
-	        
-	        resultSet.getLong("Date");
-	        if(resultSet.wasNull()){
-	        	lastUpdateDate = 0;
-	        }else{
-	        	lastUpdateDate = resultSet.getLong("Date");
-	        }	        
-	        preparedStatement.close();
-        	connection.close();
-        	
-        	return lastUpdateDate;
-        }catch(SQLException ex){
-			System.err.println("SQLException information");
-	        while (ex != null) {
-	            System.err.println("Error msg: " + ex.getMessage());
-	            ex = ex.getNextException();
-	        }
-	        throw new RuntimeException("Error");
+			System.out.println("Fetching new " + currencyPair.toString());
 		}
+			String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
+			new DbManager().insertBatchMarkets(marketList, insertQuery);
 	}
-
 }
