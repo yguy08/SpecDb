@@ -82,7 +82,6 @@ public class DbManager {
 	}
 	
 	public void insertBatchMarkets(List<MarketDAO> marketList, String sqlCommand){
-		System.out.println("Start batch insert of " + marketList.size() + " records");
         try {
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
 	        for(int i = 0; i < marketList.size();i++){
