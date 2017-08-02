@@ -20,7 +20,7 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 
 import dao.MarketDAO;
 import db.DbManager;
-import utils.SpecDbDates;
+import utils.SpecDbDate;
 
 public class PoloniexLoader {
 	
@@ -62,7 +62,7 @@ public class PoloniexLoader {
 					MarketDAO market = new MarketDAO();
 					market.setSymbol(currencyPair.base.toString() + currencyPair.counter.toString());
 					market.setExchange("POLO");
-					market.setDate(SpecDbDates.dateToUtcMidnightSeconds(dayData.getDate()));
+					market.setDate(SpecDbDate.dateToUtcMidnightSeconds(dayData.getDate()));
 					market.setHigh(dayData.getHigh());
 					market.setLow(dayData.getLow());
 					market.setOpen(dayData.getOpen());
