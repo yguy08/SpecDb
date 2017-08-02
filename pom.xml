@@ -24,6 +24,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   			<artifactId>xchange-poloniex</artifactId>
   			<version>4.2.0</version>
 	</dependency>
+		<dependency>
+  			<groupId>org.knowm.xchange</groupId>
+  			<artifactId>xchange-bittrex</artifactId>
+  			<version>4.2.0</version>
+	</dependency>
 	<dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
