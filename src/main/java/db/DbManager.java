@@ -150,7 +150,18 @@ public class DbManager {
         }
 	}
 	
-	public void createTable(String strSql){
+	public void createTable(){
+		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
+                + "	Symbol character NOT NULL,\n"
+                + "	Exchange character NOT NULL,\n"
+                + "	Date int NOT NULL,\n"
+                + " High decimal,\n"
+                + " Low decimal,\n"
+                + " Open decimal,\n"
+                + " Close decimal,\n"
+                + " Volume int,\n"
+                + " ATR decimal\n"
+                + ");";
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
