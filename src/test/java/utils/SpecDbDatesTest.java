@@ -22,21 +22,24 @@ public class SpecDbDatesTest {
 		Date date8 = new Date(1491811200000L);
 		
 		//todays date - a date from today will equal next midnight
-		long nowToUtcMidnight = SpecDbDates.dateToUtcMidnightSeconds(new Date(System.currentTimeMillis()));
+		long nowToUtcMidnight = SpecDbDate.dateToUtcMidnightSeconds(new Date(System.currentTimeMillis()));
 		long now = new Date().getTime() / 1000;
 		
-		assertEquals(1405728000,SpecDbDates.dateToUtcMidnightSeconds(date1));
-		assertEquals(1405728000,SpecDbDates.dateToUtcMidnightSeconds(date2));
-		assertEquals(1406851200,SpecDbDates.dateToUtcMidnightSeconds(date3));
-		assertEquals(1406851200,SpecDbDates.dateToUtcMidnightSeconds(date4));
-		assertEquals(1405814400,SpecDbDates.dateToUtcMidnightSeconds(date5));
-		assertEquals(1405814400,SpecDbDates.dateToUtcMidnightSeconds(date6));
-		assertEquals(1491868800,SpecDbDates.dateToUtcMidnightSeconds(date7));
-		assertEquals(1491868800,SpecDbDates.dateToUtcMidnightSeconds(date8));
+		assertEquals(1405728000,SpecDbDate.dateToUtcMidnightSeconds(date1));
+		assertEquals(1405728000,SpecDbDate.dateToUtcMidnightSeconds(date2));
+		assertEquals(1406851200,SpecDbDate.dateToUtcMidnightSeconds(date3));
+		assertEquals(1406851200,SpecDbDate.dateToUtcMidnightSeconds(date4));
+		assertEquals(1405814400,SpecDbDate.dateToUtcMidnightSeconds(date5));
+		assertEquals(1405814400,SpecDbDate.dateToUtcMidnightSeconds(date6));
+		assertEquals(1491868800,SpecDbDate.dateToUtcMidnightSeconds(date7));
+		assertEquals(1491868800,SpecDbDate.dateToUtcMidnightSeconds(date8));
 		
 		assertTrue(now < nowToUtcMidnight);
-		
-		
+	}
+	
+	@Test
+	public void testIsNewDate(){
+		assertFalse(SpecDbDate.isNewDay(1501711725));
 	}
 
 }
