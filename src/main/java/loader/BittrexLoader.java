@@ -12,7 +12,13 @@ import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 public class BittrexLoader {
 
 	public BittrexLoader() {
-		// TODO Auto-generated constructor stub
+		//get last bittrex date...
+		
+		//delete -> insert
+		
+		//id day is after UTC midnight
+		
+		//insert
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -20,6 +26,7 @@ public class BittrexLoader {
 		BittrexMarketDataService bmds = (BittrexMarketDataService) exchange.getMarketDataService();
 		List<BittrexTicker> tickerList = bmds.getBittrexTickers();
 		for(BittrexTicker bt : tickerList){
+			
 			System.out.println(bt.toString());
 		}
 		
