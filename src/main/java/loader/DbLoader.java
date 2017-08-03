@@ -67,7 +67,7 @@ public class DbLoader implements Runnable {
 	public void updateEveryHour(){
 		long initialDelay = SpecDbDate.nextHourInitialDelay();
 		System.out.println("Starting updates in: " + initialDelay / 60 + " Minutes");
-	    scheduler.scheduleAtFixedRate(new DbLoader(), initialDelay, 60 * 60, SECONDS);
+	    scheduler.scheduleAtFixedRate(new DbLoader(), 0, 60 * 60, SECONDS);
 	}
 
 	@Override
@@ -79,7 +79,19 @@ public class DbLoader implements Runnable {
 		
 		if(isConnected()){			
 			//polo loader
-			new PoloniexLoader();
+			try{
+				//new PoloniexLoader();
+			}catch(Exception e){
+				System.out.println("Poloniex failed...Trying Bittrex");
+			}
+			
+			try{
+				new BittrexLoader();
+			}catch(Exception e){
+				System.out.println("Bittrex failed..");
+			}
+			
+			System.out.println("Done...");
 		}else{
 			System.out.println("No network connection!");
 			System.out.println("Connect to a network and try again to get latest market updates.");

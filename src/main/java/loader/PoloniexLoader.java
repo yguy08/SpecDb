@@ -31,13 +31,15 @@ public class PoloniexLoader {
 		long lastUpdateDate = marketList.get(0).getDate();
 		System.out.println("Db populated up to " + lastUpdateDate);
 		
-		//delete last record before updating all
-		String deleteSql = "DELETE from markets WHERE Date = " + lastUpdateDate;
-		int recordsDeleted = new DbManager().deleteRecords(deleteSql);
-		System.out.println("Records deleted: " + recordsDeleted);
+    	long daysMissing = ((Instant.now().getEpochSecond() - lastUpdateDate) / 86400);
+    	if(daysMissing <= 1){
+    		//delete last record before updating all
+    		String deleteSql = "DELETE from markets WHERE Date = " + lastUpdateDate;
+    		int recordsDeleted = new DbManager().deleteRecords(deleteSql);
+    		System.out.println("Records deleted: " + recordsDeleted);
+    	}
 		
 		//fetch!
-    	long daysMissing = ((Instant.now().getEpochSecond() - lastUpdateDate) / 86400);
 		System.out.println("Need next " + daysMissing + " day data");
 		fetchNewPoloRecords(lastUpdateDate);
         System.out.println("Db loader complete.");

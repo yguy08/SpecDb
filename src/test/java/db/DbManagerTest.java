@@ -17,6 +17,7 @@ public class DbManagerTest {
 		boolean isDate = marketList.get(0).getDate() > 0;
 		boolean otherNull = marketList.get(0).getSymbol() == null;
 		assertTrue(isDate && otherNull);
+		
 	}
 
 }
