@@ -80,7 +80,7 @@ public class DbLoader implements Runnable {
 		if(isConnected()){			
 			//polo loader
 			try{
-				//new PoloniexLoader();
+				new PoloniexLoader();
 			}catch(Exception e){
 				System.out.println("Poloniex failed...Trying Bittrex");
 			}
