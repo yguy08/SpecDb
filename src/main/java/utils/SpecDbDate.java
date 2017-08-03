@@ -3,6 +3,7 @@ package utils;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -28,24 +29,27 @@ public class SpecDbDate {
 	}
 	
 	public static long nextHourInitialDelay(){
-        ZonedDateTime zonedNow = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Etc/UTC"));
-        ZonedDateTime zonedNextHour = zonedNow.withHour(zonedNow.getHour()).withMinute(59).withSecond(0);
-        Duration duration = Duration.between(zonedNow, zonedNextHour);
+		LocalTime localTime = LocalTime.now();
+		LocalTime nextHour = localTime.withHour(localTime.getHour()).withMinute(59).withSecond(0).withNano(0);
+        Duration duration = Duration.between(localTime, nextHour);
         long initalDelay = duration.getSeconds();
 		return initalDelay;
 	}
 	
-	public static boolean isNewDay(long date){
-		//get last updated date
-		Instant instant = Instant.ofEpochSecond(date);
-		ZonedDateTime lastUpdate = ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC"));
-		
-		ZonedDateTime today = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
-		return lastUpdate.getDayOfMonth() != today.getDayOfMonth();		
+	public static boolean isNewDay(){
+		Instant instant = Instant.now();
+		ZoneId z = ZoneId.of( "Etc/UTC" );
+		ZonedDateTime zdt = instant.atZone(z);
+		int hour = zdt.getHour();
+		if(hour == 23){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public static void main(String[]args){
-		isNewDay(1501710775);
+		nextHourInitialDelay();
 	}
 
 }
