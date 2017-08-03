@@ -35,6 +35,7 @@ public class DbLoader implements Runnable {
 	public static void main(String[] args) {
 		specLogger.log(DbLoader.class.getName(), "Start up");
 	    new DbLoader().updateEveryHour();
+		//new DbLoader().run();
 	}
 	
 	public void updateEveryHour(){
@@ -54,7 +55,7 @@ public class DbLoader implements Runnable {
 		
 		if(isConnected()){			
 			try{
-				new PoloniexLoader();
+				PoloniexLoader.poloUpdater();
 			}catch(Exception e){
 				specLogger.log(DbLoader.class.getName(), "Poloniex failed...Trying Bittrex");
 			}

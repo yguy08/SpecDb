@@ -41,15 +41,21 @@ public class SpecDbDate {
 		ZoneId z = ZoneId.of( "Etc/UTC" );
 		ZonedDateTime zdt = instant.atZone(z);
 		int hour = zdt.getHour();
-		if(hour == 23){
+		if(hour == 0){
 			return true;
 		}else{
 			return false;
 		}
 	}
 	
+	public static long getTodayUtcEpochSeconds(){
+		ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Etc/UTC"));
+		ZonedDateTime today = ZonedDateTime.of(zdt.getYear(), zdt.getMonthValue(), zdt.getDayOfMonth(), 0, 0, 0, 0, ZoneId.of("Etc/UTC"));
+		return today.toEpochSecond();
+	}
+	
 	public static void main(String[]args){
-		nextHourInitialDelay();
+		System.out.println(getTodayUtcEpochSeconds());
 	}
 
 }

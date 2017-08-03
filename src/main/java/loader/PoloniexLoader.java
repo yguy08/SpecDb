@@ -42,7 +42,7 @@ public class PoloniexLoader {
 				
 				try{
 					chartData = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-							.getPoloniexChartData(pair, Instant.now().getEpochSecond(),
+							.getPoloniexChartData(pair, SpecDbDate.getTodayUtcEpochSeconds(),
 							9999999999L, PoloniexChartDataPeriodType.PERIOD_86400));
 				}catch(Exception e){
 					System.out.println(e);
@@ -52,7 +52,7 @@ public class PoloniexLoader {
 					MarketDAO market = new MarketDAO();
 					market.setSymbol(pair.base.toString() + pair.counter.toString());
 					market.setExchange("POLO");
-					market.setDate(SpecDbDate.dateToUtcMidnightSeconds(dayData.getDate()));
+					market.setDate(SpecDbDate.getTodayUtcEpochSeconds());
 					market.setHigh(dayData.getHigh());
 					market.setLow(dayData.getLow());
 					market.setOpen(dayData.getOpen());
@@ -139,7 +139,7 @@ public class PoloniexLoader {
 					market.setVolume(dayData.getVolume().intValue());
 					marketList.add(market);
 			}
-			specLogger.log(DbLoader.class.getName(), "Done loading Polo markets");
+			specLogger.log(DbLoader.class.getName(), "Loaded " + currencyPair.toString());
 		}
 		
 			String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
