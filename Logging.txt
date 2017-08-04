@@ -1,4 +1,4 @@
-Aug 03, 2017 7:22:49 PM utils.log.SpecDbLogger log
+Aug 04, 2017 7:59:51 AM utils.log.SpecDbLogger log
 INFO: loader.DbLoader: Same Day..Records deleted: 90
-Aug 03, 2017 7:22:52 PM utils.log.SpecDbLogger log
+Aug 04, 2017 7:59:52 AM utils.log.SpecDbLogger log
 INFO: loader.DbLoader: Same Day..Records deleted: 255
