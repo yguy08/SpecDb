@@ -22,7 +22,8 @@ public class BittrexLoader {
 	public BittrexLoader() throws IOException {
 		List<BittrexTicker> tickerList = new ArrayList<>();
 		List<MarketDAO> marketList = new ArrayList<>();
-
+		StringBuffer sb = new StringBuffer();
+		
 		try{
 			Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BittrexExchange.class.getName());
 			BittrexMarketDataService bmds = (BittrexMarketDataService) exchange.getMarketDataService();
@@ -33,7 +34,15 @@ public class BittrexLoader {
 		}
 		
 		try{
+			int i = 0;
 			for(BittrexTicker bt : tickerList){
+				if(i < 10){
+					sb.append("["+bt.getMarketName()+"],");
+					i++;
+				}else{
+					sb.append("["+bt.getMarketName()+"]\n");
+					i = 0;
+				}
 				MarketDAO market = new MarketDAO();
 				market.setSymbol(bt.getMarketName());
 				market.setExchange("TREX");
@@ -44,12 +53,12 @@ public class BittrexLoader {
 				market.setClose(bt.getLast());
 				market.setVolume(bt.getBaseVolume().intValue());
 				marketList.add(market);
-				System.out.println(bt.toString());
 			}
 		}catch(Exception e){
 			System.out.println("Failed adding bittrex ticker to list!");
 		}
 		
+		specLogger.log(BittrexLoader.class.getName(),sb.toString());
 		if(SpecDbDate.isNewDay()){
 			String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
 			new DbManager().insertBatchMarkets(marketList, insertQuery);			

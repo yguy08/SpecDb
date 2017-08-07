@@ -1,6 +1,7 @@
 package utils.log;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,9 @@ public class SpecDbLogger {
     static private SimpleFormatter formatterTxt;
     
     private SpecDbLogger(String name){
+    	
     	try {
-			fileTxt = new FileHandler("Logging.txt");
+			fileTxt = new FileHandler("SpecDb.log");
 		} catch (SecurityException | IOException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +34,7 @@ public class SpecDbLogger {
     }
     
     public void log(String fqcl, String message){
-    	logger.info(fqcl + ": " + message);
+    	logger.info(fqcl + ":\n" +"* " + message);
     }
 
 	public static void main(String[] args) {

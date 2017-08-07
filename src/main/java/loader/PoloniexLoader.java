@@ -1,24 +1,14 @@
 package loader;
 
-import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import org.knowm.xchange.Exchange;
-import org.knowm.xchange.ExchangeFactory;
-import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.exceptions.ExchangeException;
-import org.knowm.xchange.poloniex.PoloniexExchange;
-import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
-import org.knowm.xchange.poloniex.service.PoloniexChartDataPeriodType;
-import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
+import java.util.Map;
 
+import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
 import dao.MarketDAO;
 import db.DbManager;
+import utils.PoloUtils;
 import utils.SpecDbDate;
 import utils.log.SpecDbLogger;
 
@@ -27,41 +17,36 @@ public class PoloniexLoader {
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	public static void poloUpdater(){
-		Exchange exchange = null;
-		try{
-			exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
-		}catch(Exception cause){
-		    System.out.println(cause);
-		}
 		
-		if(exchange != null){
-			List<CurrencyPair> pairs = exchange.getExchangeSymbols();
-			List<MarketDAO> marketList = new ArrayList<>();
-			List<PoloniexChartData> chartData = new ArrayList<>();
-			for(CurrencyPair pair : pairs){
-				
-				try{
-					chartData = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-							.getPoloniexChartData(pair, SpecDbDate.getTodayUtcEpochSeconds(),
-							9999999999L, PoloniexChartDataPeriodType.PERIOD_86400));
-				}catch(Exception e){
-					System.out.println(e);
-				}
-				
-				for(PoloniexChartData dayData : chartData){
-					MarketDAO market = new MarketDAO();
-					market.setSymbol(pair.base.toString() + pair.counter.toString());
-					market.setExchange("POLO");
-					market.setDate(SpecDbDate.getTodayUtcEpochSeconds());
-					market.setHigh(dayData.getHigh());
-					market.setLow(dayData.getLow());
-					market.setOpen(dayData.getOpen());
-					market.setClose(dayData.getClose());
-					market.setVolume(dayData.getVolume().intValue());
-					marketList.add(market);
-				}			
+		Map<String,List<PoloniexChartData>> poloniexChartData = 
+				PoloUtils.getPoloniexChartData(SpecDbDate.getTodayUtcEpochSeconds(), 9999999999L);
+		
+		List<MarketDAO> marketList = new ArrayList<>();
+		StringBuffer sb = new StringBuffer();
+		int i = 0;
+		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
+			if(i < 10){
+				sb.append("["+e.getKey()+"],");
+				i++;
+			}else{
+				sb.append("["+e.getKey()+"]\n");
+				i = 0;
 			}
-			
+			for(PoloniexChartData dayData : e.getValue()){
+				MarketDAO market = new MarketDAO();
+				market.setSymbol(e.getKey());
+				market.setExchange("POLO");
+				market.setDate(SpecDbDate.getTodayUtcEpochSeconds());
+				market.setHigh(dayData.getHigh());
+				market.setLow(dayData.getLow());
+				market.setOpen(dayData.getOpen());
+				market.setClose(dayData.getClose());
+				market.setVolume(dayData.getVolume().intValue());
+				marketList.add(market);
+			}
+		}
+		try{
+			specLogger.log(PoloniexLoader.class.getName(), sb.toString());
 			if(SpecDbDate.isNewDay()){
 				String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
 				new DbManager().insertBatchMarkets(marketList, insertQuery);
@@ -71,11 +56,14 @@ public class PoloniexLoader {
 	    		specLogger.log(DbLoader.class.getName(), "Same Day..Records deleted: " + recordsDeleted);
 				String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
 				new DbManager().insertBatchMarkets(marketList, insertQuery);
-			}			
-		}else{
-			specLogger.log(DbLoader.class.getName(), "Something went wrong!");
+			}
+		}catch(Exception e){
+			StringBuffer sbuff = new StringBuffer();
+			for(StackTraceElement ste : e.getStackTrace()){
+				sbuff.append(ste.toString() + "\n");
+			}
+			specLogger.log(PoloniexLoader.class.getName(), sbuff.toString());
 		}
-		
 
 	}
 	
@@ -101,49 +89,26 @@ public class PoloniexLoader {
 	}
 	
 	private void fetchNewPoloRecords(long lastUpdateDate){
-		ZonedDateTime departure = ZonedDateTime.of(LocalDateTime.MAX, ZoneId.of("Etc/UTC"));
-		long farFuture = departure.toInstant().getEpochSecond();
-		Exchange exchange = null;
+		Map<String,List<PoloniexChartData>> poloniexChartData = 
+				PoloUtils.getPoloniexChartData(lastUpdateDate, 9999999999L);
 		
-		try{
-			exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
-		}catch(Exception cause){
-		    System.out.println(cause);
-		}
-		
-		List<CurrencyPair> currencyPairList = new ArrayList<>();
 		List<MarketDAO> marketList = new ArrayList<>();
-		if(exchange != null){
-			currencyPairList = exchange.getExchangeSymbols();
-		}
-		
-		for(CurrencyPair currencyPair : currencyPairList){
-			List<PoloniexChartData> priceListRaw = new ArrayList<>();
-			try {
-				priceListRaw = Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
-											.getPoloniexChartData(currencyPair, lastUpdateDate,
-											farFuture, PoloniexChartDataPeriodType.PERIOD_86400));
-			}catch (IOException e) {
-				throw new ExchangeException(e.getMessage());
+		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
+			for(PoloniexChartData dayData : e.getValue()){
+				MarketDAO market = new MarketDAO();
+				market.setSymbol(e.getKey());
+				market.setExchange("POLO");
+				market.setDate(SpecDbDate.dateToUtcMidnightSeconds(dayData.getDate()));
+				market.setHigh(dayData.getHigh());
+				market.setLow(dayData.getLow());
+				market.setOpen(dayData.getOpen());
+				market.setClose(dayData.getClose());
+				market.setVolume(dayData.getVolume().intValue());
+				marketList.add(market);			
 			}
-				
-			for(PoloniexChartData dayData : priceListRaw){
-					MarketDAO market = new MarketDAO();
-					market.setSymbol(currencyPair.base.toString() + currencyPair.counter.toString());
-					market.setExchange("POLO");
-					market.setDate(SpecDbDate.dateToUtcMidnightSeconds(dayData.getDate()));
-					market.setHigh(dayData.getHigh());
-					market.setLow(dayData.getLow());
-					market.setOpen(dayData.getOpen());
-					market.setClose(dayData.getClose());
-					market.setVolume(dayData.getVolume().intValue());
-					marketList.add(market);
-			}
-			specLogger.log(DbLoader.class.getName(), "Loaded " + currencyPair.toString());
 		}
-		
-			String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
-			new DbManager().insertBatchMarkets(marketList, insertQuery);
-			specLogger.log(DbLoader.class.getName(), "Done inserting POLO markets into DB");
+		String insertQuery = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
+		new DbManager().insertBatchMarkets(marketList, insertQuery);
+		specLogger.log(DbLoader.class.getName(), "Done inserting POLO markets into DB");
 	}
 }

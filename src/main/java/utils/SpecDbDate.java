@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import loader.DbLoader;
 
 public class SpecDbDate {
 	
@@ -37,7 +40,7 @@ public class SpecDbDate {
 	}
 	
 	public static boolean isNewDay(){
-		Instant instant = Instant.now();
+		Instant instant = DbLoader.getCurrentUpdateTS();
 		ZoneId z = ZoneId.of( "Etc/UTC" );
 		ZonedDateTime zdt = instant.atZone(z);
 		int hour = zdt.getHour();
@@ -56,6 +59,15 @@ public class SpecDbDate {
 	
 	public static void main(String[]args){
 		System.out.println(getTodayUtcEpochSeconds());
+	}
+	
+	/*
+	 * @param Instant
+	 * @returns ISO_INSTANT Formatted String of Instant
+	 * Default method for log string Time stamps 
+	 */
+	public static String instantToLogStringFormat(Instant instant){
+		return ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC")).format(DateTimeFormatter.ISO_INSTANT);
 	}
 
 }

@@ -1,6 +1,9 @@
 package dao;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+
+import utils.SpecDbDate;
 
 public class MarketDAO {
 	
@@ -96,7 +99,8 @@ public class MarketDAO {
 	
 	@Override
 	public String toString(){
-		return symbol + ":" + exchange;
+		return symbol + ":" + exchange + " " + SpecDbDate.instantToLogStringFormat(Instant.ofEpochSecond(date)) 
+		+ " @" + close;
 	}
 	
 }

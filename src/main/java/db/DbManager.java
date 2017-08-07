@@ -7,17 +7,49 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import dao.MarketDAO;
+import utils.SpecDbDate;
+import utils.log.SpecDbLogger;
 
 public class DbManager {
+	
+	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	private Connection connection;
 	
 	public DbManager(){
 		connection = connect();
+	}
+	
+	public List<MarketDAO> getLast50Days(){
+		Instant instant = Instant.ofEpochSecond(SpecDbDate.getTodayUtcEpochSeconds());
+		long date = instant.getEpochSecond() - 86400 * 50;
+		String sqlCommand = "SELECT * from markets where date >= " + date + " order by date DESC";
+		List<MarketDAO> marketList = genericMarketQuery(sqlCommand);
+		return marketList;
+	}
+	
+	public List<MarketDAO> getToday(){
+		String sqlCommand = "SELECT * from markets where date = (SELECT Max(Date) from markets)";
+		List<MarketDAO> marketList = genericMarketQuery(sqlCommand);
+		return marketList;
+	}
+	
+	public List<MarketDAO> getPoloRestoreResults(){
+		String sqlCommand = "SELECT * from markets WHERE date > (SELECT Max(Date) from markets) - 86400 * 60 * 50 AND" +
+							" exchange = 'POLO'";
+		List<MarketDAO> marketList = genericMarketQuery(sqlCommand);
+		return marketList;
+	}
+	
+	public int deleteAllPoloRecords(){
+		String sqlCommand = "DELETE FROM markets WHERE exchange = 'POLO'";
+		int records = deleteRecords(sqlCommand);
+		return records;
 	}
 	
 	public List<MarketDAO> genericMarketQuery(String sqlCommand){
@@ -96,7 +128,7 @@ public class DbManager {
         		tmpStatement.setInt(8,m.getVolume());
         		tmpStatement.addBatch();
         	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
-    	        System.out.println("adding batch: " + i);
+        		specLogger.log(DbManager.class.getName(), "Adding batch: " + i);
         		long start = System.currentTimeMillis();
         		tmpStatement.executeBatch();
     	        long end = System.currentTimeMillis();
@@ -179,7 +211,8 @@ public class DbManager {
 	}
 	
 	private Connection connect(){
-        String url = "jdbc:sqlite:Speculation1000.db";
+		String userHome = System.getProperty("user.home");
+        String url = "jdbc:sqlite:" + userHome + "/SpecDb/target/Speculation1000.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
