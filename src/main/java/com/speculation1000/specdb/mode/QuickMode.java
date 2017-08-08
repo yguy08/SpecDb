@@ -80,6 +80,7 @@ public class QuickMode implements Runnable, Mode {
 	@Override
 	public void run() {
 		setStartRunTS(Instant.now());
+		
 		specLogger.log(QuickMode.class.getName(),getStartRunMessage());
 		
 		PoloniexDAO polo = new PoloniexDAO();
@@ -96,11 +97,6 @@ public class QuickMode implements Runnable, Mode {
 		}catch(SpecDbException e){
 			specLogger.log(QuickMode.class.getName(),e.getMessage());
 		}
-		
-		if(SpecDbDate.isNewDay(getStartRunTS())){
-			
-		}
-		
 		
 		specLogger.log(QuickMode.class.getName(),getEndRunMessage());
 	}

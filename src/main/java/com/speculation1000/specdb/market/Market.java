@@ -1,11 +1,9 @@
 package com.speculation1000.specdb.market;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-
-import com.speculation1000.specdb.utils.SpecDbDate;
 
 public class Market {
+	
 	private String symbol;
 	
 	private String exchange;
@@ -98,6 +96,6 @@ public class Market {
 	
 	@Override
 	public String toString(){
-		return "";
+		return symbol + " " + exchange + " " + "@" + close;
 	}
 }

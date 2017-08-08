@@ -3,6 +3,7 @@ package com.speculation1000.specdb;
 import java.time.Instant;
 import java.util.logging.Level;
 
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
@@ -16,7 +17,11 @@ public class StartApp {
 	private static final Instant START_UP_TS = Instant.now();
 
 	public static void main(String[] args) {
+		//start up message
 		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
+
+		//create table (if it doesn't exits)
+		DbUtils.createTable();
 		if(args.length > 0){
 			Mode mode = ModeFactory.getMode(args[0]);
 			mode.startApp();

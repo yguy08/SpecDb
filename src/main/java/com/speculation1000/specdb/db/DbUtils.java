@@ -10,22 +10,16 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.utils.SpecDbDate;
 
 public class DbUtils {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	public int newDayCleanUp(String exchange){
-		Connection connection = connect();
-		long from = SpecDbDate.getTodayUtcEpochSeconds() - 86400;
-		String sqlCommand = "DELETE FROM markets WHERE";
-		
 		return 0;
 	}
 	
@@ -78,9 +72,6 @@ public class DbUtils {
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int i = rsmd.getColumnCount();
-            System.out.println("Total columns: "+rsmd.getColumnCount());  
-            System.out.println("Column Name of 1st column: "+rsmd.getColumnName(1));  
-            System.out.println("Column Type Name of 1st column: "+rsmd.getColumnTypeName(1));
             List<Market> marketList = new ArrayList<>();
             while(resultSet.next()){
             	Market market = new Market();
@@ -157,7 +148,7 @@ public class DbUtils {
         return conn;
 	}
 	
-	public void createTable(){
+	public static void createTable(){
 		Connection connection = connect();
 		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
                 + "	Symbol character NOT NULL,\n"
@@ -173,11 +164,11 @@ public class DbUtils {
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
-            System.out.println("Table created!");
+	        specLogger.log(DbUtils.class.getName(), "Table created!");
             tmpStatement.close();
             connection.close();
         } catch (java.sql.SQLException ex) {
-	        System.err.println("SQLException information");
+    		specLogger.log(DbUtils.class.getName(), "SQL ERROR");
 	        while (ex != null) {
 	            System.err.println("Error msg: " + ex.getMessage());
 	            ex = ex.getNextException();
