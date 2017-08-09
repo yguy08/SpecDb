@@ -60,7 +60,7 @@ public class QuickMode implements Mode {
 		sb.append("********************************\n");
 		int i = SpecDbTime.getQuickModeDelay(Instant.now());
 		if(i == 0){
-			i = PERIOD;
+			i = PERIOD / 60;
 		}
 		sb.append("* Next Update in " + i + " minutes\n");
 		sb.append("********************************\n");

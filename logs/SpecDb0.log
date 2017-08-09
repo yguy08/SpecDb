@@ -1,0 +1,6 @@
+Aug 08, 2017 10:04:18 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 783
+Aug 08, 2017 10:04:19 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 1005 ms
