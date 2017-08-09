@@ -2,7 +2,6 @@ package com.speculation1000.specdb.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -14,26 +13,30 @@ import com.speculation1000.specdb.start.SpecDbTime;
 public class SpecDbTimeTest {
 	
 	@Test
-	public void testGetQuickModeDelay(){
+	public void testGetQuickModeDelaySeconds(){
 		ZonedDateTime start = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Etc/UTC"));
 		ZonedDateTime startHour = start.withHour(start.getHour()).withMinute(0).withSecond(0).withNano(0);
-		ZonedDateTime nextQuarter = startHour.plusMinutes(14);
-		Duration duration = Duration.between(startHour, nextQuarter);
-		int mins = (int) duration.toMinutes();
-		assertEquals(14, mins);
-		for(int i = 1; i < 60; i++){
-			ZonedDateTime nextMin = startHour.plusMinutes(i);
-			long delay = SpecDbTime.getQuickModeDelay(Instant.ofEpochSecond(nextMin.toEpochSecond()));
-			if(i < 15){ 
-				assertEquals(14 - i, delay);
-			}else if(i < 30){
-				assertEquals(29 - i, delay);
-			}else if(i < 45){
-				assertEquals(44 - i, delay);
-			}else{
-				assertEquals(59 - i, delay);
+		for(int i = 0; i < 60 * 60; i++){
+			ZonedDateTime nextSecond = startHour.plusSeconds(i);
+			long delay = SpecDbTime.getQuickModeDelaySeconds(Instant.ofEpochSecond(nextSecond.toEpochSecond()));
+			long diff;			
+			if(i < 14 * 60){
+				diff = (14 * 60) - (i);
+				assertEquals(diff, delay);
+			}else if(i < 29 * 60){
+				diff = (29 * 60) - (i);
+				assertEquals(diff, delay);
+			}else if(i < 44 * 60){
+				diff = (44 * 60) - (i);
+				assertEquals(diff, delay);
+			}else if(i < 59 * 60){
+				diff = (59 * 60) - (i);
+				assertEquals(diff, delay);
+			}else if(i < 74 * 60){
+				diff = (74 * 60) - (i);
+				assertEquals(diff, delay);
 			}
 		}
 	}
-
+	
 }
