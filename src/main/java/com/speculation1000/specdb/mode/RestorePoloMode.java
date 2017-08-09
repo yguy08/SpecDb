@@ -5,15 +5,9 @@ import java.time.Instant;
 public class RestorePoloMode implements Mode {
 
 	@Override
-	public void setStartRunTS(Instant instant) {
+	public void run() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Instant getStartRunTS() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

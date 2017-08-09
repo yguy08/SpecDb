@@ -7,31 +7,23 @@ import java.util.StringJoiner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.speculation1000.specdb.SpecDbException;
 import com.speculation1000.specdb.dao.BittrexDAO;
-import com.speculation1000.specdb.dao.MarketSummaryList;
+import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.start.SpecDbDate;
+import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.start.SpecDbTime;
+import com.speculation1000.specdb.start.StartRun;
 
-public class QuickMode implements Runnable, Mode {
+public class QuickMode implements Mode {
 	
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
-		
-	private static Instant startRunTS = null;	
-
-	@Override
-	public void setStartRunTS(Instant instant) {
-		startRunTS = instant;		
-	}
-
-	@Override
-	public Instant getStartRunTS() {
-		return startRunTS;
-	}
+	
+	private static final int PERIOD = 60 * 15;
 
 	@Override
 	public String getStartRunMessage() {
@@ -42,8 +34,8 @@ public class QuickMode implements Runnable, Mode {
 		sb.append("********************************\n");
 		sb.append("            [ START ]\n");
 		sb.append("* At: ");
-		sb.append(SpecDbDate.instantToLogStringFormat(getStartRunTS()) + "\n");
-		sb.append("* New Day: " + SpecDbDate.isNewDay(getStartRunTS()) + "\n");
+		sb.append(SpecDbDate.instantToLogStringFormat(StartRun.getStartRunTS()) + "\n");
+		sb.append("* New Day: " + SpecDbDate.isNewDay(StartRun.getStartRunTS()) + "\n");
 		sb.append("********************************\n");
 		return sb.toString();
 	}
@@ -59,35 +51,38 @@ public class QuickMode implements Runnable, Mode {
 		sb.append("********************************\n");
 		sb.append("          [ RESULTS ]\n");
 		sb.append("* Time: ");
-		sb.append(end.getEpochSecond() - getStartRunTS().getEpochSecond() + " sec\n");
+		sb.append(end.getEpochSecond() - StartRun.getStartRunTS().getEpochSecond() + " sec\n");
 		sb.append("********************************\n");
-		for(Market market : MarketSummaryList.getLatest()){
+		for(Market market : MarketSummaryDAO.getLatest()){
 			sj.add(market.toString());
 		}
 		sb.append(sj.toString() + "\n");
 		sb.append("********************************\n");
-		long nextUpdate = 60 * 2 - (Instant.now().getEpochSecond() - getStartRunTS().getEpochSecond());
-		sb.append("* Next Update in " + nextUpdate + " seconds\n");
+		int i = SpecDbTime.getQuickModeDelay(Instant.now());
+		if(i == 0){
+			i = PERIOD;
+		}
+		sb.append("* Next Update in " + i + " minutes\n");
 		sb.append("********************************\n");
 		return sb.toString();
 	}
 
 	@Override
 	public void startApp() {
-		scheduler.scheduleAtFixedRate(new QuickMode(), 1, 60 * 2, SECONDS);		
+		long nextQuarterInitialDelay = SpecDbTime.getQuickModeDelay(Instant.now());
+		scheduler.scheduleAtFixedRate(new QuickMode(), nextQuarterInitialDelay * 60, PERIOD, SECONDS);		
 	}
 
 	@Override
 	public void run() {
-		setStartRunTS(Instant.now());
-		
+		StartRun.setStartRunTS();
 		specLogger.log(QuickMode.class.getName(),getStartRunMessage());
 		
 		PoloniexDAO polo = new PoloniexDAO();
 		
 		try{
 			polo.updateMarkets();
-		}catch(SpecDbException e){
+		}catch(com.speculation1000.specdb.start.SpecDbException e){
 			specLogger.log(QuickMode.class.getName(),e.getMessage());
 		}
 		
@@ -96,6 +91,10 @@ public class QuickMode implements Runnable, Mode {
 			bittrex.updateMarkets();
 		}catch(SpecDbException e){
 			specLogger.log(QuickMode.class.getName(),e.getMessage());
+		}
+		
+		if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
+			specLogger.log(QuickMode.class.getName(),"New Day!");
 		}
 		
 		specLogger.log(QuickMode.class.getName(),getEndRunMessage());

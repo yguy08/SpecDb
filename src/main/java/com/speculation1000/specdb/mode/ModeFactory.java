@@ -7,9 +7,9 @@ public class ModeFactory {
 		case "quick":
 		case "q":
 			return new QuickMode();
-		case "normal":
-		case "n":
-			return new NormalMode();
+		case "expert":
+		case "e":
+			return new ExpertMode();
 		case "r":
 			return new RestorePoloMode();				
 		default:

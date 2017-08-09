@@ -2,7 +2,7 @@ package com.speculation1000.specdb.dao;
 
 import java.util.List;
 
-import com.speculation1000.specdb.SpecDbException;
+import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.dto.PoloniexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;

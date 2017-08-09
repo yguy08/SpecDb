@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,17 +18,20 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.start.SpecDbDate;
+import com.speculation1000.specdb.start.StartRun;
 
 public class PoloniexDTO implements ExchangeDTO {
 
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
+	
+	private static final Instant OLD_DATE = Instant.ofEpochSecond(0);
 
 	@Override
 	public List<Market> getLatestMarketList() {
 		
 		Map<String,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(SpecDbDate.getTodayUtcEpochSeconds(), 9999999999L);
+				getPoloniexChartData(SpecDbDate.getTodayUtcEpochSeconds(StartRun.getStartRunTS()), 9999999999L);
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
@@ -35,7 +39,7 @@ public class PoloniexDTO implements ExchangeDTO {
 				Market market = new Market();
 				market.setSymbol(e.getKey());
 				market.setExchange("POLO");
-				market.setDate(SpecDbDate.getTodayUtcEpochSeconds());
+				market.setDate(StartRun.getStartRunTS().getEpochSecond());
 				market.setHigh(dayData.getHigh());
 				market.setLow(dayData.getLow());
 				market.setOpen(dayData.getOpen());
@@ -51,7 +55,7 @@ public class PoloniexDTO implements ExchangeDTO {
 	public List<Market> fetchEntireExchangeHistory() {
 		
 		Map<String,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(SpecDbDate.getTodayUtcEpochSeconds() - (86400 * 365 * 10), 9999999999L);
+				getPoloniexChartData(OLD_DATE.getEpochSecond(), 9999999999L);
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
@@ -59,7 +63,7 @@ public class PoloniexDTO implements ExchangeDTO {
 				Market market = new Market();
 				market.setSymbol(e.getKey());
 				market.setExchange("POLO");
-				market.setDate(SpecDbDate.getTodayUtcEpochSeconds());
+				market.setDate(SpecDbDate.getTodayUtcEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())));
 				market.setHigh(dayData.getHigh());
 				market.setLow(dayData.getLow());
 				market.setOpen(dayData.getOpen());

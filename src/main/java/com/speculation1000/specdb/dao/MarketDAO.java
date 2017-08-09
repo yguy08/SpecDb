@@ -1,6 +1,6 @@
 package com.speculation1000.specdb.dao;
 
-import com.speculation1000.specdb.SpecDbException;
+import com.speculation1000.specdb.start.SpecDbException;
 
 public interface MarketDAO {
 	
