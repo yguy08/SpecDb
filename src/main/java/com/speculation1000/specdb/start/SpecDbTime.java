@@ -7,22 +7,30 @@ import java.time.ZonedDateTime;
 
 public class SpecDbTime {
 	
-	public static int getQuickModeDelay(Instant instant){
+	/**
+	 *@param current instant
+	 *@returns seconds to next quarter hour with SpecDb offset (14, 29, 44, 59) 
+	 */
+	public static long getQuickModeDelaySeconds(Instant instant){
 		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC"));
-		int quarter = zdt.getMinute();
+		int minute = zdt.getMinute();
 		ZonedDateTime nextQuarter;
-		if(quarter < 15){
+		
+		if(minute == 14 || minute == 29 || minute == 44 || minute == 59){
+			return 900 - zdt.getSecond();
+		}
+		
+		if(minute < 14){
 			nextQuarter = zdt.withHour(zdt.getHour()).withMinute(14).withSecond(0).withNano(0);
-		}else if(quarter < 30){
+		}else if(minute < 29){
 			nextQuarter = zdt.withHour(zdt.getHour()).withMinute(29).withSecond(0).withNano(0);
-		}else if(quarter < 45){
+		}else if(minute < 44){
 			nextQuarter = zdt.withHour(zdt.getHour()).withMinute(44).withSecond(0).withNano(0);
 		}else{
 			nextQuarter = zdt.withHour(zdt.getHour()).withMinute(59).withSecond(0).withNano(0);
 		}
 		Duration duration = Duration.between(zdt, nextQuarter);
-        int initalDelay = (int) duration.toMinutes();
-		return initalDelay;		
+		return duration.getSeconds();		
 	}
 	
 	public static void main(String[] args){
