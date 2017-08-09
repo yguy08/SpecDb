@@ -3,6 +3,7 @@ package com.speculation1000.specdb.start;
 import java.time.Instant;
 import java.util.logging.Level;
 
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
@@ -13,9 +14,14 @@ public class StartApp {
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	private static final Instant START_UP_TS = Instant.now();
+	
+	public StartApp(){
+		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
+		new DbUtils().createTable();
+	}
 
 	public static void main(String[] args) {
-		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
+		new StartApp();
 		if(args.length > 0){
 			Mode mode = ModeFactory.getMode(args[0]);
 			mode.startApp();
@@ -28,8 +34,8 @@ public class StartApp {
 		return START_UP_TS;
 	}
 	
-	/*
-	 * @returns seconds of system uptime
+	/**
+	 * @returns seconds of system up time
 	 */
 	public static long getSystemUptime(){
 		return Instant.now().getEpochSecond() - StartApp.getStartUpTs().getEpochSecond();
@@ -45,8 +51,8 @@ public class StartApp {
 		sb.append("* At: ");
 		sb.append(SpecDbDate.instantToLogStringFormat(getStartUpTs()) + "\n");
 		sb.append("********************************\n");
-		long nextUpdate = SpecDbTime.getQuickModeDelay(Instant.now());
-		sb.append("* Next Update in " + nextUpdate + " minutes\n");
+		long nextUpdate = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
+		sb.append("* Next Update in " + nextUpdate + " seconds\n");
 		sb.append("********************************\n");		
 		return sb.toString();
 	}
