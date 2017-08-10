@@ -8,6 +8,7 @@ import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
 import com.speculation1000.specdb.mode.QuickMode;
+import com.speculation1000.specdb.time.SpecDbDate;
 
 public class StartApp {
 	
@@ -23,10 +24,10 @@ public class StartApp {
 	public static void main(String[] args) {
 		new StartApp();
 		if(args.length > 0){
-		    Mode mode = ModeFactory.getMode(args[0]);
-		    mode.startApp();
+			Mode mode = ModeFactory.getMode(args[0]);
+			mode.startApp();
 		}else{
-		    new QuickMode().startApp();
+			new QuickMode().startApp();
 		}
 	}
 
