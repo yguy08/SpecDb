@@ -10,15 +10,15 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.start.SpecDbDate;
 
 public class DbUtils {
 	
@@ -98,12 +98,27 @@ public class DbUtils {
 	
 	public static int deleteRecords(String strSql){
 		Connection connection = connect();
-		int result = 0;
         try {
             Statement tmpStatement = connection.createStatement();
-            result = tmpStatement.executeUpdate(strSql);
+            int result = tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
             connection.close();
+            return result;
+        } catch (java.sql.SQLException ex) {
+	        System.err.println("SQLException information");
+	        while (ex != null) {
+	            System.err.println("Error msg: " + ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }
+	}
+	
+	public static int deleteRecords(Connection connection, String strSql){
+        try {
+            Statement tmpStatement = connection.createStatement();
+            int result = tmpStatement.executeUpdate(strSql);
+            tmpStatement.close();
             return result;
         } catch (java.sql.SQLException ex) {
 	        System.err.println("SQLException information");
@@ -122,9 +137,6 @@ public class DbUtils {
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int i = rsmd.getColumnCount();
-            System.out.println("Total columns: "+rsmd.getColumnCount());  
-            System.out.println("Column Name of 1st column: "+rsmd.getColumnName(1));  
-            System.out.println("Column Type Name of 1st column: "+rsmd.getColumnTypeName(1));
             List<Market> marketList = new ArrayList<>();
             while(resultSet.next()){
             	Market market = new Market();
@@ -176,6 +188,63 @@ public class DbUtils {
 	        throw new RuntimeException("Error");
         }
 	}
+	
+	public static List<Market> genericMarketQuery(Connection connection, String sqlCommand){
+        try {
+            Statement tmpStatement = connection.createStatement();
+            ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            int i = rsmd.getColumnCount();
+            List<Market> marketList = new ArrayList<>();
+            while(resultSet.next()){
+            	Market market = new Market();
+            	for(int z = 1; z <= i;z++){
+            		String col_name = rsmd.getColumnName(z);
+            		switch(col_name){
+            		case "Symbol":
+            			market.setSymbol(resultSet.getString(z));
+            			break;
+            		case "Exchange":
+            			market.setExchange(resultSet.getString(z));
+            			break;
+            		case "Date":
+            			market.setDate(resultSet.getLong(z));
+            			break;
+            		case "High":
+            			market.setHigh(resultSet.getBigDecimal(z));
+            			break;
+            		case "Low":
+            			market.setLow(resultSet.getBigDecimal(z));
+            			break;
+            		case "Open":
+            			market.setOpen(resultSet.getBigDecimal(z));
+            			break;
+            		case "Close":
+            			market.setClose(resultSet.getBigDecimal(z));
+            			break;
+            		case "Volume":
+            			market.setVolume(resultSet.getInt(z));
+            			break;
+            		case "ATR":
+            			market.setTrueRange(resultSet.getBigDecimal(z));
+            			break;
+            		default:
+            			break;
+            		}
+            	}
+            	marketList.add(market);
+            }
+            tmpStatement.close();
+            return marketList;
+        } catch (java.sql.SQLException ex) {
+	        System.err.println("SQLException information");
+	        while (ex != null) {
+	            System.err.println("Error msg: " + ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }
+	}	
 	
 	public static Connection connect(){
     	String path = System.getProperty("user.home") + "/SpecDb/db/";
@@ -315,21 +384,59 @@ public class DbUtils {
         }
 	}
 	
-	public static int nextDayCleanUp(Instant startRunTS, String exchange) throws SpecDbException{
-		long yesterday = SpecDbDate.getYesterdayEpochSeconds(SpecDbDate.getTodayMidnightInstant(startRunTS));
-		long today = SpecDbDate.getTodayUtcEpochSeconds(startRunTS);
+	public static void nextDayCleanUp(String exchange) throws SpecDbException{
+		long yesterday = SpecDbDate.getYesterdayEpochSeconds(StartRun.getStartRunTS());
+		long today = SpecDbDate.getTodayUtcEpochSeconds(StartRun.getStartRunTS());
 		
 		String sqlDelete = "DELETE FROM Markets WHERE date >"+" "+yesterday+" "
-							+ "AND date < (SELECT Max(Date) FROM markets WHERE date >"+" "+yesterday+" "
-							+ "AND date <"+" "+today+" AND Exchange = "+exchange+")"
-							+ "AND Exchange = "+exchange;
+				+ "AND date < (SELECT Max(Date) FROM markets WHERE date >"+" "+yesterday+" "
+				+ "AND date <"+" "+today+" AND Exchange = "+exchange+")"
+				+ "AND Exchange = "+exchange;
 		
 		try{
-			int deleted = DbUtils.deleteRecords(sqlDelete);			
-			return deleted;
-		}catch(RuntimeException e){
+			int deleted = DbUtils.deleteRecords(sqlDelete);
+			specLogger.logp(Level.INFO, DbUtils.class.getName(),"nextDayCleanUp", "Next day clean up deleted: " 
+			+ deleted + " records.");
+		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());
-		}		
+		}
+		
+		String sqlUpdate = "";
+		try{
+			int updated = UpdateRecord.updateRecords(sqlUpdate);
+			specLogger.logp(Level.INFO, DbUtils.class.getName(),"nextDayCleanUp", "Next day clean up updated: " 
+			+ updated + " records.");
+		}catch(Exception e){
+			throw new SpecDbException(e.getMessage());
+		}
+	}
+	
+	public static void nextDayCleanUp(Connection connection, String exchange, long yesterday,long today) throws SpecDbException{
+		String sqlDelete = "DELETE FROM Markets WHERE date > " + yesterday + " "
+				+ "AND date < (SELECT Max(Date) FROM markets WHERE date > " + yesterday + " "
+				+ "AND date < " + today + " "
+				+ "AND Exchange = " + "'"+exchange+"'"+")"
+				+ "AND Exchange = " + "'"+exchange+"'";
+		
+		try{
+			int deleted = DbUtils.deleteRecords(connection,sqlDelete);
+			specLogger.logp(Level.INFO, DbUtils.class.getName(),"nextDayCleanUp", "Next day clean up deleted: " 
+			+ deleted + " records.");
+		}catch(Exception e){
+			throw new SpecDbException(e.getMessage());
+		}
+		
+		String sqlUpdate = "UPDATE markets SET date = " + yesterday + " " 
+				+ "WHERE date > " + yesterday + " "
+				+ "AND date < " + today + " "
+				+ "AND Exchange = " + "'"+exchange+"'";
+		try{
+			int updated = UpdateRecord.updateRecords(connection,sqlUpdate);
+			specLogger.logp(Level.INFO, DbUtils.class.getName(),"nextDayCleanUp", "Next day clean up updated: " 
+			+ updated + " records.");
+		}catch(Exception e){
+			throw new SpecDbException(e.getMessage());
+		}
 	}
 
 }
