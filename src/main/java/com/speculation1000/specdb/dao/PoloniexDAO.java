@@ -17,6 +17,7 @@ public class PoloniexDAO implements MarketDAO {
 		try{
 			List<Market> marketList = new PoloniexDTO().getLatestMarketList();
 			DbUtils.insertBatchMarkets(marketList);
+        		specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
 			throw new SpecDbException(message);
