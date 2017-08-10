@@ -13,10 +13,10 @@ import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.start.SpecDbDate;
 import com.speculation1000.specdb.start.SpecDbException;
-import com.speculation1000.specdb.start.SpecDbTime;
 import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.time.SpecDbTime;
 
 public class QuickMode implements Mode {
     
@@ -55,7 +55,7 @@ public class QuickMode implements Mode {
         sb.append(end.getEpochSecond() - StartRun.getStartRunTS().getEpochSecond() + " sec\n");
         sb.append("********************************\n");
         
-        for(Market market : MarketSummaryDAO.getLatest()){
+        for(Market market : MarketSummaryDAO.getAllLatest()){
             sj.add(market.toString());
         }
         
@@ -95,8 +95,23 @@ public class QuickMode implements Mode {
         }
         
         if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
-            specLogger.log(QuickMode.class.getName(),"New Day!");
+            try{
+            	polo.cleanUpForNewDay();
+            	specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "Polo clean up successful");
+            }catch(SpecDbException e){
+            	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "Error during Polo clean up");
+            }
+            
+            try{
+            	bittrex.cleanUpForNewDay();
+            	specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "Trex clean up successful");
+            }catch(SpecDbException e){
+            	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "Error during TREX clean up");
+            }
         }
+        
+        //look for trades...
+        
         
         specLogger.log(QuickMode.class.getName(),getEndRunMessage());
     }
