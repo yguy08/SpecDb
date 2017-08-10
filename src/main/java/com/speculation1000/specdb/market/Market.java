@@ -96,6 +96,6 @@ public class Market {
 	
 	@Override
 	public String toString(){
-		return symbol + " " + exchange + " " + "@" + close;
+		return symbol + " " + exchange + " " + SpecDbDate.longToLogStringFormat(date) + " " + "@" + close;
 	}
 }
