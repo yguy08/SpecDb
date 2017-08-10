@@ -1,7 +1,6 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.knowm.xchange.Exchange;
@@ -13,6 +12,7 @@ import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.start.StartRun;
 
 public class BittrexDTO implements ExchangeDTO {
 	
@@ -33,12 +33,11 @@ public class BittrexDTO implements ExchangeDTO {
 		}
 		
 		List<Market> marketList = new ArrayList<>();
-		Instant instant = Instant.now();
 		for(BittrexTicker bt : tickerList){
 			Market market = new Market();
 			market.setSymbol(bt.getMarketName());
 			market.setExchange("TREX");
-			market.setDate(instant.getEpochSecond());
+			market.setDate(StartRun.getStartRunTS().getEpochSecond());
 			market.setHigh(bt.getHigh());
 			market.setLow(bt.getLow());
 			market.setOpen(bt.getPrevDay());

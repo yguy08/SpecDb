@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
@@ -187,7 +189,7 @@ public class DbUtils {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            System.out.println("Connected!");
+            specLogger.logp(Level.INFO, DbUtils.class.getName(), "connect", "Connection to db established");
         } catch (SQLException ex) {
 	        System.err.println("SQLException information");
 	        while (ex != null) {
@@ -211,7 +213,7 @@ public class DbUtils {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            System.out.println("Connected!");
+            specLogger.logp(Level.INFO, DbUtils.class.getName(), "testConnect", "Test connection established");
         } catch (SQLException ex) {
 	        System.err.println("SQLException information");
 	        while (ex != null) {
@@ -238,7 +240,7 @@ public class DbUtils {
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
-            System.out.println("Table created!");
+            specLogger.logp(Level.INFO, DbUtils.class.getName(), "createTable", "Table created/exists!");
             tmpStatement.close();
             connection.close();
         } catch (java.sql.SQLException ex) {
