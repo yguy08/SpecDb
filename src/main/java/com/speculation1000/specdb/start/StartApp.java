@@ -23,10 +23,10 @@ public class StartApp {
 	public static void main(String[] args) {
 		new StartApp();
 		if(args.length > 0){
-			Mode mode = ModeFactory.getMode(args[0]);
-			mode.startApp();
+		    Mode mode = ModeFactory.getMode(args[0]);
+		    mode.startApp();
 		}else{
-			new QuickMode().startApp();
+		    new QuickMode().startApp();
 		}
 	}
 
@@ -50,9 +50,6 @@ public class StartApp {
 		sb.append("* Start Up: \n");
 		sb.append("* At: ");
 		sb.append(SpecDbDate.instantToLogStringFormat(getStartUpTs()) + "\n");
-		sb.append("********************************\n");
-		long nextUpdate = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
-		sb.append("* Next Update in " + nextUpdate + " seconds\n");
 		sb.append("********************************\n");		
 		return sb.toString();
 	}
