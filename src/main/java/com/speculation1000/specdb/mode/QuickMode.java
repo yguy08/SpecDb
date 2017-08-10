@@ -67,6 +67,7 @@ public class QuickMode implements Mode {
 	@Override
 	public void startApp() {
 		long nextQuarterInitialDelay = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
+    		specLogger.logp(Level.INFO,QuickMode.class.getName(),"startApp","* Next update in " + nextQuarterInitialDelay + " seconds");
 		scheduler.scheduleAtFixedRate(new QuickMode(), nextQuarterInitialDelay, PERIOD, SECONDS);		
 	}
 
