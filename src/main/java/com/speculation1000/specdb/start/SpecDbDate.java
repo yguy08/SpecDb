@@ -33,10 +33,11 @@ public class SpecDbDate {
 		ZoneId z = ZoneId.of( "Etc/UTC" );
 		ZonedDateTime zdt = instant.atZone(z);
 		int hour = zdt.getHour();
-		if(hour == 0){
-			return true;
+		int min = zdt.getMinute();
+		if(hour == 0 && min < 15){
+		    return true;
 		}else{
-			return false;
+		    return false;
 		}
 	}
 	
