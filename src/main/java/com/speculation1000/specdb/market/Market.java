@@ -2,6 +2,8 @@ package com.speculation1000.specdb.market;
 
 import java.math.BigDecimal;
 
+import com.speculation1000.specdb.time.SpecDbDate;
+
 public class Market {
 	
 	private String symbol;
