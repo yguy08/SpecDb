@@ -15,20 +15,21 @@ public class SpecDbDatesTest {
 	
 	@Test
 	public void testIsNewDate(){
-		ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Etc/UTC"));
-		ZonedDateTime today = ZonedDateTime.of(zdt.getYear(), zdt.getMonthValue(), zdt.getDayOfMonth(), 0, 0, 0, 0, ZoneId.of("Etc/UTC"));
-		Instant start = Instant.ofEpochSecond(today.toEpochSecond());
-		
-		assertTrue(SpecDbDate.isNewDay(start));
-		
-		Instant next = null;
-		for(int i = 60; i < 60 * 24;i+=60){
-			next = start.plusSeconds(i*60);
-			assertFalse(SpecDbDate.isNewDay(next));	
+	    ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Etc/UTC"));
+	    ZonedDateTime startYear = ZonedDateTime.of(zdt.getYear(), 1, 1, 0, 14, 0, 0, ZoneId.of("Etc/UTC"));
+	    Instant start = Instant.ofEpochSecond(startYear.toEpochSecond());
+
+	    for(int i = 0; i < 15 * 4 * 24 * 365;i+=15){
+		ZonedDateTime next = ZonedDateTime.ofInstant(start.plusSeconds(i*60), ZoneId.of("Etc/UTC"));
+		int hour = next.getHour();
+		int min = next.getMinute();
+		if(hour == 0 && min < 15){
+			assertTrue(SpecDbDate.isNewDay(Instant.ofEpochSecond(next.toEpochSecond())));
+			System.out.println(next.toLocalDate());
+		}else{
+			assertFalse(SpecDbDate.isNewDay(Instant.ofEpochSecond(next.toEpochSecond())));
 		}
-		
-		Instant last = next.plusSeconds(60 * 60);
-		assertTrue(SpecDbDate.isNewDay(last));
+        }
     }
 	
 	@Test
