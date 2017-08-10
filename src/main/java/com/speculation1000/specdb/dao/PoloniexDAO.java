@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.dao;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbUtils;
@@ -17,7 +18,7 @@ public class PoloniexDAO implements MarketDAO {
 		try{
 			List<Market> marketList = new PoloniexDTO().getLatestMarketList();
 			DbUtils.insertBatchMarkets(marketList);
-        		specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
 			throw new SpecDbException(message);
@@ -31,8 +32,14 @@ public class PoloniexDAO implements MarketDAO {
 	}
 
 	@Override
-	public void cleanUpForNewDay() {
-		
+	public void cleanUpForNewDay() throws SpecDbException {
+		try{
+			DbUtils.nextDayCleanUp("POLO");
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "cleanUpForNewDay", "Polo markets cleaned up.");
+		}catch(Exception e){
+			String message = SpecDbException.exceptionFormat(e.getStackTrace());
+			throw new SpecDbException(message);
+		}
 	}
 
 	@Override
