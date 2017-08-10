@@ -18,8 +18,8 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.start.SpecDbDate;
 import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.time.SpecDbDate;
 
 public class PoloniexDTO implements ExchangeDTO {
 
