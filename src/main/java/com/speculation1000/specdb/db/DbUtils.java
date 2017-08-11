@@ -299,7 +299,7 @@ public class DbUtils {
 		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
                 + "	Symbol character NOT NULL,\n"
                 + "	Exchange character NOT NULL,\n"
-                + "	Date int NOT NULL,\n"
+                + "	Date long NOT NULL,\n"
                 + " High decimal,\n"
                 + " Low decimal,\n"
                 + " Open decimal,\n"
@@ -326,7 +326,7 @@ public class DbUtils {
 		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
                 + "	Symbol character NOT NULL,\n"
                 + "	Exchange character NOT NULL,\n"
-                + "	Date int NOT NULL,\n"
+                + "	Date long NOT NULL,\n"
                 + " High decimal,\n"
                 + " Low decimal,\n"
                 + " Open decimal,\n"
@@ -388,10 +388,11 @@ public class DbUtils {
 		long yesterday = SpecDbDate.getYesterdayEpochSeconds(StartRun.getStartRunTS());
 		long today = SpecDbDate.getTodayUtcEpochSeconds(StartRun.getStartRunTS());
 		
-		String sqlDelete = "DELETE FROM Markets WHERE date >"+" "+yesterday+" "
-				+ "AND date < (SELECT Max(Date) FROM markets WHERE date >"+" "+yesterday+" "
-				+ "AND date <"+" "+today+" AND Exchange = "+exchange+")"
-				+ "AND Exchange = "+exchange;
+		String sqlDelete = "DELETE FROM Markets WHERE date > " + yesterday + " "
+				+ "AND date < (SELECT Max(Date) FROM markets WHERE date > " + yesterday + " "
+				+ "AND date < " + today + " "
+				+ "AND Exchange = " + "'"+exchange+"'"+")"
+				+ "AND Exchange = " + "'"+exchange+"'";
 		
 		try{
 			int deleted = DbUtils.deleteRecords(sqlDelete);
@@ -401,7 +402,10 @@ public class DbUtils {
 			throw new SpecDbException(e.getMessage());
 		}
 		
-		String sqlUpdate = "";
+		String sqlUpdate = "UPDATE markets SET date = " + yesterday + " " 
+				+ "WHERE date > " + yesterday + " "
+				+ "AND date < " + today + " "
+				+ "AND Exchange = " + "'"+exchange+"'";
 		try{
 			int updated = UpdateRecord.updateRecords(sqlUpdate);
 			specLogger.logp(Level.INFO, DbUtils.class.getName(),"nextDayCleanUp", "Next day clean up updated: " 
