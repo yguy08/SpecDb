@@ -9,6 +9,7 @@ import org.knowm.xchange.bittrex.v1.BittrexExchange;
 import org.knowm.xchange.bittrex.v1.dto.marketdata.BittrexTicker;
 import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
@@ -36,7 +37,7 @@ public class BittrexDTO implements ExchangeDTO {
 		for(BittrexTicker bt : tickerList){
 			Market market = new Market();
 			market.setSymbol(bt.getMarketName());
-			market.setExchange("TREX");
+			market.setExchange(ExchangeEnum.BITTREX.getExchangeSymbol());
 			market.setDate(StartRun.getStartRunTS().getEpochSecond());
 			market.setHigh(bt.getHigh());
 			market.setLow(bt.getLow());
@@ -50,7 +51,8 @@ public class BittrexDTO implements ExchangeDTO {
 	}
 
 	@Override
-	public List<Market> fetchEntireExchangeHistory() {
+	public List<Market> fetchExchangeHistory(long endDate) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
