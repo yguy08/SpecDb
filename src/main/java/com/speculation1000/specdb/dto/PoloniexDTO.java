@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
@@ -16,6 +17,7 @@ import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
 import org.knowm.xchange.poloniex.service.PoloniexChartDataPeriodType;
 import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.StartRun;
@@ -31,14 +33,14 @@ public class PoloniexDTO implements ExchangeDTO {
 	public List<Market> getLatestMarketList() {
 		
 		Map<String,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(SpecDbDate.getTodayUtcEpochSeconds(StartRun.getStartRunTS()), 9999999999L);
+				getPoloniexChartData(SpecDbDate.getTodayMidnightEpochSeconds(StartRun.getStartRunTS()), 9999999999L);
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
 			for(PoloniexChartData dayData : e.getValue()){
 				Market market = new Market();
 				market.setSymbol(e.getKey());
-				market.setExchange("POLO");
+				market.setExchange(ExchangeEnum.POLONIEX.getExchangeSymbol());
 				market.setDate(StartRun.getStartRunTS().getEpochSecond());
 				market.setHigh(dayData.getHigh());
 				market.setLow(dayData.getLow());
@@ -52,18 +54,20 @@ public class PoloniexDTO implements ExchangeDTO {
 	}
 
 	@Override
-	public List<Market> fetchEntireExchangeHistory() {
+	public List<Market> fetchExchangeHistory(long endDate) {
 		
 		Map<String,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(OLD_DATE.getEpochSecond(), 9999999999L);
+				getPoloniexChartData(OLD_DATE.getEpochSecond(), endDate);
+		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "fetchExchangeHistory", "Fetched Polo history from " 
+				+ SpecDbDate.instantToLogStringFormat(OLD_DATE) + " " + "to " + SpecDbDate.instantToLogStringFormat(Instant.ofEpochSecond(endDate)));
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<String, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
 			for(PoloniexChartData dayData : e.getValue()){
 				Market market = new Market();
 				market.setSymbol(e.getKey());
-				market.setExchange("POLO");
-				market.setDate(SpecDbDate.getTodayUtcEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())));
+				market.setExchange(ExchangeEnum.POLONIEX.getExchangeSymbol());
+				market.setDate(SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())));
 				market.setHigh(dayData.getHigh());
 				market.setLow(dayData.getLow());
 				market.setOpen(dayData.getOpen());
