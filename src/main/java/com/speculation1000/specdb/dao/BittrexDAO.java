@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbUtils;
+import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.dto.BittrexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
@@ -17,7 +18,7 @@ public class BittrexDAO implements MarketDAO {
 	public void updateMarkets() throws SpecDbException {
 		try{
 			List<Market> marketList = new BittrexDTO().getLatestMarketList();
-			DbUtils.insertBatchMarkets(marketList);
+			InsertRecord.insertBatchMarkets(marketList);
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
 			throw new SpecDbException(message);
@@ -26,8 +27,7 @@ public class BittrexDAO implements MarketDAO {
 
 	@Override
 	public void restoreMarkets() {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
     @Override
@@ -40,11 +40,4 @@ public class BittrexDAO implements MarketDAO {
             throw new SpecDbException(message);
         }	
     }
-
-	@Override
-	public String getMarketDbStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
