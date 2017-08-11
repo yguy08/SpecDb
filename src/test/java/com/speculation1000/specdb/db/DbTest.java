@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -39,11 +41,14 @@ public class DbTest {
 	
 	public static long tomorrow;
 	
+	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
+	
 	@BeforeClass
 	public static void setUpDb() {
-	    connection = DbUtils.testConnect();
-	    DbUtils.dropTable(connection);
-	    DbUtils.createTable(connection);
+		specLogger.logp(Level.INFO, DbTest.class.getName(), "setUpDb", "Start!");
+	    connection = DbConnection.testConnect();
+	    DropTable.dropTable(connection);
+	    CreateTable.createTable(connection);
 	    
 	    //insert test data 1 batch of yesterday
 	    Market yesterdaysMarket;
@@ -63,7 +68,7 @@ public class DbTest {
 	    
 	    //insert test data from 8/10 0:14 - 8/10 23:59
 	    Market todaysMarket;
-	    today = SpecDbDate.getTodayUtcEpochSeconds(Instant.now()) + 14 * 60;
+	    today = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) + 14 * 60;
 	    for(String symbol : symbolArr){
 	    	for(int i = 0;i < 15 * 4 * 24;i+=15){
 	    		todaysMarket = new Market();
@@ -81,7 +86,7 @@ public class DbTest {
 	    
 	    //insert test data with 8/11 0:14
 	    Market tomorrowsMarket;
-	    tomorrow = SpecDbDate.getTodayUtcEpochSeconds(Instant.now()) + 86400 + 14;
+	    tomorrow = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) + 86400 + 14;
 	    for(String symbol : symbolArr){
 	    	tomorrowsMarket = new Market();
 	    	tomorrowsMarket.setSymbol(symbol);
@@ -95,7 +100,7 @@ public class DbTest {
 			marketList.add(tomorrowsMarket);
 	    }
 	    
-	    DbUtils.insertBatchMarkets(connection, marketList);
+	    InsertRecord.insertBatchMarkets(connection, marketList);
 	    
 	}
 	
@@ -109,7 +114,7 @@ public class DbTest {
 		}
 		
 		String sqlCommand = "SELECT * FROM Markets where date = " + yesterday;
-		List<Market> marketList = DbUtils.genericMarketQuery(connection, sqlCommand);
+		List<Market> marketList = QueryTable.genericMarketQuery(connection, sqlCommand);
 		for(Market market : marketList){
 			assertEquals(yesterday,market.getDate());
 		}
