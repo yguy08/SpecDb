@@ -9,7 +9,5 @@ public interface MarketDAO {
 	void cleanUpForNewDay() throws SpecDbException;
 		
 	void restoreMarkets() throws SpecDbException;
-	
-	String getMarketDbStatus() throws SpecDbException;
 
 }
