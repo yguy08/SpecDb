@@ -3,6 +3,7 @@ package com.speculation1000.specdb.mode;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -110,10 +111,26 @@ public class QuickMode implements Mode {
             }
         }
         
-        //look for trades...
-        
+        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", entryStatus());
         
         specLogger.log(QuickMode.class.getName(),getEndRunMessage());
+    }
+    
+    public String entryStatus(){
+    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
+        StringBuilder sb = new StringBuilder();
+        StringJoiner sj = new StringJoiner(":", "[", "]");
+        sb.append("********************************\n");
+        sb.append("          [ ENTRIES ]\n");
+        sb.append("********************************\n");
+        
+        for(Market market : marketList){
+            sj.add(market.toString());
+        }
+        
+        sb.append(sj.toString() + "\n");
+        sb.append("********************************\n");
+        return sb.toString();
     }
 
 
