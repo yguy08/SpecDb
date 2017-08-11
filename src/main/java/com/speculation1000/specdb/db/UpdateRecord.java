@@ -23,7 +23,7 @@ public class UpdateRecord {
             int result = tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
             connection.close();
-            //log
+            specLogger.logp(Level.INFO, UpdateRecord.class.getName(), "updateRecords", "Records updated..");
             return result;
         } catch (java.sql.SQLException ex) {
 	        System.err.println("SQLException information");
@@ -40,7 +40,7 @@ public class UpdateRecord {
             Statement tmpStatement = connection.createStatement();
             int result = tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
-            //log
+            specLogger.logp(Level.INFO, UpdateRecord.class.getName(), "updateRecords", "Records updated..");
             return result;
         } catch (java.sql.SQLException ex) {
 	        System.err.println("SQLException information");
