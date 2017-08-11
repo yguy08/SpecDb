@@ -1,11 +1,15 @@
 package com.speculation1000.specdb.dao;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbUtils;
+import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.dto.PoloniexDTO;
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 
@@ -17,7 +21,7 @@ public class PoloniexDAO implements MarketDAO {
 	public void updateMarkets() throws SpecDbException {
 		try{
 			List<Market> marketList = new PoloniexDTO().getLatestMarketList();
-			DbUtils.insertBatchMarkets(marketList);
+			InsertRecord.insertBatchMarkets(marketList);
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
@@ -26,9 +30,27 @@ public class PoloniexDAO implements MarketDAO {
 	}
 
 	@Override
-	public void restoreMarkets() {
-		List<Market> marketList = new PoloniexDTO().fetchEntireExchangeHistory();
-		DbUtils.insertBatchMarkets(marketList);
+	public void restoreMarkets() throws SpecDbException {
+		Connection connection = DbConnection.mainConnect();
+		
+		try{
+			//Get oldest market date for poloniex
+			long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());
+			//Missing up to date so we don't overwrite existing data
+			long missingUpToDate = oldestDateInDb - 86400;
+			//Get poloniex chart data up to oldest date - 86400
+			List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
+			long fromPoloDate = marketList.get(marketList.size()-1).getDate();
+			if(fromPoloDate != 0){
+				InsertRecord.insertBatchMarkets(connection, marketList);
+				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
+			}			
+			connection.close();
+		}catch(Exception e){
+			String message = SpecDbException.exceptionFormat(e.getStackTrace());
+			throw new SpecDbException(message);
+		}
+		
 	}
 
 	@Override
@@ -40,11 +62,6 @@ public class PoloniexDAO implements MarketDAO {
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
 			throw new SpecDbException(message);
 		}
-	}
-
-	@Override
-	public String getMarketDbStatus() {
-		return null;
 	}
 
 }
