@@ -9,9 +9,7 @@ public class ModeFactory {
 			return new QuickMode();
 		case "expert":
 		case "e":
-			return new ExpertMode();
-		case "r":
-			return new RestorePoloMode();				
+			return new ExpertMode();				
 		default:
 			return new QuickMode();
 		}
