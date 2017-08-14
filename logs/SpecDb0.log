@@ -1,12 +1,42 @@
-Aug 10, 2017 6:36:27 PM com.speculation1000.specdb.db.DbUtils testConnect
+Aug 13, 2017 5:54:50 PM com.speculation1000.specdb.dao.MarketSummaryDAOTest setUpDb
+INFO: Start!
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbConnection testConnect
 INFO: Test connection established
-Aug 10, 2017 6:36:27 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DropTable dropTable
+INFO: Table dropped!
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.CreateTable createTable
+INFO: Table created
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 99
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 63 ms
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbTest setUpDb
+INFO: Start!
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbConnection testConnect
+INFO: Test connection established
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DropTable dropTable
+INFO: Table dropped!
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.CreateTable createTable
+INFO: Table created
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.db.DbUtils:
 * Adding batch: 489
-Aug 10, 2017 6:36:28 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.db.DbUtils:
-* total time taken to insert the batch = 392 ms
-Aug 10, 2017 6:36:28 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
+* total time taken to insert the batch = 484 ms
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
 INFO: Next day clean up deleted: 475 records.
-Aug 10, 2017 6:36:28 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.UpdateRecord updateRecords
+INFO: Records updated..
+Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
 INFO: Next day clean up updated: 5 records.
+Aug 13, 2017 5:54:52 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 13, 2017 5:55:39 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 13, 2017 5:55:49 PM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2001-09-09T01:46:39Z[Etc/UTC]

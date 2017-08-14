@@ -22,19 +22,20 @@ public class InsertRecord {
 	}
 	
 	public static void insertBatchMarkets(Connection connection, List<Market> marketList){
-		String sqlCommand = "INSERT INTO markets(Symbol,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO markets(Base,Counter,Exchange,Date,High,Low,Open,Close,Volume) VALUES(?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
 	        for(int i = 0; i < marketList.size();i++){
         		Market m = marketList.get(i);
-        		tmpStatement.setString(1, m.getSymbol());
-        		tmpStatement.setString(2, m.getExchange());
-        		tmpStatement.setLong(3,m.getDate());
-        		tmpStatement.setBigDecimal(4, m.getHigh());
-        		tmpStatement.setBigDecimal(5, m.getLow());
-        		tmpStatement.setBigDecimal(6,m.getOpen());
-        		tmpStatement.setBigDecimal(7, m.getClose());
-        		tmpStatement.setInt(8,m.getVolume());
+        		tmpStatement.setString(1, m.getBase());
+        		tmpStatement.setString(2, m.getCounter());
+        		tmpStatement.setString(3, m.getExchange());
+        		tmpStatement.setLong(4,m.getDate());
+        		tmpStatement.setBigDecimal(5, m.getHigh());
+        		tmpStatement.setBigDecimal(6, m.getLow());
+        		tmpStatement.setBigDecimal(7,m.getOpen());
+        		tmpStatement.setBigDecimal(8, m.getClose());
+        		tmpStatement.setInt(9,m.getVolume());
         		tmpStatement.addBatch();
         	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
         		specLogger.log(DbUtils.class.getName(), "Adding batch: " + i);

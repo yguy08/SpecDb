@@ -5,8 +5,10 @@ import java.math.BigDecimal;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class Market {
+		
+	private String base;
 	
-	private String symbol;
+	private String counter;
 	
 	private String exchange;
 	
@@ -24,12 +26,20 @@ public class Market {
 	
 	private BigDecimal trueRange;
 	
-	public String getSymbol(){
-		return symbol;
+	public String getBase(){
+		return base;
 	}
 	
-	public void setSymbol(String symbol){
-		this.symbol = symbol;
+	public void setBase(String base){
+		this.base = base;
+	}
+	
+	public String getCounter(){
+		return counter;
+	}
+	
+	public void setCounter(String counter){
+		this.counter = counter;
 	}
 
 	public String getExchange() {
@@ -98,6 +108,6 @@ public class Market {
 	
 	@Override
 	public String toString(){
-		return symbol + " " + exchange + " " + SpecDbDate.longToLogStringFormat(date) + " " + "@" + close;
+		return base + counter + ":" + exchange + " " + SpecDbDate.longToLogStringFormat(date) + " " + "@" + close;
 	}
 }

@@ -38,13 +38,18 @@ public class PoloniexDAO implements MarketDAO {
 			long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());
 			//Missing up to date so we don't overwrite existing data
 			long missingUpToDate = oldestDateInDb - 86400;
+			if(missingUpToDate < 0){
+				missingUpToDate = 9999999999L;
+			}
 			//Get poloniex chart data up to oldest date - 86400
 			List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
 			long fromPoloDate = marketList.get(marketList.size()-1).getDate();
 			if(fromPoloDate != 0){
 				InsertRecord.insertBatchMarkets(connection, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
-			}			
+			}else{
+				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Nothing to restore!");
+			}
 			connection.close();
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());

@@ -40,9 +40,12 @@ public class QueryTable {
             	for(int z = 1; z <= i;z++){
             		String col_name = rsmd.getColumnName(z);
             		switch(col_name){
-            		case "Symbol":
-            			market.setSymbol(resultSet.getString(z));
+            		case "Base":
+            			market.setBase(resultSet.getString(z));
             			break;
+            		case "Counter":
+            			market.setCounter(resultSet.getString(z));
+            			break;	
             		case "Exchange":
             			market.setExchange(resultSet.getString(z));
             			break;
@@ -63,9 +66,6 @@ public class QueryTable {
             			break;
             		case "Volume":
             			market.setVolume(resultSet.getInt(z));
-            			break;
-            		case "ATR":
-            			market.setTrueRange(resultSet.getBigDecimal(z));
             			break;
             		default:
             			break;

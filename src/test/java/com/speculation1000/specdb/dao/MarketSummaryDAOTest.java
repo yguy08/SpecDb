@@ -27,7 +27,7 @@ public class MarketSummaryDAOTest {
 	
 	public static Connection connection;
 	
-	public static String[] symbolArr = {"BTCUSDT","ETHBTC","ETCBTC","XMRBTC","LTCBTC"};
+	public static String[] symbolArr = {"BTC","ETH","ETC","XMR","LTC"};
 	
 	public static int price = 0;
 	
@@ -53,7 +53,8 @@ public class MarketSummaryDAOTest {
 	    		price = 0;
 		    	for(int i = 0; i < 10; i++){
 		    		market = new Market();
-		    		market.setSymbol(symbol);
+		    		market.setBase(symbol);
+		    		market.setCounter("BTC");
 		    		market.setExchange(exchange.getExchangeSymbol());
 		    		market.setDate(start + (i*86400));
 		    		market.setHigh(new BigDecimal(price++));

@@ -23,7 +23,8 @@ public class CreateTable {
 	
 	public static void createTable(Connection connection){
 		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
-                + "	Symbol character NOT NULL,\n"
+                + "	Base character NOT NULL,\n"
+				+ " Counter character NOT NULL,\n"
                 + "	Exchange character NOT NULL,\n"
                 + "	Date long NOT NULL,\n"
                 + " High decimal,\n"

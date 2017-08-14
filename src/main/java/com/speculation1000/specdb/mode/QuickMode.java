@@ -70,9 +70,7 @@ public class QuickMode implements Mode {
 
     @Override
     public void startApp() {
-        long nextQuarterInitialDelay = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
-        specLogger.logp(Level.INFO,QuickMode.class.getName(),"startApp","* Next update in " + nextQuarterInitialDelay + " seconds");
-        scheduler.scheduleAtFixedRate(new QuickMode(), nextQuarterInitialDelay, PERIOD, SECONDS);		
+        scheduler.scheduleAtFixedRate(new QuickMode(), 0, PERIOD, SECONDS);		
     }
 
     @Override
@@ -111,7 +109,15 @@ public class QuickMode implements Mode {
             }
         }
         
-        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", entryStatus());
+        //restore
+        try{
+        	polo.restoreMarkets();
+        	specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "POLO restore successful");
+        }catch(SpecDbException e){
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "Error during POLO restore");
+        }
+        
+        //specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", entryStatus());
         
         specLogger.log(QuickMode.class.getName(),getEndRunMessage());
     }
@@ -123,11 +129,20 @@ public class QuickMode implements Mode {
         sb.append("********************************\n");
         sb.append("          [ ENTRIES ]\n");
         sb.append("********************************\n");
-        
+        sb.append("          [ LONG ]\n");
+        sb.append("********************************\n");
         for(Market market : marketList){
-            sj.add(market.toString());
+            sj.add(market.toString()+"\n");
         }
-        
+        sb.append(sj.toString() + "\n");
+        sb.append("          [ SHORT ]\n");
+        sb.append("********************************\n");
+        sj = new StringJoiner(":","[","]");
+        marketList = MarketSummaryDAO.getShortEntries(25);
+        for(Market market : marketList){
+            sj.add(market.toString()+"\n");
+        }
+
         sb.append(sj.toString() + "\n");
         sb.append("********************************\n");
         return sb.toString();

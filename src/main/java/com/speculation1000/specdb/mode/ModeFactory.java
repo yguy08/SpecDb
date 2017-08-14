@@ -9,9 +9,15 @@ public class ModeFactory {
 			return new QuickMode();
 		case "expert":
 		case "e":
-			return new ExpertMode();				
+			return new ExpertMode();
+		case "normal":
+		case "n":
+			return new StandardMode();
+		case "restore":
+		case "r":
+			return new RestoreMode();
 		default:
-			return new QuickMode();
+			return new StandardMode();
 		}
 	}
 

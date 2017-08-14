@@ -13,7 +13,7 @@ public class DropTable {
 	
 	private static final String DROP_TABLE = DropTable.class.getName();
 	
-	public void dropTable(){
+	public static void dropTable(){
 		Connection connection = DbConnection.mainConnect();
 		dropTable(connection);
 		

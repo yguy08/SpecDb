@@ -23,7 +23,7 @@ public class DbTest {
 	
 	public static Connection connection;
 	
-	public static String[] symbolArr = {"BTCUSDT","ETHBTC","ETCBTC","XMRBTC","LTCBTC"};
+	public static String[] symbolArr = {"BTC","ETH","ETC","XMR","LTC"};
 	
 	public static BigDecimal price = new BigDecimal(0.01);
 	
@@ -55,7 +55,8 @@ public class DbTest {
 	    yesterday = SpecDbDate.getYesterdayEpochSeconds(Instant.now());
 	    for(String symbol : symbolArr){
 	    	yesterdaysMarket = new Market();
-	    	yesterdaysMarket.setSymbol(symbol);
+	    	yesterdaysMarket.setBase(symbol);
+	    	yesterdaysMarket.setCounter("BTC");
 	    	yesterdaysMarket.setExchange("POLO");
 	    	yesterdaysMarket.setDate(yesterday);
 	    	yesterdaysMarket.setHigh(price);
@@ -72,7 +73,8 @@ public class DbTest {
 	    for(String symbol : symbolArr){
 	    	for(int i = 0;i < 15 * 4 * 24;i+=15){
 	    		todaysMarket = new Market();
-	    		todaysMarket.setSymbol(symbol);
+	    		todaysMarket.setBase(symbol);
+	    		todaysMarket.setCounter("BTC");
 	    		todaysMarket.setExchange("POLO");
 	    		todaysMarket.setDate(today + i*60);
 	    		todaysMarket.setHigh(price);
@@ -89,7 +91,8 @@ public class DbTest {
 	    tomorrow = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) + 86400 + 14;
 	    for(String symbol : symbolArr){
 	    	tomorrowsMarket = new Market();
-	    	tomorrowsMarket.setSymbol(symbol);
+	    	tomorrowsMarket.setBase(symbol);
+	    	tomorrowsMarket.setCounter("BTC");
 	    	tomorrowsMarket.setExchange("POLO");
 	    	tomorrowsMarket.setDate(tomorrow);
 	    	tomorrowsMarket.setHigh(price);

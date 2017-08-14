@@ -19,6 +19,7 @@ public class BittrexDAO implements MarketDAO {
 		try{
 			List<Market> marketList = new BittrexDTO().getLatestMarketList();
 			InsertRecord.insertBatchMarkets(marketList);
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Trex markets updated!");
 		}catch(Exception e){
 			String message = SpecDbException.exceptionFormat(e.getStackTrace());
 			throw new SpecDbException(message);
