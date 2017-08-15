@@ -21,8 +21,7 @@ public class BittrexDAO implements MarketDAO {
 			InsertRecord.insertBatchMarkets(marketList);
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Trex markets updated!");
 		}catch(Exception e){
-			String message = SpecDbException.exceptionFormat(e.getStackTrace());
-			throw new SpecDbException(message);
+			throw new SpecDbException(e.getMessage());
 		}
 	}
 
@@ -37,8 +36,7 @@ public class BittrexDAO implements MarketDAO {
             DbUtils.nextDayCleanUp("TREX");
             specLogger.logp(Level.INFO, BittrexDAO.class.getName(), "cleanUpForNewDay", "Trex markets cleaned up.");
         }catch(Exception e){
-            String message = SpecDbException.exceptionFormat(e.getStackTrace());
-            throw new SpecDbException(message);
+            throw new SpecDbException(e.getMessage());
         }	
     }
 }
