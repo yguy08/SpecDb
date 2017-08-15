@@ -76,9 +76,8 @@ public class QueryTable {
             tmpStatement.close();
             return marketList;
         } catch (SQLException ex) {
-	        System.err.println("SQLException information");
-	        while (ex != null) {
-	            System.err.println("Error msg: " + ex.getMessage());
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "genericMarketQuery", ex.getMessage());
 	            ex = ex.getNextException();
 	        }
 	        throw new RuntimeException("Error");
