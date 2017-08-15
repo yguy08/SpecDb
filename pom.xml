@@ -4,8 +4,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
   <modelVersion>4.0.0</modelVersion>
   	<groupId>com.speculation1000</groupId>
-  	<artifactId>spec-db</artifactId>
-  <version>1.0.0</version>
+  	<artifactId>specdb</artifactId>
+  <version>1.0</version>
 
   <properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
