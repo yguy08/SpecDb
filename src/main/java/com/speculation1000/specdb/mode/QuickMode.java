@@ -113,43 +113,9 @@ public class QuickMode implements Mode {
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "Error during POLO restore");
         }
         
-        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", entryStatus());
+        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
         
         specLogger.log(QuickMode.class.getName(),getEndRunMessage());
-        
-        try{
-        	Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
-        	CreateTable.createTable(conn);
-            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "H2 db created!");
-        }catch(Exception e){
-            specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "H2 db creation failed!");
-        }
-    }
-    
-    public String entryStatus(){
-    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
-        StringBuilder sb = new StringBuilder();
-        StringJoiner sj = new StringJoiner(":", "[", "]");
-        sb.append("********************************\n");
-        sb.append("          [ ENTRIES ]\n");
-        sb.append("********************************\n");
-        sb.append("          [ LONG ]\n");
-        sb.append("********************************\n");
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-        sb.append(sj.toString() + "\n");
-        sb.append("          [ SHORT ]\n");
-        sb.append("********************************\n");
-        sj = new StringJoiner(":","[","]");
-        marketList = MarketSummaryDAO.getShortEntries(25);
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-
-        sb.append(sj.toString() + "\n");
-        sb.append("********************************\n");
-        return sb.toString();
     }
 
 
