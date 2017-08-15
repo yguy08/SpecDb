@@ -13,10 +13,10 @@ ssh pi@192.168.1.197 <<zzz23EndOfStatuszzz23
   echo Killing java process on Raspberry pi...
   killall -w java
   echo java processes stopped!
-  ps -e | grep java
-  echo Removing spec-db.jar from pi
-  rm -r /home/pi/SpecDb/tmp
-  mkdir /home/pi/SpecDb/tmp
+  ps -e | grep java  
+  echo Removing specdb jar from pi
+  rm -r /home/pi/SpecDb/target
+  mkdir /home/pi/SpecDb/target
   exit
 zzz23EndOfStatuszzz23
 
@@ -24,11 +24,11 @@ echo Raspberry pi cleaned up...
 
 echo Copying target files to Raspberry Pi...
 
-cd $TMP_DIR
+cd $TARGET
 
 sftp pi@192.168.1.197 <<zzz23EndOfSftpzzz23
-  cd /home/pi/SpecDb/tmp
-  put -r $TMP_DIR/specdb.jar   
+  cd /home/pi/SpecDb/target
+  put -r $TARGET/specdb-1.0.jar   
   exit
 zzz23EndOfSftpzzz23
 
