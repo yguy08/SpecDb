@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.Instant;
 import java.util.List;
+import java.util.StringJoiner;
 
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.market.Market;
@@ -69,6 +70,31 @@ public class MarketSummaryDAO {
 				+ "WHERE date = (SELECT Max(Date) from markets)";
 		List<Market> marketList = QueryTable.genericMarketQuery(sqlCommand);
 		return marketList;
+	}
+	
+	public static String getEntryStatus(){
+    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
+        StringBuilder sb = new StringBuilder();
+        StringJoiner sj = new StringJoiner(":", "[", "]");
+        sb.append("********************************\n");
+        sb.append("          [ ENTRIES ]\n");
+        sb.append("********************************\n");
+        sb.append("          [ LONG ]\n");
+        sb.append("********************************\n");
+        for(Market market : marketList){
+            sj.add(market.toString()+"\n");
+        }
+        sb.append(sj.toString() + "\n");
+        sb.append("          [ SHORT ]\n");
+        sb.append("********************************\n");
+        sj = new StringJoiner(":","[","]");
+        marketList = MarketSummaryDAO.getShortEntries(25);
+        for(Market market : marketList){
+            sj.add(market.toString()+"\n");
+        }
+        sb.append(sj.toString() + "\n");
+        sb.append("********************************\n");
+        return sb.toString();		
 	}
 	
 	public static void main(String[] args){
