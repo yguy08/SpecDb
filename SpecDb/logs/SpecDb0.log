@@ -1,0 +1,1321 @@
+Aug 15, 2017 12:50:51 AM com.speculation1000.specdb.start.StartApp main
+INFO: 
+********** SpecDb ************** 
+[ Digital Asset Price Database ]
+********************************
+* Start Up: 
+* At: 2017-08-15T00:50:50.78Z[Etc/UTC]
+********************************
+
+Aug 15, 2017 12:50:51 AM com.speculation1000.specdb.db.DbConnection static
+INFO: Db directory created/exits
+Aug 15, 2017 12:50:52 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 12:50:52 AM com.speculation1000.specdb.db.CreateTable createTable
+INFO: Table created
+Aug 15, 2017 12:50:52 AM com.speculation1000.specdb.mode.StandardMode startApp
+INFO: * Next update in 487 seconds
+Aug 15, 2017 12:58:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T00:58:59.365Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 12:59:04 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 12:59:11 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 12:59:11 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 12:59:27 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 15608 ms
+Aug 15, 2017 12:59:27 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 12:59:27 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 1:00:01 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:00:01 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 15, 2017 1:00:56 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 54745 ms
+Aug 15, 2017 1:00:56 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 1:00:56 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:00:56 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BTCUSDT:POLO 2017-08-15T00:58:59Z[Etc/UTC] @4339.49716499
+:FCTETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.059999
+:EDGBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00016148
+:SPRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00033448
+:MUSICBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000039
+:BTCUSDT:TREX 2017-08-15T00:58:59Z[Etc/UTC] @4342
+:KOREBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00030521
+:SLRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000045
+:GAMBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00161
+:IOCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00054209
+]
+          [ SHORT ]
+********************************
+[ETCETH:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.04655001
+:MAIDXMR:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00746228
+:GNTBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00005963
+:SCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00000151
+:GAMEBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00043641
+:STRATBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00129745
+:STRBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00000394
+:BCHUSDT:POLO 2017-08-15T00:58:59Z[Etc/UTC] @292.00000002
+:FLOBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00001049
+:ETCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00319197
+:FCTBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00396464
+:GNOBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.04070355
+:SYSBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00002569
+:VIABTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00020757
+:NXTBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00002488
+:NAUTBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00003477
+:DOGEBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @4.0E-7
+:STEEMBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00026437
+:NXTUSDT:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.10857
+:BCHETH:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.99
+:ZECBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.04739059
+:FLDCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00000246
+:BLKXMR:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0
+:LTCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.010339
+:GRCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00000707
+:ETHBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.0683556
+:GNTETH:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.000875
+:XBCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.01973966
+:VRCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00005078
+:MAIDBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00008511
+:BTMBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00008505
+:PASCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00009852
+:LTCXMR:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.899
+:NMCBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00038443
+:BLKBTC:POLO 2017-08-15T00:58:59Z[Etc/UTC] @0.00005059
+:PDCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00002512
+:NEOSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00061184
+:RDDBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @1.8E-7
+:OMNIBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00580001
+:SNTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000014
+:NXSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000412
+:DGBBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000263
+:GCRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00001061
+:WAVESBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00105
+:XLMETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00005811
+:LTCETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.1509005
+:BITBBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @5.9E-7
+:ETHBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.06813064
+:GNTETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00086647
+:RBYBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00011001
+:MAIDBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00008596
+:LUNETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0565
+:XRPBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000383
+:HMQETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0006
+:INCNTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000375
+:DOPEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000504
+:CPCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00010096
+:TIMEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00569999
+:QTUMBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00342
+:CVCETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00207999
+:GAMEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00043694
+:WAVESETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.01570014
+:PTOYBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00006434
+:DGBETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000394
+:EGCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00003119
+:CLUBBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00007183
+:MTLETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0256
+:QTUMETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.049511
+:STORJETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00533824
+:STRATETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.01934037
+:BYCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0001053
+:SNGLSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000338
+:LSKBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00051501
+:DCTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00035
+:XLMBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000396
+:WINGSETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00188335
+:GUPETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00064981
+:ENRGBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00001909
+:QWARKBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00006955
+:PKBBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00006038
+:2GIVEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000103
+:SCETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000225
+:ETCUSDT:TREX 2017-08-15T00:58:59Z[Etc/UTC] @13.831
+:BLKBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000050
+:BCYBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00008346
+:XVGBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @4.3E-7
+:VOXBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00001221
+:EXCLBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00015292
+:ETCETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0465678
+:AMPBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00005618
+:GNTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00005945
+:XMRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.01147436
+:NBTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0002314
+:MUEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00003204
+:MONABTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00008465
+:LUNBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00369981
+:NMRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00775761
+:SYSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000256
+:VIABTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0002004
+:DOGEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @3.9E-7
+:STEEMBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00026303
+:SPHRBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0004586
+:PTCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000387
+:KMDBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00030107
+:ZECETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.71673021
+:XDNBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @4.6E-7
+:SNGLSETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0005
+:XSTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00002592
+:BRXBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00011228
+:ANTBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00060919
+:FTCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000125
+:NMRETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.11088437
+:FUNBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000581
+:SCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000152
+:STRATBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00131355
+:TXBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00007895
+:RLCETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00199412
+:1STETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00241503
+:CFIBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00003999
+:ETCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0032002
+:MEMEBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00002995
+:XWCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000144
+:EFLBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000234
+:1STBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0001631
+:ZENBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00128837
+:ADXBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000078
+:QRLBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00009158
+:TKSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00059182
+:BATETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00065716
+:TKNETH:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0043
+:FLDCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.0000025
+:LTCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.01033199
+:GRCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00000704
+:CUREBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00004673
+:RADSBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.001409
+:XMYBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @5.0E-7
+:CVCBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.000143
+:HKGBTC:TREX 2017-08-15T00:58:59Z[Etc/UTC] @0.00002113
+]
+********************************
+
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 125 sec
+********************************
+* Next Update in 775 seconds
+********************************
+
+Aug 15, 2017 1:01:04 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!
+Aug 15, 2017 1:13:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T01:13:59.361Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 1:13:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:14:07 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:14:07 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 1:14:14 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 6798 ms
+Aug 15, 2017 1:14:14 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 1:14:14 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 1:14:47 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:14:47 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 15, 2017 1:15:04 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 16699 ms
+Aug 15, 2017 1:15:04 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 1:15:04 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:15:04 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:15:12 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 1:15:12 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 1:15:12 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 1:15:12 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:15:13 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:15:13 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[FCTETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.06
+:DRACOBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000299
+:EDGBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.000165
+:ABYBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000187
+:STARTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000107
+:BTCUSDT:TREX 2017-08-15T01:13:59Z[Etc/UTC] @4347.16
+:THCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000202
+:KOREBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00030997
+:SLRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.000045
+:SEQBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003979
+:GBGBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00002495
+:BCCETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @1.00199999
+:GAMBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0017544
+:BTABTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00011763
+]
+          [ SHORT ]
+********************************
+[PPCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00035
+:AMPBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.0000557
+:MAIDXMR:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00746228
+:SCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00000149
+:GAMEBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00042181
+:XVCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00003923
+:OMNIBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00569561
+:DGBBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00000262
+:FCTBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00393651
+:SYSBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00002569
+:VIABTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00020346
+:ZECXMR:POLO 2017-08-15T01:13:59Z[Etc/UTC] @4.14675899
+:NAUTBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00003391
+:DOGEBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @4.0E-7
+:STEEMBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00026399
+:DCRBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00525
+:FLDCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00000243
+:ARDRBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00003018
+:BLKXMR:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0
+:LTCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.01033591
+:GRCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00000707
+:RADSBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.0014
+:BCHBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.06779969
+:BTMBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00008301
+:LTCXMR:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.899
+:NMCBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00038
+:ETCUSDT:POLO 2017-08-15T01:13:59Z[Etc/UTC] @13.88100103
+:BLKBTC:POLO 2017-08-15T01:13:59Z[Etc/UTC] @0.00005023
+:CLOAKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.001
+:NEOBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0109
+:NEOSBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00061184
+:RDDBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @1.8E-7
+:OMNIBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0058
+:NXSBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.000412
+:DGBBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000262
+:GCRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00001019
+:XLMETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00005697
+:XMGBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003492
+:DCRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00525
+:ZCLBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00033159
+:DGDBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.01783169
+:GNTETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00086647
+:RBYBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00011001
+:MAIDBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000855
+:MUSICBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000371
+:LUNETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0565
+:HMQETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0006
+:INCNTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000375
+:DOPEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000504
+:CPCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00010096
+:NEOUSDT:TREX 2017-08-15T01:13:59Z[Etc/UTC] @47.95999999
+:TIMEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00569999
+:QTUMBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00338001
+:PPCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00034801
+:GAMEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00042999
+:XZCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00234423
+:LBCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00008255
+:WAVESETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.01570014
+:DGBETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003937
+:EGCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003119
+:CLUBBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00007183
+:MTLETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0256
+:ADXETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00114105
+:NXTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00002476
+:QTUMETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.04946
+:SBDBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00022
+:STORJETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00533824
+:BYCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00010494
+:ZECBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.04711342
+:LSKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0005112
+:XLMBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000396
+:WINGSETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00188335
+:ARDRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003011
+:ENRGBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00001909
+:QWARKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000672
+:PKBBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00006038
+:EBSTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003443
+:2GIVEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000102
+:SCETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00002201
+:XEMBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00005495
+:BLKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.000050
+:POTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003081
+:BCYBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00008346
+:EXCLBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00015291
+:AMPBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00005571
+:SWTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00038175
+:XMRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.01147433
+:NBTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0002314
+:MUEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00003204
+:MONABTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00008465
+:LUNBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0036205
+:EMCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0002068
+:STEEMBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00026261
+:PAYBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00101595
+:SPHRBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0004586
+:PINKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000025
+:PTCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000387
+:SNTETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.000205
+:KMDBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00030107
+:BATBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000433
+:ZECETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.71673021
+:XDNBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @4.6E-7
+:SNGLSETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0005
+:XSTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00002592
+:ANTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00060801
+:DARBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00007841
+:DTBBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00019091
+:FTCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000125
+:SCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000149
+:TXBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00007895
+:RLCETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00199412
+:1STETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00241503
+:WINGSBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00012574
+:ETCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00318163
+:MEMEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0000295
+:RISEBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00002552
+:XWCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000144
+:1STBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00016244
+:ZENBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00126911
+:BURSTBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000132
+:TKSBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00058045
+:BATETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00063423
+:TKNETH:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.0043
+:FLDCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000245
+:LTCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.01029085
+:GRCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00000704
+:CUREBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00004651
+:RADSBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00139
+:OKBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00001525
+:CVCBTC:TREX 2017-08-15T01:13:59Z[Etc/UTC] @0.00014251
+]
+********************************
+
+Aug 15, 2017 1:15:13 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 74 sec
+********************************
+* Next Update in 826 seconds
+********************************
+
+Aug 15, 2017 1:15:13 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!
+Aug 15, 2017 1:28:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T01:28:59.361Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 1:28:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:29:08 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:29:08 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 1:29:12 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 3253 ms
+Aug 15, 2017 1:29:12 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 1:29:12 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 1:29:43 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:29:43 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 15, 2017 1:30:02 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 19165 ms
+Aug 15, 2017 1:30:02 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 1:30:02 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:30:03 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BCHETH:POLO 2017-08-15T01:28:59Z[Etc/UTC] @1.006
+:FCTETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.06
+:DRACOBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000303
+:EDGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000173
+:BSDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000073
+:THCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000202
+:INFXBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00011076
+:SLRBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00004599
+:SEQBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00004142
+:GBGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00002501
+:BCCETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @1.00199999
+:GAMBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0018175
+:BTABTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00012752
+:CRBETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00237683
+:IOCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00054399
+]
+          [ SHORT ]
+********************************
+[BCYBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00008158
+:AMPBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00005565
+:MAIDXMR:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00741934
+:XVCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00003881
+:VTCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00008953
+:FLOBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00001028
+:ETCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00319
+:FCTBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00393464
+:SYSBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00002546
+:VIABTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00020346
+:ZECXMR:POLO 2017-08-15T01:28:59Z[Etc/UTC] @4.12500001
+:NXTBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00002476
+:DOGEBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @3.9E-7
+:DCRBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.005245
+:GNOETH:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.59373433
+:PINKBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.0000025
+:FLDCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.0000024
+:GRCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00000706
+:NXCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00005286
+:ETHBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.0683
+:XBCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.01958553
+:VRCBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00005042
+:RADSBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.0013924
+:MAIDBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00008499
+:EXPBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00049452
+:LTCXMR:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.899
+:ETCUSDT:POLO 2017-08-15T01:28:59Z[Etc/UTC] @13.83000001
+:XEMBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00005498
+:BLKBTC:POLO 2017-08-15T01:28:59Z[Etc/UTC] @0.00004981
+:CLOAKBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0009537
+:PDCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00002512
+:RDDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @1.8E-7
+:OMNIBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0058
+:SNTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000139
+:FLOBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000104
+:FUNETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00008514
+:XLMETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00005697
+:SAFEXBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000581
+:ZECUSDT:TREX 2017-08-15T01:28:59Z[Etc/UTC] @206.536
+:BITBBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @5.8E-7
+:DGDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.01783158
+:GNTETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00086647
+:MAIDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000085
+:MUSICBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000037
+:LUNETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0565
+:HMQETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0006
+:BCCUSDT:TREX 2017-08-15T01:28:59Z[Etc/UTC] @295
+:STARTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00001055
+:CPCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00009992
+:NEOUSDT:TREX 2017-08-15T01:28:59Z[Etc/UTC] @47.66567224
+:TIMEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00569999
+:DMDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00111058
+:PPCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00034674
+:GAMEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00042457
+:XZCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00234423
+:WAVESETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.01570014
+:DGBETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003937
+:OMGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00157204
+:EGCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003047
+:MTLETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0256
+:SBDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00022
+:SIBBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00027
+:STORJETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00519715
+:STRATETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.01910101
+:BYCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00010494
+:NEOETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.1592
+:LSKBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00051047
+:XLMBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000395
+:WINGSETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00184
+:ENRGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00001909
+:LTCUSDT:TREX 2017-08-15T01:28:59Z[Etc/UTC] @44.55000003
+:QWARKBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00006619
+:PKBBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00006008
+:BTCDBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.013525
+:XEMBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000549
+:POTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003072
+:BCYBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000808
+:XVGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @4.3E-7
+:EXCLBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00015291
+:AMPBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00005536
+:STORJBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00034761
+:SWTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00038175
+:NBTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0002314
+:MUEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003203
+:MONABTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00008465
+:LUNBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00360061
+:DOGEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @3.9E-7
+:SPHRBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0004586
+:PINKBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000025
+:SNTETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000205
+:EXPBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00049974
+:BATBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00004263
+:ZECETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.71672027
+:XDNBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @4.3E-7
+:SNGLSETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00049973
+:XSTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00002564
+:HMQBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00004154
+:BRXBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0001077
+:ANTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000608
+:DARBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00007841
+:FTCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0000123
+:FUNBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000571
+:SCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000149
+:STRATBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00131004
+:TXBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00007828
+:RLCETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00199412
+:GBYTEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.07099999
+:CFIBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003912
+:RISEBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.000025
+:XWCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000144
+:ZENBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.001269
+:NAUTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00003424
+:BURSTBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000131
+:BATETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00060844
+:TKNETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.0043
+:FLDCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000245
+:OMGETH:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.02300002
+:GRCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00000703
+:NLGBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00001679
+:CVCBTC:TREX 2017-08-15T01:28:59Z[Etc/UTC] @0.00014174
+]
+********************************
+
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 71 sec
+********************************
+* Next Update in 829 seconds
+********************************
+
+Aug 15, 2017 1:30:10 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!
+Aug 15, 2017 1:43:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T01:43:59.361Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 1:43:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:44:06 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:44:06 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 1:44:10 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 3220 ms
+Aug 15, 2017 1:44:10 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 1:44:10 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 1:44:57 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+*  [java.net.SocketInputStream.socketRead0(Native Method)], [java.net.SocketInputStream.socketRead(SocketInputStream.java:116)], [java.net.SocketInputStream.read(SocketInputStream.java:170)], [java.net.SocketInputStream.read(SocketInputStream.java:141)], [sun.security.ssl.InputRecord.readFully(InputRecord.java:465)], [sun.security.ssl.InputRecord.read(InputRecord.java:503)], [sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)], [sun.security.ssl.SSLSocketImpl.readDataRecord(SSLSocketImpl.java:930)], [sun.security.ssl.AppInputStream.read(AppInputStream.java:105)], [java.io.BufferedInputStream.fill(BufferedInputStream.java:246)], [java.io.BufferedInputStream.read1(BufferedInputStream.java:286)], [java.io.BufferedInputStream.read(BufferedInputStream.java:345)], [sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:704)], [sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)], [sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1536)], [sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)], [java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)], [sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:338)], [si.mazi.rescu.HttpTemplate.receive(HttpTemplate.java:122)], [si.mazi.rescu.RestInvocationHandler.receiveAndMap(RestInvocationHandler.java:156)], [si.mazi.rescu.RestInvocationHandler.invoke(RestInvocationHandler.java:120)], [com.sun.proxy.$Proxy22.getTicker(Unknown Source)], [org.knowm.xchange.bittrex.v1.service.BittrexMarketDataServiceRaw.getBittrexTicker(BittrexMarketDataServiceRaw.java:58)], [org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService.getTicker(BittrexMarketDataService.java:41)], [com.speculation1000.specdb.dto.BittrexDTO.getBittrexChartData(BittrexDTO.java:58)], [com.speculation1000.specdb.dto.BittrexDTO.getLatestMarketList(BittrexDTO.java:27)], [com.speculation1000.specdb.dao.BittrexDAO.updateMarkets(BittrexDAO.java:20)], [com.speculation1000.specdb.mode.StandardMode.run(StandardMode.java:89)], [java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)], [java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)], [java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)], [java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)], [java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)], [java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)], [java.lang.Thread.run(Thread.java:745)],
+Aug 15, 2017 1:45:32 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+*  [java.net.SocketInputStream.socketRead0(Native Method)], [java.net.SocketInputStream.socketRead(SocketInputStream.java:116)], [java.net.SocketInputStream.read(SocketInputStream.java:170)], [java.net.SocketInputStream.read(SocketInputStream.java:141)], [sun.security.ssl.InputRecord.readFully(InputRecord.java:465)], [sun.security.ssl.InputRecord.read(InputRecord.java:503)], [sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)], [sun.security.ssl.SSLSocketImpl.readDataRecord(SSLSocketImpl.java:930)], [sun.security.ssl.AppInputStream.read(AppInputStream.java:105)], [java.io.BufferedInputStream.fill(BufferedInputStream.java:246)], [java.io.BufferedInputStream.read1(BufferedInputStream.java:286)], [java.io.BufferedInputStream.read(BufferedInputStream.java:345)], [sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:704)], [sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)], [sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1536)], [sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)], [java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)], [sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:338)], [si.mazi.rescu.HttpTemplate.receive(HttpTemplate.java:122)], [si.mazi.rescu.RestInvocationHandler.receiveAndMap(RestInvocationHandler.java:156)], [si.mazi.rescu.RestInvocationHandler.invoke(RestInvocationHandler.java:120)], [com.sun.proxy.$Proxy22.getTicker(Unknown Source)], [org.knowm.xchange.bittrex.v1.service.BittrexMarketDataServiceRaw.getBittrexTicker(BittrexMarketDataServiceRaw.java:58)], [org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService.getTicker(BittrexMarketDataService.java:41)], [com.speculation1000.specdb.dto.BittrexDTO.getBittrexChartData(BittrexDTO.java:58)], [com.speculation1000.specdb.dto.BittrexDTO.getLatestMarketList(BittrexDTO.java:27)], [com.speculation1000.specdb.dao.BittrexDAO.updateMarkets(BittrexDAO.java:20)], [com.speculation1000.specdb.mode.StandardMode.run(StandardMode.java:89)], [java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)], [java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)], [java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)], [java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)], [java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)], [java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)], [java.lang.Thread.run(Thread.java:745)],
+Aug 15, 2017 1:45:43 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:45:43 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 258
+Aug 15, 2017 1:45:55 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 11800 ms
+Aug 15, 2017 1:45:55 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 1:45:55 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:45:56 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:46:04 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 1:46:04 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 1:46:04 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 1:46:04 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:46:04 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:46:05 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BTCUSDT:POLO 2017-08-15T01:43:59Z[Etc/UTC] @4350.32
+:FCTETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.06
+:DRACOBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00000317
+:EDGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.000177
+:BSDBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00007964
+:BTCUSDT:TREX 2017-08-15T01:43:59Z[Etc/UTC] @4350
+:ARKBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00046
+:SLRBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00004599
+:SEQBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000425
+:GBGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002522
+:BCCETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @1.004
+:CLAMBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00168784
+:UBQBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0003502
+]
+          [ SHORT ]
+********************************
+[PPCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00034593
+:AMPBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00005555
+:MAIDXMR:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00741934
+:GNTBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00005953
+:SCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00000149
+:XVCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00003881
+:XMRBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.01146
+:ETCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00317317
+:SYSBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00002524
+:VIABTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00020339
+:ZECXMR:POLO 2017-08-15T01:43:59Z[Etc/UTC] @4.12500001
+:RICBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00001854
+:NAUTBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00003341
+:STEEMBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00026338
+:DCRBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00522383
+:ZECBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.04715832
+:FLDCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.0000024
+:LTCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.01030501
+:GRCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00000699
+:NXCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00005211
+:ETHBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.06816666
+:XBCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.01945001
+:VRCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00004901
+:MAIDBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00008475
+:EXPBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00048414
+:BTMBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00008301
+:XRPBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00003832
+:LTCXMR:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.899
+:NMCBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00037948
+:XEMBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.0000549
+:BLKBTC:POLO 2017-08-15T01:43:59Z[Etc/UTC] @0.00004959
+:CLOAKBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00095367
+:PDCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002512
+:RDDBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @1.8E-7
+:OMNIBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0058
+:SNTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000139
+:FLOBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000104
+:GCRBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00001014
+:XLMETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00005697
+:LTCETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.1509005
+:SAFEXBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000058
+:DCRBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00525
+:ZECUSDT:TREX 2017-08-15T01:43:59Z[Etc/UTC] @205
+:BITBBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @5.8E-7
+:DGDBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.01774147
+:ETHBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.06812001
+:MAIDBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00008497
+:LUNETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0491304
+:HMQETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00057874
+:STARTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00001055
+:CPCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00009446
+:TIMEBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00569999
+:PPCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00034621
+:WAVESETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.01570014
+:DGBETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003937
+:OMGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00155104
+:EGCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003047
+:CLUBBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00007183
+:FCTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00392705
+:NXTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000247
+:STORJETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.005
+:BYCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00010494
+:SNGLSBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003361
+:DASHBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0456578
+:ZECBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.04707003
+:WINGSETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00184
+:QWARKBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000625
+:PKBBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00006008
+:XEMBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00005471
+:BLKBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.000050
+:POTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003072
+:GRSBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0000229
+:XVGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @4.3E-7
+:AMPBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00005531
+:STORJBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00033886
+:NBTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0002314
+:MUEBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003203
+:MONABTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00008349
+:TRSTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.000062
+:SYSBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002527
+:EMCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00020493
+:SPHRBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0004586
+:SNTETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00020049
+:EXPBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00048723
+:BATBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00004151
+:ZECETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.68766756
+:SNGLSETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00048504
+:XSTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002564
+:ANTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00059425
+:FTCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00001194
+:TXBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00007828
+:RLCETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00199412
+:GBYTEBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.07022353
+:AGRSBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00011537
+:RISEBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002436
+:XWCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00000141
+:1STBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00016145
+:ZENBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0012525
+:NAUTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00003007
+:BURSTBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00000131
+:MTLBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00173125
+:TKNETH:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.0043
+:FLDCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00000244
+:GRCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00000701
+:NLGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00001634
+:VRCBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00004998
+:HKGBTC:TREX 2017-08-15T01:43:59Z[Etc/UTC] @0.00002047
+]
+********************************
+
+Aug 15, 2017 1:46:05 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 126 sec
+********************************
+* Next Update in 774 seconds
+********************************
+
+Aug 15, 2017 1:46:05 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!
+Aug 15, 2017 1:58:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T01:58:59.361Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 1:58:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 1:59:06 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:59:06 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 1:59:14 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 7427 ms
+Aug 15, 2017 1:59:14 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 1:59:14 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 1:59:48 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 1:59:48 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 15, 2017 2:00:02 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 13916 ms
+Aug 15, 2017 2:00:02 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 2:00:02 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:00:03 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 2:00:10 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 2:00:10 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 2:00:10 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 2:00:10 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:00:10 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:00:11 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BTCUSDT:POLO 2017-08-15T01:58:59Z[Etc/UTC] @4361.01010101
+:XCPBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00285537
+:BCHETH:POLO 2017-08-15T01:58:59Z[Etc/UTC] @1.009979
+:FCTETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.06062
+:EDGBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00018777
+:BTCUSDT:TREX 2017-08-15T01:58:59Z[Etc/UTC] @4366
+:ARKBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.000467
+:KOREBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00030998
+:GBGBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002524
+:BCCETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @1.00715
+]
+          [ SHORT ]
+********************************
+[REPBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00453562
+:AMPBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0000555
+:MAIDXMR:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00741933
+:GNTBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00005912
+:SCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00000148
+:XVCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00003881
+:STRBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0000038
+:XMRBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0113703
+:DGBBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00000262
+:ETCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00314987
+:FCTBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00393463
+:NXTBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00002461
+:RICBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00001851
+:SBDBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0001612
+:STEEMBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00026206
+:NXTUSDT:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.107
+:DASHBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.04580848
+:PINKBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00000249
+:ZECBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.04692624
+:LSKBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.000492
+:FLDCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0000024
+:LTCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.01025
+:GRCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0000069
+:ETHBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.0674698
+:GNTETH:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00087
+:MAIDBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00008439
+:EXPBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00048414
+:PASCBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00009852
+:XRPBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00003811
+:ETCUSDT:POLO 2017-08-15T01:58:59Z[Etc/UTC] @13.785
+:XEMBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00005365
+:XPMBTC:POLO 2017-08-15T01:58:59Z[Etc/UTC] @0.00007186
+:CLOAKBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0009534
+:NEOBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.01081
+:PDCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002512
+:OMNIBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00577702
+:SNTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00001376
+:FLOBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000104
+:FUNETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00008376
+:XLMETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00005669
+:DCRBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00525
+:ZECUSDT:TREX 2017-08-15T01:58:59Z[Etc/UTC] @205
+:BITBBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @5.6E-7
+:DGDBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.017734
+:ETHBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.06751081
+:GNTETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00086647
+:MAIDBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00008403
+:CANNBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000458
+:MUSICBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000037
+:XRPBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003825
+:HMQETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00057874
+:STARTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00001055
+:NEOUSDT:TREX 2017-08-15T01:58:59Z[Etc/UTC] @47.328
+:TIMEBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00563989
+:DMDBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00111058
+:PPCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00034576
+:REPBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00456001
+:LBCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00008255
+:WAVESETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.01570014
+:TRSTETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0009118
+:DGBETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003937
+:EGCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003047
+:FCTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00390264
+:NXTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002458
+:SIBBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00027
+:STORJETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00499983
+:BYCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00010494
+:SNGLSBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003361
+:DASHBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.04557576
+:ZECBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.04700002
+:TRIGBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002368
+:LSKBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00050451
+:XLMBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000379
+:WINGSETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00184
+:QWARKBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00006001
+:XEMBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000536
+:ETCUSDT:TREX 2017-08-15T01:58:59Z[Etc/UTC] @13.8
+:BLKBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.000050
+:POTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003072
+:GRSBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000228
+:BCYBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00008069
+:XVGBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @4.3E-7
+:VOXBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00001208
+:EXCLBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00015224
+:AMPBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00005521
+:GNTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00005936
+:STORJBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00033622
+:XMRBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0114
+:NBTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0002314
+:MUEBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00003203
+:MONABTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00008349
+:LUNBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00360053
+:NMRBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00771
+:DOGEBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @3.9E-7
+:SPHRBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0004323
+:PTCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000386
+:UNBBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00005423
+:SNGLSETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00048504
+:XSTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002564
+:FTCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00001193
+:FUNBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000562
+:TXBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00007777
+:1STETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0023761
+:XEMETH:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00078921
+:ETCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00315002
+:RISEBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.000023
+:XWCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000138
+:EFLBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000234
+:1STBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00015884
+:BURSTBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.0000013
+:MTLBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00173002
+:FLDCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000244
+:LTCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.01023
+:GRCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00000681
+:CUREBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00004644
+:VRCBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00004851
+:HKGBTC:TREX 2017-08-15T01:58:59Z[Etc/UTC] @0.00002047
+]
+********************************
+
+Aug 15, 2017 2:00:11 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 72 sec
+********************************
+* Next Update in 828 seconds
+********************************
+
+Aug 15, 2017 2:00:11 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!
+Aug 15, 2017 2:13:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T02:13:59.361Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 15, 2017 2:13:59 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 2:14:07 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:14:07 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 15, 2017 2:14:11 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 3472 ms
+Aug 15, 2017 2:14:11 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 15, 2017 2:14:11 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 15, 2017 2:15:00 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:15:00 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 15, 2017 2:15:20 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 19931 ms
+Aug 15, 2017 2:15:20 AM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 15, 2017 2:15:20 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:15:21 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2014-01-17T00:00:00Z[Etc/UTC]
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Nothing to restore!
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: POLO restore successful
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/home/pi/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.mode.StandardMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BTCUSDT:POLO 2017-08-15T02:13:59Z[Etc/UTC] @4400
+:BCHETH:POLO 2017-08-15T02:13:59Z[Etc/UTC] @1.01837434
+:FCTETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.06062
+:SPRBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00033958
+:BCCUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @299.364
+:BTCUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @4395.47000001
+:CRWBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00021298
+:BYCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00010944
+:ARKBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0005321
+:XMRUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @50.4
+:XMRETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.17236796
+:BCCETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @1.0192
+:DASHETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.679
+:MCOETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.01295779
+:DASHUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @201.86099838
+]
+          [ SHORT ]
+********************************
+[BCYBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00008158
+:XRPUSDT:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.16074901
+:PPCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0003399
+:REPBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00452001
+:AMPBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00005411
+:MAIDXMR:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00741933
+:GNTBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00005773
+:SCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00000146
+:LBCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00008088
+:BTSBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00003041
+:STRBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00000369
+:OMNIBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0056561
+:DGBBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00000258
+:ETCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0031125
+:FCTBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00384254
+:GNOBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.03978294
+:ZECXMR:POLO 2017-08-15T02:13:59Z[Etc/UTC] @4.12500001
+:NXTBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00002403
+:SBDBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0001612
+:DOGEBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @3.9E-7
+:STEEMBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00026197
+:NXTUSDT:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.1061111
+:DASHBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.04501337
+:PINKBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00000249
+:ZECBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.04688562
+:LSKBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00049195
+:FLDCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00000235
+:ARDRBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00003011
+:LTCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.01012402
+:GRCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0000067
+:NXCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00005211
+:ETHBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.06597084
+:BCHBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.0675812
+:MAIDBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00008355
+:EXPBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00048198
+:PASCBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00009852
+:XRPBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00003652
+:LTCXMR:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.89279988
+:ETCUSDT:POLO 2017-08-15T02:13:59Z[Etc/UTC] @13.71
+:XEMBTC:POLO 2017-08-15T02:13:59Z[Etc/UTC] @0.00005227
+:CLOAKBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00092097
+:XRPUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.16399999
+:NEOBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0107
+:BCCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0678
+:PDCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00002512
+:RDDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @1.8E-7
+:OMNIBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00561583
+:SNTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000136
+:VTCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.000090
+:DGBBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000256
+:WAVESBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00105
+:GNOBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.04
+:FUNETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000835
+:XLMETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00005669
+:DCRBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00525
+:ZCLBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00033159
+:DGDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.01750175
+:SLSBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00333468
+:LGDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00033
+:ETHBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.06640499
+:NXCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00005125
+:RBYBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00011
+:MAIDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00008355
+:MUSICBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000367
+:XRPBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00003697
+:DOPEBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000503
+:STARTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00001055
+:CPCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000925
+:NEOUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @47.16329785
+:TIMEBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00563989
+:QTUMBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00335601
+:DMDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00111058
+:PPCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00033843
+:REPBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0045
+:LBCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00007996
+:WAVESETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.01570014
+:TRSTETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0009118
+:DGBETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000393
+:TKNBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0002916
+:OMGBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00154
+:EGCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00003027
+:FCTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00385943
+:NXTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00002416
+:STORJETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00490037
+:DASHBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.04513017
+:ZECBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.04671671
+:TRIGBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00002368
+:LSKBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.000495
+:XLMBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000369
+:RLCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0001461
+:EBSTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00003435
+:GEOBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00019983
+:XEMBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000525
+:ETCUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @13.75
+:BLKBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.000050
+:POTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00003072
+:BCYBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00007999
+:VOXBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.000012
+:EXCLBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00015224
+:AMPBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00005442
+:GNTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000579
+:STORJBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0003261
+:ETHUSDT:TREX 2017-08-15T02:13:59Z[Etc/UTC] @292
+:NBTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0002272
+:GUPBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00004326
+:MONABTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00008223
+:LUNBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00359978
+:NMRBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0076254
+:EMCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00020493
+:FAIRBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00009233
+:DOGEBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @3.9E-7
+:PAYBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0009902
+:PINKBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000246
+:PTCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000386
+:UNBBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00005423
+:EXPBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00048611
+:KMDBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00030022
+:BATBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00004113
+:XDNBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @4.2E-7
+:XSTBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00002564
+:BRXBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00010483
+:FTCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000117
+:SCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000148
+:STRATBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00128503
+:TXBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00007613
+:BTSBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00003348
+:1STETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0023761
+:GBYTEBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.07001636
+:XEMETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00078921
+:ETCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00313787
+:AGRSBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0001152
+:RISEBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00002255
+:XWCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000133
+:EFLBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.0000234
+:1STBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00015681
+:XRPETH:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00055111
+:FLDCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000243
+:XELBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00013899
+:LTCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.01021394
+:GRCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.00000665
+:CVCBTC:TREX 2017-08-15T02:13:59Z[Etc/UTC] @0.000139
+]
+********************************
+
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.StandardMode:
+* 
+********************************
+          [ STANDARDMODE ]
+********************************
+          [ RESULTS ]
+* Time: 90 sec
+********************************
+* Next Update in 810 seconds
+********************************
+
+Aug 15, 2017 2:15:29 AM com.speculation1000.specdb.mode.QuickMode run
+SEVERE: H2 db creation failed!

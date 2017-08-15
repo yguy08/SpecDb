@@ -18,7 +18,6 @@ public class BittrexDTOTest {
 		try {
 			marketList = new BittrexDTO().getLatestMarketList();
 		} catch (SpecDbException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for(Market market : marketList){

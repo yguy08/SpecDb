@@ -2,6 +2,7 @@ package com.speculation1000.specdb.mode;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import java.sql.Connection;
 import java.time.Instant;
 import java.util.List;
 import java.util.StringJoiner;
@@ -12,6 +13,9 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.dao.BittrexDAO;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
+import com.speculation1000.specdb.db.CreateTable;
+import com.speculation1000.specdb.db.DbConnection;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
@@ -114,6 +118,15 @@ public class StandardMode implements Mode {
         specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", entryStatus());
         
         specLogger.log(StandardMode.class.getName(),getEndRunMessage());
+        
+        //h2 db
+        try{
+        	Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+        	CreateTable.createTable(conn);
+            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "H2 db created!");
+        }catch(Exception e){
+            specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "H2 db creation failed!");
+        }
     }
     
     public String entryStatus(){
