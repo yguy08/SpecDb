@@ -21,23 +21,25 @@ public class DbConnection {
 			Files.createDirectories(Paths.get(USER_HOME));
 			specLogger.logp(Level.INFO, DbConnection.class.getName(), "static", "Db directory created/exits");
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			specLogger.logp(Level.INFO, DbConnection.class.getName(), "static", "Error creating Db directory " + e1.getMessage());
 		}
 	}
 	
 	public static Connection connect(DbConnectionEnum dbce){
 		Connection conn = null;
         try {
+        	Class.forName(dbce.getClassForName());
             conn = DriverManager.getConnection(dbce.getConnectionString());
             specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "Connection to " + dbce.getConnectionString() + " established");
         } catch (SQLException ex) {
-	        System.err.println("SQLException information");
-	        while (ex != null) {
-	            System.err.println("Error msg: " + ex.getMessage());
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "SQLException: " + ex.getMessage());
 	            ex = ex.getNextException();
 	        }
 	        throw new RuntimeException("Error");
-        }
+        } catch (ClassNotFoundException e) {
+        	specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "ClassNotFoundException: " + e.getMessage());
+		}
         return conn;
 	}
 
