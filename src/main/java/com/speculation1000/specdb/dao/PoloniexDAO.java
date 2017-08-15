@@ -1,10 +1,12 @@
 package com.speculation1000.specdb.dao;
 
 import java.sql.Connection;
+import java.time.Instant;
 import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
@@ -25,8 +27,7 @@ public class PoloniexDAO implements MarketDAO {
 			InsertRecord.insertBatchMarkets(marketList);
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
 		}catch(Exception e){
-			String message = SpecDbException.exceptionFormat(e.getStackTrace());
-			throw new SpecDbException(message);
+			throw new SpecDbException(e.getMessage());
 		}
 	}
 
@@ -34,29 +35,49 @@ public class PoloniexDAO implements MarketDAO {
 	public void restoreMarkets() throws SpecDbException {
 		Connection connection = DbConnection.connect(DbConnectionEnum.SQLITE_MAIN);
 		
-		try{
-			//Get oldest market date for poloniex
-			long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());
+		//Get oldest market date for poloniex
+		long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());
+		
+		if(oldestDateInDb > 1390003200){
+			
 			//Missing up to date so we don't overwrite existing data
 			long missingUpToDate = oldestDateInDb - 86400;
-			if(missingUpToDate < 0){
-				missingUpToDate = 9999999999L;
-			}
-			//Get poloniex chart data up to oldest date - 86400
-			List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
-			long fromPoloDate = marketList.get(marketList.size()-1).getDate();
-			if(fromPoloDate != 0){
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo Restore: Need to restore up to: " 
+																						+ SpecDbDate.longToLogStringFormat(missingUpToDate));
+			try{
+				
+				//Get poloniex chart data up to oldest date - 86400
+				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
 				InsertRecord.insertBatchMarkets(connection, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
-			}else{
-				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Nothing to restore!");
+				connection.close();
+				
+			}catch(Exception e){
+				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
+				throw new SpecDbException(e.getMessage());
 			}
-			connection.close();
-		}catch(Exception e){
-			String message = SpecDbException.exceptionFormat(e.getStackTrace());
-			throw new SpecDbException(message);
+		}else if(oldestDateInDb == 0){
+			
+			long currentDay = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo Restore: Need a full restore up to today: " 
+																						+ SpecDbDate.longToLogStringFormat(currentDay) );
+			try{
+				
+				//Get poloniex chart data up to oldest date - 86400
+				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(currentDay);
+				InsertRecord.insertBatchMarkets(connection, marketList);
+				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
+				connection.close();
+				
+			}catch(Exception e){
+				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
+				throw new SpecDbException(e.getMessage());
+			}
+		}else{
+			
+			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo Restore: Nothing to restore!");
+			
 		}
-		
 	}
 
 	@Override
@@ -65,8 +86,7 @@ public class PoloniexDAO implements MarketDAO {
 			DbUtils.nextDayCleanUp("POLO");
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "cleanUpForNewDay", "Polo markets cleaned up.");
 		}catch(Exception e){
-			String message = SpecDbException.exceptionFormat(e.getStackTrace());
-			throw new SpecDbException(message);
+			throw new SpecDbException(e.getMessage());
 		}
 	}
 
