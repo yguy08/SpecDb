@@ -2,23 +2,21 @@ package com.speculation1000.specdb.db;
 
 public enum DbConnectionEnum {
 	
-	H2_MAIN("jdbc:h2:","Speculation1000h2.db"),
-	H2_TEST("jdbc:h2:","Speculation1000h2-t.db"),
-	SQLITE_MAIN("jdbc:sqlite:","Speculation1000sqlite.db"),
-	SQLITE_TEST("jdbc:sqlite:","Speculation1000sqlite-t.db");
-	
-	private static final String USER_HOME = System.getProperty("user.home") + "/SpecDb/db/";
-	
+	H2_MAIN("jdbc:h2:",System.getProperty("user.home") + "/SpecDb/db/Speculation1000-H2.db"),
+	H2_TEST("jdbc:h2:",""),
+	SQLITE_MAIN("jdbc:sqlite:",System.getProperty("user.home") + "/SpecDb/db/Speculation1000.db"),
+	SQLITE_TEST("jdbc:sqlite:",System.getProperty("user.home") + "/SpecDb/db/Speculation1000.db");
+		
 	private String dbDriverName;
-	private String dbName;	
+	private String dbPath;	
 	
-	DbConnectionEnum(String dbDriverName, String dbName){
+	DbConnectionEnum(String dbDriverName, String dbPath){
 		this.dbDriverName = dbDriverName;
-		this.dbName = dbName;
+		this.dbPath = dbPath;
 	}
 	
 	public String getConnectionString(){
-		return dbDriverName + USER_HOME + dbName;
+		return dbDriverName + dbPath;
 	}
 
 }

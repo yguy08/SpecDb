@@ -1,42 +1,151 @@
-Aug 13, 2017 5:54:50 PM com.speculation1000.specdb.dao.MarketSummaryDAOTest setUpDb
-INFO: Start!
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbConnection testConnect
-INFO: Test connection established
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DropTable dropTable
-INFO: Table dropped!
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.CreateTable createTable
+Aug 14, 2017 8:24:25 PM com.speculation1000.specdb.start.StartApp main
+INFO: 
+********** SpecDb ************** 
+[ Digital Asset Price Database ]
+********************************
+* Start Up: 
+* At: 2017-08-15T00:24:25.456Z[Etc/UTC]
+********************************
+
+Aug 14, 2017 8:24:25 PM com.speculation1000.specdb.db.DbConnection static
+INFO: Db directory created/exits
+Aug 14, 2017 8:24:25 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:24:25 PM com.speculation1000.specdb.db.CreateTable createTable
 INFO: Table created
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
-INFO: com.speculation1000.specdb.db.DbUtils:
-* Adding batch: 99
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
-INFO: com.speculation1000.specdb.db.DbUtils:
-* total time taken to insert the batch = 63 ms
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbTest setUpDb
-INFO: Start!
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbConnection testConnect
-INFO: Test connection established
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DropTable dropTable
-INFO: Table dropped!
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.CreateTable createTable
-INFO: Table created
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
-INFO: com.speculation1000.specdb.db.DbUtils:
-* Adding batch: 489
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.log.SpecDbLogger log
-INFO: com.speculation1000.specdb.db.DbUtils:
-* total time taken to insert the batch = 484 ms
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
-INFO: Next day clean up deleted: 475 records.
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.UpdateRecord updateRecords
-INFO: Records updated..
-Aug 13, 2017 5:54:51 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
-INFO: Next day clean up updated: 5 records.
-Aug 13, 2017 5:54:52 PM com.speculation1000.specdb.log.SpecDbLogger log
-INFO: com.speculation1000.specdb.dto.BittrexDTO:
-* Loading TREX markets from Trex API...
-Aug 13, 2017 5:55:39 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 14, 2017 8:24:25 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.QuickMode:
+* 
+********************************
+          [ QUICKMODE ]
+********************************
+            [ START ]
+* At: 2017-08-15T00:24:25.817Z[Etc/UTC]
+* New Day: false
+********************************
+
+Aug 14, 2017 8:24:27 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.dto.PoloniexDTO:
 * Loading Polo markets from Polo API...
-Aug 13, 2017 5:55:49 PM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
-INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2001-09-09T01:46:39Z[Etc/UTC]
+Aug 14, 2017 8:24:35 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:24:35 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 92
+Aug 14, 2017 8:24:36 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 69 ms
+Aug 14, 2017 8:24:36 PM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Polo markets updated!
+Aug 14, 2017 8:24:36 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.BittrexDTO:
+* Loading TREX markets from Trex API...
+Aug 14, 2017 8:25:10 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:25:10 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 260
+Aug 14, 2017 8:25:10 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 288 ms
+Aug 14, 2017 8:25:10 PM com.speculation1000.specdb.dao.PoloniexDAO updateMarkets
+INFO: Trex markets updated!
+Aug 14, 2017 8:25:10 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:25:11 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.dto.PoloniexDTO:
+* Loading Polo markets from Polo API...
+Aug 14, 2017 8:25:40 PM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2017-08-13T00:00:00Z[Etc/UTC]
+Aug 14, 2017 8:25:41 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 10000
+Aug 14, 2017 8:25:52 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 11544 ms
+Aug 14, 2017 8:25:52 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 20000
+Aug 14, 2017 8:26:03 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 10357 ms
+Aug 14, 2017 8:26:03 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 30000
+Aug 14, 2017 8:26:11 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 8541 ms
+Aug 14, 2017 8:26:11 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 40000
+Aug 14, 2017 8:26:23 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 12050 ms
+Aug 14, 2017 8:26:23 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 50000
+Aug 14, 2017 8:26:36 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 12686 ms
+Aug 14, 2017 8:26:36 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 60000
+Aug 14, 2017 8:26:45 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 9588 ms
+Aug 14, 2017 8:26:45 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 70000
+Aug 14, 2017 8:26:58 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 12371 ms
+Aug 14, 2017 8:26:58 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* Adding batch: 76166
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.db.DbUtils:
+* total time taken to insert the batch = 6810 ms
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Polo markets restored!
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.mode.QuickMode run
+INFO: POLO restore successful
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.mode.QuickMode run
+INFO: ********************************
+          [ ENTRIES ]
+********************************
+          [ LONG ]
+********************************
+[BTCBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+:ETCBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+]
+          [ SHORT ]
+********************************
+[BTCBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+:ETHBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+:XMRBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+:LTCBTC:POLO 2017-08-16T00:00:14Z[Etc/UTC] @0.01
+]
+********************************
+
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.log.SpecDbLogger log
+INFO: com.speculation1000.specdb.mode.QuickMode:
+* 
+********************************
+          [ QUICKMODE ]
+********************************
+          [ RESULTS ]
+* Time: 160 sec
+********************************
+* Next Update in 114 seconds
+********************************
+
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:h2:/Users/Wyatt/SpecDb/db/Speculation1000-H2.db established
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.db.CreateTable createTable
+INFO: Table created
+Aug 14, 2017 8:27:05 PM com.speculation1000.specdb.mode.QuickMode run
+INFO: H2 db created!

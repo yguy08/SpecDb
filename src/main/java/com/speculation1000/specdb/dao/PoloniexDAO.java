@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbConnection;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.dto.PoloniexDTO;
@@ -31,7 +32,7 @@ public class PoloniexDAO implements MarketDAO {
 
 	@Override
 	public void restoreMarkets() throws SpecDbException {
-		Connection connection = DbConnection.mainConnect();
+		Connection connection = DbConnection.connect(DbConnectionEnum.SQLITE_MAIN);
 		
 		try{
 			//Get oldest market date for poloniex

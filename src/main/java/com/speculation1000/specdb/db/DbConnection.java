@@ -39,7 +39,6 @@ public class DbConnection {
 	        throw new RuntimeException("Error");
         }
         return conn;
-		
 	}
 
 }

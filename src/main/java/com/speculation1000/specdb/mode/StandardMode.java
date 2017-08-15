@@ -45,7 +45,6 @@ public class StandardMode implements Mode {
     @Override
     public String getEndRunMessage() {
         StringBuilder sb = new StringBuilder();
-        StringJoiner sj = new StringJoiner(":", "[", "]");
         sb.append("\n");
         sb.append("********************************\n");
         sb.append("          [ STANDARDMODE ]\n");
@@ -54,13 +53,6 @@ public class StandardMode implements Mode {
         sb.append("          [ RESULTS ]\n");
         sb.append("* Time: ");
         sb.append(end.getEpochSecond() - StartRun.getStartRunTS().getEpochSecond() + " sec\n");
-        sb.append("********************************\n");
-        
-        for(Market market : MarketSummaryDAO.getAllLatest()){
-            sj.add(market.toString());
-        }
-        
-        sb.append(sj.toString() + "\n");
         sb.append("********************************\n");
         long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         sb.append("* Next Update in " + i + " seconds\n");

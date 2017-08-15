@@ -4,10 +4,11 @@ import java.time.Instant;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.CreateTable;
+import com.speculation1000.specdb.db.DbConnection;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
-import com.speculation1000.specdb.mode.QuickMode;
 import com.speculation1000.specdb.mode.StandardMode;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -19,7 +20,7 @@ public class StartApp {
 	
 	public StartApp(){
 		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
-		CreateTable.createTable();
+		CreateTable.createTable(DbConnection.connect(DbConnectionEnum.SQLITE_MAIN));
 	}
 
 	public static void main(String[] args) {

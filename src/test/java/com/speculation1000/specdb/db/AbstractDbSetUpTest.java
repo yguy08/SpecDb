@@ -7,7 +7,7 @@ public class AbstractDbSetUpTest {
 	}
 	
 	public static void main(String[] args){
-		setUpTestDb();
+		DbConnection.connect(DbConnectionEnum.H2_MAIN);
 	}
 
 }

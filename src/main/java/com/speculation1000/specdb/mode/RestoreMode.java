@@ -4,6 +4,8 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.dao.PoloniexDAO;
 import com.speculation1000.specdb.db.CreateTable;
+import com.speculation1000.specdb.db.DbConnection;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DropTable;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.start.SpecDbException;
@@ -26,7 +28,7 @@ public class RestoreMode implements Mode {
 	public void run() {
 		StartRun.setStartRunTS();
 		DropTable.dropTable();
-		CreateTable.createTable();
+		CreateTable.createTable(DbConnection.connect(DbConnectionEnum.SQLITE_MAIN));
 		PoloniexDAO polo = new PoloniexDAO();
 		
 		getStartRunMessage();

@@ -46,7 +46,7 @@ public class DbTest {
 	@BeforeClass
 	public static void setUpDb() {
 		specLogger.logp(Level.INFO, DbTest.class.getName(), "setUpDb", "Start!");
-	    connection = DbConnection.testConnect();
+	    connection = DbConnection.connect(DbConnectionEnum.SQLITE_TEST);
 	    DropTable.dropTable(connection);
 	    CreateTable.createTable(connection);
 	    
