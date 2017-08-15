@@ -118,15 +118,6 @@ public class StandardMode implements Mode {
         specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", entryStatus());
         
         specLogger.log(StandardMode.class.getName(),getEndRunMessage());
-        
-        //h2 db
-        try{
-        	Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
-        	CreateTable.createTable(conn);
-            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", "H2 db created!");
-        }catch(Exception e){
-            specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run", "H2 db creation failed!");
-        }
     }
     
     public String entryStatus(){
