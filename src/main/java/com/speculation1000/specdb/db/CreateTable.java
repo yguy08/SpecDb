@@ -28,9 +28,8 @@ public class CreateTable {
             specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", "Table created");
             tmpStatement.close();
         } catch (java.sql.SQLException ex) {
-	        System.err.println("SQLException information");
-	        while (ex != null) {
-	            System.err.println("Error msg: " + ex.getMessage());
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
 	            ex = ex.getNextException();
 	        }
 	        throw new RuntimeException("Error");
