@@ -33,10 +33,29 @@ public class SpecDbTime {
 		return duration.getSeconds();		
 	}
 	
+	/**
+	 * Returns a pretty string for uptime
+	 * @param long uptime seconds
+	 * @returns String uptime seconds,minutes, hour or days
+	 */
+	public static String uptimePrettyStr(long uptimeSeconds){
+		if(uptimeSeconds < 60){
+			return uptimeSeconds + " secs";
+		}else if(uptimeSeconds < 3600){
+			return uptimeSeconds / 60 + " mins";
+		}else if(uptimeSeconds < 86400){
+			return uptimeSeconds / 60 / 60 + " hours"; 
+		}else{
+			return uptimeSeconds / 60 / 60 / 24 + " days";
+		}
+	}
 	
 	
 	public static void main(String[] args){
-		
+		System.out.println(uptimePrettyStr(50));
+		System.out.println(uptimePrettyStr(3000));
+		System.out.println(uptimePrettyStr(80000));
+		System.out.println(uptimePrettyStr(352145));
 	}
 
 }
