@@ -2,10 +2,8 @@ package com.speculation1000.specdb.mode;
 
 public interface Mode extends Runnable {
 	
-	String getStartRunMessage();
+	void startRun();
 	
-	String getEndRunMessage();
-	
-	void startApp();
+	String getModeName();
 	
 }
