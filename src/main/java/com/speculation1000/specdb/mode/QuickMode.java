@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.dao.BittrexDAO;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
-import com.speculation1000.specdb.db.DbServer;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.start.DbServer;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -55,8 +55,7 @@ public class QuickMode implements Mode {
         long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         sb.append("* Next Update in " + i + " seconds\n");
         sb.append("* H2 Db Server Status: \n");
-        sb.append("* " + DbServer.getH2ServerStatus() + " *");
-        sb.append("********************************\n");
+        sb.append("* " + DbServer.getH2ServerStatus() + " *\n");
         sb.append("********************************\n");
         return sb.toString();
     }
