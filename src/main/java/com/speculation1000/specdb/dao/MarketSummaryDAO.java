@@ -98,29 +98,25 @@ public class MarketSummaryDAO {
 	}
 	
 	public static String getEntryStatus(){
-    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
-        StringBuilder sb = new StringBuilder();
-        StringJoiner sj = new StringJoiner(":", "[", "]");
-        sb.append("\n");
-        sb.append("********************************\n");
-        sb.append("          [ ENTRIES ]\n");
-        sb.append("********************************\n");
-        sb.append("          [ LONG ]\n");
-        sb.append("********************************\n");
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-        sb.append(sj.toString() + "\n");
-        sb.append("          [ SHORT ]\n");
-        sb.append("********************************\n");
-        sj = new StringJoiner(":","[","]");
-        marketList = MarketSummaryDAO.getShortEntries(25);
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-        sb.append(sj.toString() + "\n");
-        sb.append("********************************\n");
-        return sb.toString();		
+    	    List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n");
+            sb.append("********************************\n");
+            sb.append("          [ ENTRIES ]\n");
+            sb.append("********************************\n");
+            sb.append("          [ LONG ]\n");
+            sb.append("********************************\n");
+            for(Market market : marketList){
+                sb.append(market.toString()+"\n");
+            }
+            sb.append("          [ SHORT ]\n");
+            sb.append("********************************\n");
+            marketList = MarketSummaryDAO.getShortEntries(25);
+            for(Market market : marketList){
+                sb.append(market.toString()+"\n");
+            }
+            sb.append("********************************\n");
+            return sb.toString();		
 	}
 	
 	public static void main(String[] args){
