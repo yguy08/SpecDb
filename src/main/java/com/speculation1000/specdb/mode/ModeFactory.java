@@ -13,12 +13,8 @@ public class ModeFactory {
 		case "standard":
 		case "s":
 			return new StandardMode();
-		case "restore":
-		case "r":
-			return new RestoreMode();
 		default:
 			return new StandardMode();
 		}
 	}
-
 }
