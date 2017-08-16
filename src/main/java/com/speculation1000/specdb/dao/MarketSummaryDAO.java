@@ -2,15 +2,22 @@ package com.speculation1000.specdb.dao;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.logging.Level;
 
+import com.speculation1000.specdb.db.DbConnection;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.QueryTable;
+import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class MarketSummaryDAO {
+	
+	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	public static List<Market> getAllLatest(){
 		String sqlCommand = "SELECT * FROM markets WHERE date = (SELECT Max(Date) from markets) order by base ASC";
@@ -37,7 +44,36 @@ public class MarketSummaryDAO {
 							+ "GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base "
 							+ "AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close >= t.Close "
 							+ "WHERE date = (SELECT Max(Date) from markets)";
-		List<Market> marketList = QueryTable.genericMarketQuery(sqlCommand);
+		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
+		try{
+			conn.close();
+		}catch(SQLException e){
+			while (e != null) {
+            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "getLongEntries", e.getMessage());
+	            e = e.getNextException();
+	        }
+		}
+		return marketList;
+	}
+	
+	public static List<Market> getShortEntries(int entryFlag){
+		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) - 86400 * entryFlag;
+		String sqlCommand = "SELECT m.* FROM markets m INNER JOIN "
+				+ "(SELECT Base,Counter, Exchange, Min(Close) Close FROM markets WHERE date > " + fromDate + " "
+				+ "GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base "
+				+ "AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close <= t.Close "
+				+ "WHERE date = (SELECT Max(Date) from markets)";
+		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
+		try{
+			conn.close();
+		}catch(SQLException e){
+			while (e != null) {
+            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "getLongEntries", e.getMessage());
+	            e = e.getNextException();
+	        }
+		}
 		return marketList;
 	}
 	
@@ -59,17 +95,6 @@ public class MarketSummaryDAO {
 							+ "AND Date > " + fromDate;
 		List<Market> marketList = QueryTable.genericMarketQuery(sqlCommand);
 		return marketList.get(0).getClose();
-	}
-	
-	public static List<Market> getShortEntries(int entryFlag){
-		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) - 86400 * entryFlag;
-		String sqlCommand = "SELECT m.* FROM markets m INNER JOIN "
-				+ "(SELECT Base,Counter, Exchange, Min(Close) Close FROM markets WHERE date > " + fromDate + " "
-				+ "GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base "
-				+ "AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close <= t.Close "
-				+ "WHERE date = (SELECT Max(Date) from markets)";
-		List<Market> marketList = QueryTable.genericMarketQuery(sqlCommand);
-		return marketList;
 	}
 	
 	public static String getEntryStatus(){
