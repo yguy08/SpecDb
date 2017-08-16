@@ -22,7 +22,7 @@ public class BittrexDAO implements MarketDAO {
 		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		try{
 			List<Market> marketList = new BittrexDTO().getLatestMarketList();
-			InsertRecord.insertBatchMarkets(marketList);
+			InsertRecord.insertBatchMarkets(conn, marketList);
 			conn.close();
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Trex markets updated!");
 		}catch(Exception e){
