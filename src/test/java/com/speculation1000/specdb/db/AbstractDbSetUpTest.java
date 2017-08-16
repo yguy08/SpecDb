@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.start.DbServer;
 
 public class AbstractDbSetUpTest {
 	
