@@ -11,9 +11,9 @@ import com.speculation1000.specdb.dao.BittrexDAO;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
 import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.start.DbServer;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.start.SystemStatus;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
 
@@ -25,43 +25,10 @@ public class StandardMode implements Mode {
     
     private static final int PERIOD = 60 * 15;
     
-    @Override
-    public String getStartRunMessage() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        sb.append("********************************\n");
-        sb.append("          [ STANDARDMODE ]\n");
-        sb.append("********************************\n");
-        sb.append("            [ START ]\n");
-        sb.append("* At: ");
-        sb.append(SpecDbDate.instantToLogStringFormat(StartRun.getStartRunTS()) + "\n");
-        sb.append("* New Day: " + SpecDbDate.isNewDay(StartRun.getStartRunTS()) + "\n");
-        sb.append("********************************\n");
-        return sb.toString();
-    }
-    
-    @Override
-    public String getEndRunMessage() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        sb.append("********************************\n");
-        sb.append("          [ STANDARDMODE ]\n");
-        Instant end = Instant.now();
-        sb.append("********************************\n");
-        sb.append("          [ RESULTS ]\n");
-        sb.append("* Time: ");
-        sb.append(end.getEpochSecond() - StartRun.getStartRunTS().getEpochSecond() + " sec\n");
-        sb.append("********************************\n");
-        long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
-        sb.append("* Next Update in " + i + " seconds\n");
-        sb.append("* H2 Db Server Status: \n");
-        sb.append("* " + DbServer.getH2ServerStatus() + " *\n");
-        sb.append("********************************\n");
-        return sb.toString();
-    }
+    private static final String modeNameStr = "STANDARDMODE";
 
     @Override
-    public void startApp() {
+    public void startRun() {
         long nextQuarterInitialDelay = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         specLogger.logp(Level.INFO,StandardMode.class.getName(),"startApp","* Next update in " + nextQuarterInitialDelay + " seconds");
         scheduler.scheduleAtFixedRate(new StandardMode(), nextQuarterInitialDelay, PERIOD, SECONDS);		
@@ -70,7 +37,7 @@ public class StandardMode implements Mode {
     @Override
     public void run() {
         StartRun.setStartRunTS();
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",getStartRunMessage());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",StartRun.getStartRunMessage());
         
         PoloniexDAO polo = new PoloniexDAO();
         
@@ -114,8 +81,13 @@ public class StandardMode implements Mode {
         
         specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
         
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",getEndRunMessage());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",StartRun.getEndRunMessage());
+        
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",SystemStatus.getSystemStatus());
     }
 
-
+	@Override
+	public String getModeName() {
+		return modeNameStr;
+	}
 }
