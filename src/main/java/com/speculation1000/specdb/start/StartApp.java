@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.db.CreateTable;
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
-import com.speculation1000.specdb.db.DbServer;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
@@ -22,21 +21,22 @@ public class StartApp {
 	private static final Instant START_UP_TS = Instant.now();
 	
 	public StartApp(){
-		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
+		specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", StartApp.startUpStatusMessage());
 		
 		try {
 			DbServer.startDB();
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "H2 server start up successful");
 		} catch (SQLException e) {
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "main", "Unable to start H2 server!");
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to start H2 server");
 		}
 		
 		try{
 			Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 			CreateTable.createTable(conn);
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "main", "Table created on H2 db");
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Market table created (if it didn't already exist)");
 			conn.close();
 		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "main", "Unable to connect to H2 server!" + e.getMessage());
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server" + e.getMessage());
 		}
 	}
 
