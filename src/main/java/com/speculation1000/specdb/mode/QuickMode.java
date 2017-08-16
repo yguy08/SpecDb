@@ -69,21 +69,21 @@ public class QuickMode implements Mode {
     @Override
     public void run() {
         StartRun.setStartRunTS();
-        specLogger.log(QuickMode.class.getName(),getStartRunMessage());
+        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run",getStartRunMessage());
         
         PoloniexDAO polo = new PoloniexDAO();
         
         try{
             polo.updateMarkets();
         }catch(com.speculation1000.specdb.start.SpecDbException e){
-            specLogger.log(QuickMode.class.getName(),e.getMessage());
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run",e.getMessage());
         }
         
         BittrexDAO bittrex = new BittrexDAO();
         try{
             bittrex.updateMarkets();
         }catch(SpecDbException e){
-            specLogger.log(QuickMode.class.getName(),e.getMessage());
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(), "run",e.getMessage());
         }
         
         if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
@@ -112,7 +112,7 @@ public class QuickMode implements Mode {
         
         specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
         
-        specLogger.log(QuickMode.class.getName(),getEndRunMessage());        
+        specLogger.logp(Level.INFO, QuickMode.class.getName(), "run",getEndRunMessage());        
     }
 
 
