@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 
@@ -38,11 +40,11 @@ public class InsertRecord {
         		tmpStatement.setInt(9,m.getVolume());
         		tmpStatement.addBatch();
         	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
-        		specLogger.log(DbUtils.class.getName(), "Adding batch: " + i);
+        		specLogger.logp(Level.INFO, DbUtils.class.getName(),"insertBatchMarkets", "Adding batch: " + i);
         		long start = System.currentTimeMillis();
         		tmpStatement.executeBatch();
     	        long end = System.currentTimeMillis();
-    	        specLogger.log(DbUtils.class.getName(), "total time taken to insert the batch = " + (end - start) + " ms");
+    	        specLogger.logp(Level.INFO, DbUtils.class.getName(),"insertBatchMarkets", "total time taken to insert the batch = " + (end - start) + " ms");
         	}
         }
             tmpStatement.close();
