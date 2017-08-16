@@ -31,9 +31,14 @@ public class PoloniexDTO implements ExchangeDTO {
 
 	@Override
 	public List<Market> getLatestMarketList() {
+		Instant start = StartRun.getStartRunTS();
+		long end = 9999999999L;		
 		
 		Map<CurrencyPair,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(SpecDbDate.getTodayMidnightEpochSeconds(StartRun.getStartRunTS()), 9999999999L);
+				getPoloniexChartData(SpecDbDate.getTodayMidnightEpochSeconds(start), end);
+		
+		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "getLatestMarketList", "Fetched latest Polo market list from: " 
+				+ SpecDbDate.instantToLogStringFormat(start) + " " + "to " + SpecDbDate.instantToLogStringFormat(Instant.ofEpochSecond(end)));
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<CurrencyPair, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
@@ -85,7 +90,7 @@ public class PoloniexDTO implements ExchangeDTO {
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
 		Map<CurrencyPair,List<PoloniexChartData>> poloChartDataMap = new HashMap<>();
 		List<CurrencyPair> pairList = exchange.getExchangeSymbols();
-		specLogger.log(PoloniexDTO.class.getName(),  "Loading Polo markets from Polo API...");
+		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "getPoloniexChartData", "Loading Polo markets from Polo API...");
 		for(CurrencyPair pair : pairList){
 			try {
 				List<PoloniexChartData> poloniexChartData = (Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
@@ -93,11 +98,7 @@ public class PoloniexDTO implements ExchangeDTO {
 						end, PoloniexChartDataPeriodType.PERIOD_86400)));
 				poloChartDataMap.put(pair, poloniexChartData);
 			} catch (IOException e) {
-				StringBuffer sb = new StringBuffer();
-				for(StackTraceElement ste : e.getStackTrace()){
-					sb.append(" [" + ste.toString() + "],");
-				}
-				specLogger.log(PoloniexDTO.class.getName(), sb.toString());
+				specLogger.logp(Level.SEVERE, PoloniexDTO.class.getName(), "getPoloniexChartData", "Failed to load Polo markets from POLO API...");
 			}
 		}
 		return poloChartDataMap;
