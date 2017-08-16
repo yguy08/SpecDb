@@ -18,7 +18,9 @@ public class StartApp {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
-	private static final Instant START_UP_TS = Instant.now();
+	private static final Instant APP_START_UP_TS = Instant.now();
+	
+	protected static Mode mode;
 	
 	public StartApp(){
 		specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", StartApp.startUpStatusMessage());
@@ -43,15 +45,16 @@ public class StartApp {
 	public static void main(String[] args) {
 		new StartApp();
 		if(args.length > 0){
-			Mode mode = ModeFactory.getMode(args[0]);
-			mode.startApp();
+			mode = ModeFactory.getMode(args[0]);
 		}else{
-			new StandardMode().startApp();
+			mode = new StandardMode();
 		}
+		
+		mode.startRun();
 	}
 
 	public static Instant getStartUpTs() {
-		return START_UP_TS;
+		return APP_START_UP_TS;
 	}
 	
 	/**
@@ -73,5 +76,12 @@ public class StartApp {
 		sb.append("********************************\n");		
 		return sb.toString();
 	}
+	
+	 
+    //To install htop simply use
+        //sudo apt-get install htop
+
+    //Once installed you can start it using
+        //htop
 
 }
