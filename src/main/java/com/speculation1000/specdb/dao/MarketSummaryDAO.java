@@ -101,6 +101,7 @@ public class MarketSummaryDAO {
     	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
         StringBuilder sb = new StringBuilder();
         StringJoiner sj = new StringJoiner(":", "[", "]");
+        sb.append("\n");
         sb.append("********************************\n");
         sb.append("          [ ENTRIES ]\n");
         sb.append("********************************\n");
