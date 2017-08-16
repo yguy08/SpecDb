@@ -55,7 +55,7 @@ public class StandardMode implements Mode {
         long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         sb.append("* Next Update in " + i + " seconds\n");
         sb.append("* H2 Db Server Status: \n");
-        sb.append("* " + DbServer.getH2ServerStatus() + " *");
+        sb.append("* " + DbServer.getH2ServerStatus() + " *\n");
         sb.append("********************************\n");
         return sb.toString();
     }
@@ -70,23 +70,24 @@ public class StandardMode implements Mode {
     @Override
     public void run() {
         StartRun.setStartRunTS();
-        specLogger.log(StandardMode.class.getName(),getStartRunMessage());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",getStartRunMessage());
         
         PoloniexDAO polo = new PoloniexDAO();
         
         try{
             polo.updateMarkets();
         }catch(com.speculation1000.specdb.start.SpecDbException e){
-            specLogger.log(StandardMode.class.getName(),e.getMessage());
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run",e.getMessage());
         }
         
         BittrexDAO bittrex = new BittrexDAO();
         try{
             bittrex.updateMarkets();
         }catch(SpecDbException e){
-            specLogger.log(StandardMode.class.getName(),e.getMessage());
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run",e.getMessage());
         }
         
+        //new day cleanup 
         if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
             try{
             	polo.cleanUpForNewDay();
@@ -113,7 +114,7 @@ public class StandardMode implements Mode {
         
         specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
         
-        specLogger.log(StandardMode.class.getName(),getEndRunMessage());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",getEndRunMessage());
     }
 
 
