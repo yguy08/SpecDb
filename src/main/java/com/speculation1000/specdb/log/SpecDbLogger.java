@@ -40,17 +40,8 @@ public class SpecDbLogger {
     	return appLog;
     }
     
-    public void log(String fqcl, String message){
-    	logger.info(fqcl + ":\n" +"* " + message);
-    }
-    
     public void logp(Level level, String sourceClass, String sourceMethod, String msg){
     	logger.logp(level, sourceClass, sourceMethod, msg);
     }
-
-	public static void main(String[] args) {
-		SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
-		specLogger.log(SpecDbLogger.class.getName(),"Hello world");
-	}
 
 }
