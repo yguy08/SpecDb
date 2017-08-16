@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.DbConnection;
@@ -98,29 +97,27 @@ public class MarketSummaryDAO {
 	}
 	
 	public static String getEntryStatus(){
-    	    List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
-            StringBuilder sb = new StringBuilder();
-            sb.append("\n");
-            sb.append("********************************\n");
-            sb.append("          [ ENTRIES ]\n");
-            sb.append("********************************\n");
-            sb.append("          [ LONG ]\n");
-            sb.append("********************************\n");
-            for(Market market : marketList){
-                sb.append(market.toString()+"\n");
-            }
-            sb.append("          [ SHORT ]\n");
-            sb.append("********************************\n");
-            marketList = MarketSummaryDAO.getShortEntries(25);
-            for(Market market : marketList){
-                sb.append(market.toString()+"\n");
-            }
-            sb.append("********************************\n");
-            return sb.toString();		
+    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("********************************\n");
+        sb.append("          [ ENTRIES ]\n");
+        sb.append("********************************\n");
+        sb.append("          [ LONG ]\n");
+        sb.append("********************************\n");
+        for(Market market : marketList){
+            sb.append(market.toString()+"\n");
+        }
+        sb.append("          [ SHORT ]\n");
+        sb.append("********************************\n");
+        marketList = MarketSummaryDAO.getShortEntries(25);
+        for(Market market : marketList){
+            sb.append(market.toString()+"\n");
+        }
+        sb.append("********************************\n");
+        return sb.toString();		
 	}
 	
-	public static void main(String[] args){
-		
-	}
+	public static void main(String[] args){	}
 
 }
