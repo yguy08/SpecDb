@@ -10,8 +10,8 @@ public class ModeFactory {
 		case "expert":
 		case "e":
 			return new ExpertMode();
-		case "normal":
-		case "n":
+		case "standard":
+		case "s":
 			return new StandardMode();
 		case "restore":
 		case "r":
