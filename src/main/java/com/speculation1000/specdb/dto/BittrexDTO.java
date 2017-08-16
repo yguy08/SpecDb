@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
@@ -52,7 +53,7 @@ public class BittrexDTO implements ExchangeDTO {
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BittrexExchange.class.getName());
 		Map<CurrencyPair,Ticker> trexTickerMap = new HashMap<>();
 		List<CurrencyPair> pairList = exchange.getExchangeSymbols();
-		specLogger.log(BittrexDTO.class.getName(),  "Loading TREX markets from Trex API...");
+		specLogger.logp(Level.INFO, BittrexDTO.class.getName(), "getBittrexChartData", "Loading TREX markets from Trex API...");
 		for(CurrencyPair pair : pairList){
 			try {
 				Ticker trexTicker = exchange.getMarketDataService().getTicker(pair);
@@ -62,7 +63,7 @@ public class BittrexDTO implements ExchangeDTO {
 				for(StackTraceElement ste : e.getStackTrace()){
 					sb.append(" [" + ste.toString() + "],");
 				}
-				specLogger.log(PoloniexDTO.class.getName(), sb.toString());
+				specLogger.logp(Level.SEVERE, BittrexDTO.class.getName(), "getBittrexChartData", sb.toString());
 			}
 		}
 		return trexTickerMap;
