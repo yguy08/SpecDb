@@ -5,13 +5,19 @@ import java.sql.SQLException;
 import org.h2.tools.Server;
 
 public class DbServer {
+	
+	public static Server server;
 
     public static void startDB() throws SQLException {
-        Server.createTcpServer("-tcpPort", "8082", "-tcpAllowOthers").start();
+    	server = Server.createTcpServer("-tcpPort", "8082", "-tcpAllowOthers").start();
     }
 
     public static void stopDB() throws SQLException {
         Server.shutdownTcpServer("tcp://localhost:8082", "", true, true);
+    }
+    
+    public static String getH2ServerStatus(){
+    	return server.getStatus();
     }
 
     public static void main(String[] args) {

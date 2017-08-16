@@ -22,9 +22,11 @@ public class PoloniexDAO implements MarketDAO {
 
 	@Override
 	public void updateMarkets() throws SpecDbException {
+		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		try{
 			List<Market> marketList = new PoloniexDTO().getLatestMarketList();
-			InsertRecord.insertBatchMarkets(marketList);
+			InsertRecord.insertBatchMarkets(conn, marketList);
+			conn.close();
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
 		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());
@@ -33,7 +35,7 @@ public class PoloniexDAO implements MarketDAO {
 
 	@Override
 	public void restoreMarkets() throws SpecDbException {
-		Connection connection = DbConnection.connect(DbConnectionEnum.SQLITE_MAIN);
+		Connection connection = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		
 		//Get oldest market date for poloniex
 		long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());

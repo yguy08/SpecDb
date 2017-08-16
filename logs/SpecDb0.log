@@ -1,46 +1,54 @@
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection static
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection static
 INFO: Db directory created/exits
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
 INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbTest setUpDb
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbTest setUpDb
 INFO: Start!
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DbConnection connect
-INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000.db established
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.DropTable dropTable
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DbConnection connect
+INFO: Connection to jdbc:sqlite:/Users/Wyatt/SpecDb/db/Speculation1000-tmp.db established
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.DropTable dropTable
 INFO: Table dropped!
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.db.CreateTable createTable
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.db.CreateTable createTable
 INFO: Table created
-Aug 14, 2017 8:48:48 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 15, 2017 8:40:18 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.db.DbUtils:
 * Adding batch: 489
-Aug 14, 2017 8:48:49 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 15, 2017 8:40:19 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.db.DbUtils:
-* total time taken to insert the batch = 766 ms
-Aug 14, 2017 8:48:49 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
+* total time taken to insert the batch = 452 ms
+Aug 15, 2017 8:40:19 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
 INFO: Next day clean up deleted: 475 records.
-Aug 14, 2017 8:48:49 PM com.speculation1000.specdb.db.UpdateRecord updateRecords
+Aug 15, 2017 8:40:19 PM com.speculation1000.specdb.db.UpdateRecord updateRecords
 INFO: Records updated..
-Aug 14, 2017 8:48:49 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
+Aug 15, 2017 8:40:19 PM com.speculation1000.specdb.db.DbUtils nextDayCleanUp
 INFO: Next day clean up updated: 5 records.
-Aug 14, 2017 8:48:53 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 15, 2017 8:40:20 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.dto.BittrexDTO:
 * Loading TREX markets from Trex API...
-Aug 14, 2017 8:49:39 PM com.speculation1000.specdb.log.SpecDbLogger log
+Aug 15, 2017 8:41:03 PM com.speculation1000.specdb.log.SpecDbLogger log
 INFO: com.speculation1000.specdb.dto.PoloniexDTO:
 * Loading Polo markets from Polo API...
-Aug 14, 2017 8:50:15 PM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
-INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2017-08-15T00:49:36Z[Etc/UTC]
+Aug 15, 2017 8:41:44 PM com.speculation1000.specdb.dto.PoloniexDTO fetchExchangeHistory
+INFO: Fetched Polo history from 1970-01-01T00:00:00Z[Etc/UTC] to 2017-08-16T00:41:03Z[Etc/UTC]

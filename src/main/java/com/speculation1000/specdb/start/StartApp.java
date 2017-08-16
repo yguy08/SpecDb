@@ -1,11 +1,14 @@
 package com.speculation1000.specdb.start;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.CreateTable;
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
+import com.speculation1000.specdb.db.DbServer;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.mode.Mode;
 import com.speculation1000.specdb.mode.ModeFactory;
@@ -20,7 +23,21 @@ public class StartApp {
 	
 	public StartApp(){
 		specLogger.logp(Level.INFO, StartApp.class.getName(), "main", StartApp.startUpStatusMessage());
-		CreateTable.createTable(DbConnection.connect(DbConnectionEnum.SQLITE_MAIN));
+		
+		try {
+			DbServer.startDB();
+		} catch (SQLException e) {
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "main", "Unable to start H2 server!");
+		}
+		
+		try{
+			Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+			CreateTable.createTable(conn);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "main", "Table created on H2 db");
+			conn.close();
+		}catch(Exception e){
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "main", "Unable to connect to H2 server!" + e.getMessage());
+		}
 	}
 
 	public static void main(String[] args) {

@@ -8,7 +8,7 @@ echo copying target files from Raspberry Pi
 sftp pi@192.168.1.197 <<zzz23EndOfSftpzzz23
   lcd ~/SpecDb
   cd /home/pi/
-  get -r SpecDb
+  get -r SpecDb SpecDbPi
   exit
 zzz23EndOfSftpzzz23
 

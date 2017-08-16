@@ -2,10 +2,7 @@ package com.speculation1000.specdb.mode;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import java.sql.Connection;
 import java.time.Instant;
-import java.util.List;
-import java.util.StringJoiner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
@@ -13,11 +10,8 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.dao.BittrexDAO;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.dao.PoloniexDAO;
-import com.speculation1000.specdb.db.CreateTable;
-import com.speculation1000.specdb.db.DbConnection;
-import com.speculation1000.specdb.db.DbConnectionEnum;
+import com.speculation1000.specdb.db.DbServer;
 import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -60,6 +54,8 @@ public class StandardMode implements Mode {
         sb.append("********************************\n");
         long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         sb.append("* Next Update in " + i + " seconds\n");
+        sb.append("* H2 Db Server Status: \n");
+        sb.append("* " + DbServer.getH2ServerStatus() + " *");
         sb.append("********************************\n");
         return sb.toString();
     }
@@ -115,35 +111,9 @@ public class StandardMode implements Mode {
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run", "Error during POLO restore");
         }
         
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", entryStatus());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
         
         specLogger.log(StandardMode.class.getName(),getEndRunMessage());
-    }
-    
-    public String entryStatus(){
-    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
-        StringBuilder sb = new StringBuilder();
-        StringJoiner sj = new StringJoiner(":", "[", "]");
-        sb.append("********************************\n");
-        sb.append("          [ ENTRIES ]\n");
-        sb.append("********************************\n");
-        sb.append("          [ LONG ]\n");
-        sb.append("********************************\n");
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-        sb.append(sj.toString() + "\n");
-        sb.append("          [ SHORT ]\n");
-        sb.append("********************************\n");
-        sj = new StringJoiner(":","[","]");
-        marketList = MarketSummaryDAO.getShortEntries(25);
-        for(Market market : marketList){
-            sj.add(market.toString()+"\n");
-        }
-
-        sb.append(sj.toString() + "\n");
-        sb.append("********************************\n");
-        return sb.toString();
     }
 
 
