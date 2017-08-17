@@ -52,8 +52,6 @@ public class StartRun {
         sb.append("********************************\n");
         long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
         sb.append("* Next Update in " + i + " seconds\n");
-        sb.append("* H2 Db Server Status: \n");
-        sb.append("* " + DbServer.getH2ServerStatus() + " *\n");
         sb.append("********************************\n");
         return sb.toString();
 	}

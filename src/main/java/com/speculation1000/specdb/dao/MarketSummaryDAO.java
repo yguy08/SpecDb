@@ -37,12 +37,9 @@ public class MarketSummaryDAO {
 	}
 	
 	public static List<Market> getLongEntries(int entryFlag){
-		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) - 86400 * entryFlag;
-		String sqlCommand = "SELECT m.* FROM markets m INNER JOIN "
-							+ "(SELECT Base,Counter, Exchange, Max(Close) Close FROM markets WHERE date > " + fromDate + " "
-							+ "GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base "
-							+ "AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close >= t.Close "
-							+ "WHERE date = (SELECT Max(Date) from markets)";
+		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
+		String sqlCommand = "SELECT * FROM markets WHERE date > " + fromDate + " "
+				+ "ORDER BY Base,Counter,Date ASC";
 		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
 		try{
@@ -58,11 +55,8 @@ public class MarketSummaryDAO {
 	
 	public static List<Market> getShortEntries(int entryFlag){
 		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now()) - 86400 * entryFlag;
-		String sqlCommand = "SELECT m.* FROM markets m INNER JOIN "
-				+ "(SELECT Base,Counter, Exchange, Min(Close) Close FROM markets WHERE date > " + fromDate + " "
-				+ "GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base "
-				+ "AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close <= t.Close "
-				+ "WHERE date = (SELECT Max(Date) from markets)";
+		String sqlCommand = "SELECT * FROM markets WHERE date > " + fromDate + " "
+				+ "ORDER BY Base,Counter,Date ASC";
 		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
 		try{
@@ -97,20 +91,12 @@ public class MarketSummaryDAO {
 	}
 	
 	public static String getEntryStatus(){
-    	List<Market> marketList = MarketSummaryDAO.getLongEntries(25);
+    	List<Market> marketList = MarketSummaryDAO.getLongEntries(1);
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         sb.append("********************************\n");
-        sb.append("          [ ENTRIES ]\n");
+        sb.append("          [ TICKERTAPE ]\n");
         sb.append("********************************\n");
-        sb.append("          [ LONG ]\n");
-        sb.append("********************************\n");
-        for(Market market : marketList){
-            sb.append(market.toString()+"\n");
-        }
-        sb.append("          [ SHORT ]\n");
-        sb.append("********************************\n");
-        marketList = MarketSummaryDAO.getShortEntries(25);
         for(Market market : marketList){
             sb.append(market.toString()+"\n");
         }

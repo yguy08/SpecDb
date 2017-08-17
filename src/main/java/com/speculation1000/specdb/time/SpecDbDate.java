@@ -58,6 +58,18 @@ public class SpecDbDate {
 		}
 	}
 	
+	public static boolean isNewHour(Instant instant) {
+		ZoneId z = ZoneId.of( "Etc/UTC" );
+		ZonedDateTime zdt = instant.atZone(z);
+		int hour = zdt.getHour();
+		int min = zdt.getMinute();
+		if(min < 15){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	/**
 	 * @param instant
 	 * @returns yesterdays date in epoch seconds

@@ -50,7 +50,7 @@ public class QuickMode implements Mode {
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run",e.getMessage());
         }
         
-        if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
+        if(SpecDbDate.isNewHour(StartRun.getStartRunTS())){
             try{
             	polo.cleanUpForNewDay();
             	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Polo clean up successful");
@@ -74,11 +74,23 @@ public class QuickMode implements Mode {
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error during POLO restore");
         }
         
-        specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",MarketSummaryDAO.getEntryStatus());
+        try{
+            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",MarketSummaryDAO.getEntryStatus());
+        }catch(Exception e){
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting entry status");
+        }
         
-        specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StartRun.getEndRunMessage());
+        try{
+            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StartRun.getEndRunMessage());
+        }catch(Exception e){
+        	
+        }
         
-        specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",SystemStatus.getSystemStatus());
+        try{
+            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",SystemStatus.getSystemStatus());
+        }catch(Exception e){
+        	
+        }
         
     }
 
