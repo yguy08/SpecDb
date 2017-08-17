@@ -37,53 +37,74 @@ public class StandardMode implements Mode {
     @Override
     public void run() {
         StartRun.setStartRunTS();
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",StartRun.getStartRunMessage());
+        specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StartRun.getStartRunMessage());
         
         PoloniexDAO polo = new PoloniexDAO();
         
         try{
             polo.updateMarkets();
         }catch(com.speculation1000.specdb.start.SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run",e.getMessage());
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run",e.getMessage());
         }
         
         BittrexDAO bittrex = new BittrexDAO();
         try{
             bittrex.updateMarkets();
         }catch(SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run",e.getMessage());
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run",e.getMessage());
         }
         
-        //new day cleanup 
+        try{
+        	polo.cleanUpForToday();
+        }catch(SpecDbException e){
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run",e.getMessage());
+        }
+        
+        
         if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
             try{
             	polo.cleanUpForNewDay();
-            	specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", "Polo clean up successful");
+            	specLogger.logp(Level.INFO, StandardMode.class.getName(),"run","Polo clean up successful");
             }catch(SpecDbException e){
-            	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run", "Error during Polo clean up");
+            	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error during Polo clean up");
             }
             
             try{
             	bittrex.cleanUpForNewDay();
-            	specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", "Trex clean up successful");
+            	specLogger.logp(Level.INFO, StandardMode.class.getName(),"run","Trex clean up successful");
             }catch(SpecDbException e){
-            	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run", "Error during TREX clean up");
+            	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error during TREX clean up");
             }
         }
         
         //restore
         try{
         	polo.restoreMarkets();
-        	specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", "POLO restore successful");
+        	specLogger.logp(Level.INFO, StandardMode.class.getName(),"run","POLO restore successful");
         }catch(SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(), "run", "Error during POLO restore");
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error during POLO restore");
         }
         
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", MarketSummaryDAO.getEntryStatus());
+        //entry status
+        try{
+            specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",MarketSummaryDAO.getEntryStatus());
+        }catch(Exception e){
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error getting entry status");
+        }
         
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",StartRun.getEndRunMessage());
+        //end run message
+        try{
+            specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StartRun.getEndRunMessage());
+        }catch(Exception e){
+        	
+        }
         
-        specLogger.logp(Level.INFO, StandardMode.class.getName(), "run",SystemStatus.getSystemStatus());
+        //system status
+        try{
+            specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",SystemStatus.getSystemStatus());
+        }catch(Exception e){
+        	
+        }
     }
 
 	@Override
