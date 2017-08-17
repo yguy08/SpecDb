@@ -50,7 +50,14 @@ public class QuickMode implements Mode {
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run",e.getMessage());
         }
         
-        if(SpecDbDate.isNewHour(StartRun.getStartRunTS())){
+        try{
+        	polo.cleanUpForToday();
+        }catch(SpecDbException e){
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run",e.getMessage());
+        }
+        
+        
+        if(SpecDbDate.isNewDay(StartRun.getStartRunTS())){
             try{
             	polo.cleanUpForNewDay();
             	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Polo clean up successful");
