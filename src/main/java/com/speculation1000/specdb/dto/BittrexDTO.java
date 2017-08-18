@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.logging.Level;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.bittrex.v1.BittrexExchange;
+import org.knowm.xchange.bittrex.v1.BittrexAdapters;
+import org.knowm.xchange.bittrex.v1.dto.marketdata.BittrexTicker;
+import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
@@ -17,6 +21,7 @@ import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.time.SpecDbDate;
 
 public class BittrexDTO implements ExchangeDTO {
 	
@@ -24,16 +29,21 @@ public class BittrexDTO implements ExchangeDTO {
 
 	@Override
 	public List<Market> getLatestMarketList() throws SpecDbException {
-		Map<CurrencyPair,Ticker> bittrexChartData = 
-				getBittrexChartData();
+		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StartRun.getStartRunTS());
+		Map<CurrencyPair, BittrexTicker> bittrexChartData;
+		try {
+			bittrexChartData = getBittrexChartData();
+		} catch (IOException e1) {
+			throw new SpecDbException(e1.getMessage());
+		}
 		List<Market> marketList = new ArrayList<>();
-		for(Map.Entry<CurrencyPair, Ticker> e : bittrexChartData.entrySet()){
+		for(Map.Entry<CurrencyPair, BittrexTicker> e : bittrexChartData.entrySet()){
 				Market market = new Market();
-				Ticker t = e.getValue();
+				BittrexTicker t = e.getValue();
 				market.setBase(e.getKey().base.toString());
 				market.setCounter(e.getKey().counter.toString());
 				market.setExchange(ExchangeEnum.BITTREX.getExchangeSymbol());
-				market.setDate(StartRun.getStartRunTS().getEpochSecond());
+				market.setDate(todayMidnight);
 				market.setHigh(t.getHigh());
 				market.setLow(t.getLow());
 				market.setClose(t.getLast());
@@ -49,22 +59,18 @@ public class BittrexDTO implements ExchangeDTO {
 		return null;
 	}
 	
-	private Map<CurrencyPair,Ticker> getBittrexChartData(){
+	private Map<CurrencyPair, BittrexTicker> getBittrexChartData() throws IOException{
 		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BittrexExchange.class.getName());
-		Map<CurrencyPair,Ticker> trexTickerMap = new HashMap<>();
-		List<CurrencyPair> pairList = exchange.getExchangeSymbols();
-		specLogger.logp(Level.INFO, BittrexDTO.class.getName(), "getBittrexChartData", "Loading TREX markets from Trex API...");
-		for(CurrencyPair pair : pairList){
-			try {
-				Ticker trexTicker = exchange.getMarketDataService().getTicker(pair);
-						trexTickerMap.put(pair, trexTicker);
-			} catch (IOException e) {
-				StringBuffer sb = new StringBuffer();
-				for(StackTraceElement ste : e.getStackTrace()){
-					sb.append(" [" + ste.toString() + "],");
-				}
-				specLogger.logp(Level.SEVERE, BittrexDTO.class.getName(), "getBittrexChartData", sb.toString());
-			}
+		BittrexMarketDataService bmds = (BittrexMarketDataService) exchange.getMarketDataService();
+		List<BittrexTicker> tickerList = bmds.getBittrexTickers();
+		Map<CurrencyPair,BittrexTicker> trexTickerMap = new HashMap<>();
+		for(BittrexTicker t : tickerList){
+			//trex is opposite
+			String base = t.getMarketName().substring(t.getMarketName().indexOf("-")+1);
+			String counter = t.getMarketName().substring(0,t.getMarketName().indexOf("-"));
+			String pairStr = base + "/" + counter;
+			CurrencyPair cp = new CurrencyPair(pairStr);
+			trexTickerMap.put(cp, t);
 		}
 		return trexTickerMap;
 	}

@@ -32,13 +32,14 @@ public class PoloniexDTO implements ExchangeDTO {
 	@Override
 	public List<Market> getLatestMarketList() {
 		Instant start = StartRun.getStartRunTS();
+		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(start);
 		long end = 9999999999L;		
 		
 		Map<CurrencyPair,List<PoloniexChartData>> poloniexChartData = 
-				getPoloniexChartData(SpecDbDate.getTodayMidnightEpochSeconds(start), end);
+				getPoloniexChartData(todayMidnight, end);
 		
-		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "getLatestMarketList", "Fetched latest Polo market list from: " 
-				+ SpecDbDate.instantToLogStringFormat(start) + " " + "to " + SpecDbDate.instantToLogStringFormat(Instant.ofEpochSecond(end)));
+		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "getLatestMarketList", "Fetched latest Polo markets for: " 
+				+ SpecDbDate.longToLogStringFormat(todayMidnight));
 		
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<CurrencyPair, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
@@ -47,7 +48,7 @@ public class PoloniexDTO implements ExchangeDTO {
 				market.setBase(e.getKey().base.toString());
 				market.setCounter(e.getKey().counter.toString());
 				market.setExchange(ExchangeEnum.POLONIEX.getExchangeSymbol());
-				market.setDate(StartRun.getStartRunTS().getEpochSecond());
+				market.setDate(todayMidnight);
 				market.setHigh(dayData.getHigh());
 				market.setLow(dayData.getLow());
 				market.setOpen(dayData.getOpen());

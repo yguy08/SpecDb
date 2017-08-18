@@ -8,10 +8,12 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
+import com.speculation1000.specdb.db.DeleteRecord;
+import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class MarketSummaryDAO {
@@ -24,27 +26,18 @@ public class MarketSummaryDAO {
 		return marketList.get(0).getDate();
 	}
 	
-	public static List<Market> getLongEntries(int entryFlag){
-		long fromDate = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-		String sqlCommand = "SELECT * FROM markets WHERE date > " + fromDate + " "
-				+ "ORDER BY Base,Counter,Date";
-		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "getLongEntries", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
+	public static void updateTickerList(DbConnectionEnum dbce) throws SpecDbException{
+		List<Market> poloMarket = new PoloniexDAO().getLatestMarkets();
+		List<Market> bittrexMarkets = new BittrexDAO().getLatestMarkets();
+		List<Market> marketsToUpdate = getCleanUpList(dbce);
+		DeleteRecord.deleteBulkMarkets(dbce, marketsToUpdate);
+		InsertRecord.insertBatchMarkets(dbce, poloMarket);
+		InsertRecord.insertBatchMarkets(dbce, bittrexMarkets);
 	}
 	
-	public static List<Market> getTodaysMarketCleanUpList(DbConnectionEnum dbce){
+	public static List<Market> getCleanUpList(DbConnectionEnum dbce){
 		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-		String sqlCommand = "SELECT DISTINCT(Date) FROM markets WHERE date > " + todayMidnight
-				+ " AND Date < (SELECT Max(Date) FROM markets) ORDER BY Date ASC";
+		String sqlCommand = "SELECT * FROM Markets WHERE Date = " + todayMidnight;
 		Connection conn = DbConnection.connect(dbce);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
 		try{
@@ -58,38 +51,23 @@ public class MarketSummaryDAO {
 		return marketList;
 	}
 	
-	public static List<Market> getNextDayMarketCleanUpList(DbConnectionEnum dbce){
-		long yesterday = SpecDbDate.getYesterdayEpochSeconds(StartRun.getStartRunTS());
-		long today = SpecDbDate.getTodayMidnightEpochSeconds(StartRun.getStartRunTS());
-		String sqlCommand = "SELECT DISTINCT(Date) FROM markets WHERE date > " + yesterday + " "
-				+ "AND date < " + today;
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "getLongEntries", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
+	public static void restoreMarkets() throws SpecDbException{
+        PoloniexDAO polo = new PoloniexDAO();
+    	polo.restoreMarkets();
 	}
 	
 	public static String getEntryStatus(){
-    	List<Market> marketList = MarketSummaryDAO.getLongEntries(1);
         StringBuilder sb = new StringBuilder();
+        List<Market> marketList = getCleanUpList(DbConnectionEnum.H2_MAIN);
         sb.append("\n");
         sb.append("********************************\n");
         sb.append("          [ TICKERTAPE ]\n");
-        sb.append("********************************\n");
-        for(Market market : marketList){
-            sb.append(market.toString()+"\n");
+        for(Market m : marketList){
+        	sb.append(m.toString() + "\n");
         }
+        sb.append("********************************\n");
         sb.append("********************************\n");
         return sb.toString();		
 	}
-	
-	public static void main(String[] args){	}
 
 }

@@ -3,3 +3,5 @@ SELECT m.* FROM markets m INNER JOIN
 							GROUP BY Base,Counter,Exchange) t ON m.Base = t.Base
 							AND m.Counter = t.Counter AND m.exchange = t.Exchange AND m.Close >= t.Close
 							WHERE date = (SELECT Max(Date) from markets)
+							
+SELECT * FROM markets where date > 1471478400

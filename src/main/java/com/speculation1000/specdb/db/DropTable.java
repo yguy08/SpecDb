@@ -13,17 +13,6 @@ public class DropTable {
 	
 	private static final String DROP_TABLE = DropTable.class.getName();
 	
-	public static void dropTable(){
-		Connection connection = DbConnection.connect(DbConnectionEnum.SQLITE_MAIN);
-		dropTable(connection);
-		
-		try{
-			connection.close();
-		}catch(SQLException e){
-			specLogger.logp(Level.SEVERE, DROP_TABLE, "dropTable", "Error dropping table!");
-		}
-	}
-	
 	public static void dropTable(Connection connection){
 		String sql = "DROP TABLE IF EXISTS markets";
         try {

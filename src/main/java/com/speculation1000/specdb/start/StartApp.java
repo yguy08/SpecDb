@@ -29,7 +29,7 @@ public class StartApp {
 			DbServer.startDB();
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "H2 server start up successful");
 		} catch (SQLException e) {
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to start H2 server");
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to start H2 server: " + e.getMessage());
 		}
 		
 		try{
@@ -76,12 +76,5 @@ public class StartApp {
 		sb.append("********************************\n");		
 		return sb.toString();
 	}
-	
-	 
-    //To install htop simply use
-        //sudo apt-get install htop
-
-    //Once installed you can start it using
-        //htop
 
 }

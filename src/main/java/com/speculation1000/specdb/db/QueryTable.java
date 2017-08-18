@@ -16,18 +16,6 @@ public class QueryTable {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
-	public static List<Market> genericMarketQuery(String sqlCommand){
-		Connection connection = DbConnection.connect(DbConnectionEnum.SQLITE_MAIN);
-		List<Market> marketList = genericMarketQuery(connection, sqlCommand);
-		try{
-			connection.close();
-		}catch(SQLException e){
-			specLogger.logp(Level.SEVERE, QueryTable.class.getName(), "genericMarketQuery", "Error running query!");
-		}
-		
-		return marketList;
-	}
-	
 	public static List<Market> genericMarketQuery(Connection connection, String sqlCommand){
         try {
             Statement tmpStatement = connection.createStatement();

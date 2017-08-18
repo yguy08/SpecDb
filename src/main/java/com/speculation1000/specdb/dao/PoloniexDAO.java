@@ -9,9 +9,7 @@ import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
-import com.speculation1000.specdb.db.DeleteRecord;
 import com.speculation1000.specdb.db.InsertRecord;
-import com.speculation1000.specdb.db.UpdateRecord;
 import com.speculation1000.specdb.dto.PoloniexDTO;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
@@ -22,47 +20,10 @@ public class PoloniexDAO implements MarketDAO {
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 
 	@Override
-	public void updateMarkets() throws SpecDbException {
-		Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+	public List<Market> getLatestMarkets() throws SpecDbException {
 		try{
 			List<Market> marketList = new PoloniexDTO().getLatestMarketList();
-			InsertRecord.insertBatchMarkets(conn, marketList);
-			conn.close();
-			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "updateMarkets", "Polo markets updated!");
-		}catch(Exception e){
-			throw new SpecDbException(e.getMessage());
-		}
-	}
-
-	@Override
-	public int cleanUpForToday() throws SpecDbException {
-		DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
-		try{
-			List<Market> marketList = MarketSummaryDAO.getTodaysMarketCleanUpList(dbce);
-			int[] recordsDeleted = DeleteRecord.deleteBulkMarkets(dbce, marketList);
-			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "cleanUpForNewDay", "Polo markets cleaned up.");
-			int sum = 0;
-			for(Integer i : recordsDeleted){
-				sum+=i;
-			}
-			return sum;
-		}catch(Exception e){
-			throw new SpecDbException(e.getMessage());
-		}
-	}
-
-	@Override
-	public int cleanUpForNewDay() throws SpecDbException {
-		DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
-		try{
-			List<Market> marketList = MarketSummaryDAO.getTodaysMarketCleanUpList(dbce);
-			int[] recordsUpdated = UpdateRecord.updateBulkMarkets(dbce, marketList);
-			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "cleanUpForNewDay", "Polo markets cleaned up.");
-			int sum = 0;
-			for(Integer i : recordsUpdated){
-				sum+=i;
-			}
-			return sum;
+			return marketList;
 		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());
 		}
