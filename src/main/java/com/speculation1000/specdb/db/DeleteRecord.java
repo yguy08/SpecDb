@@ -29,15 +29,13 @@ public class DeleteRecord {
         }
 	}
 	
-	public static int[] deleteBulkMarkets(DbConnectionEnum dbce, List<Market> marketList){
+	public static int[] deleteBulkMarkets(DbConnectionEnum dbce, long date){
 		Connection conn = DbConnection.connect(dbce);
 		try{
 			String deleteSql = "DELETE FROM markets WHERE Date = ?";              
 			PreparedStatement st = conn.prepareStatement(deleteSql);
-			for(Market m : marketList){
-				st.setLong(1, m.getDate());
-				st.addBatch();
-			}
+			st.setLong(1, date);
+			st.addBatch();
 			int[] results = st.executeBatch();
 			st.close();
 			conn.close();

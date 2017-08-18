@@ -13,6 +13,7 @@ import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.mode.QuickMode;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -28,15 +29,26 @@ public class MarketSummaryDAO {
 	
 	public static void updateTickerList(DbConnectionEnum dbce) throws SpecDbException{
 		List<Market> poloMarket = new PoloniexDAO().getLatestMarkets();
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Updated polo successful");
 		List<Market> bittrexMarkets = new BittrexDAO().getLatestMarkets();
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Updated trex successful");
 		List<Market> marketsToUpdate = getCleanUpList(dbce);
-		DeleteRecord.deleteBulkMarkets(dbce, marketsToUpdate);
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","got clean up list successful");
+    	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
+    	try{
+    		DeleteRecord.deleteBulkMarkets(dbce, todayMidnight);
+    	}catch(Exception e){
+        	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",e.getMessage());
+    	}
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","deleted clean up list");
 		InsertRecord.insertBatchMarkets(dbce, poloMarket);
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","inserted polo list");
 		InsertRecord.insertBatchMarkets(dbce, bittrexMarkets);
+    	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","inserted trex list");
 	}
 	
 	public static List<Market> getCleanUpList(DbConnectionEnum dbce){
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
+    	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
 		String sqlCommand = "SELECT * FROM Markets WHERE Date = " + todayMidnight;
 		Connection conn = DbConnection.connect(dbce);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);

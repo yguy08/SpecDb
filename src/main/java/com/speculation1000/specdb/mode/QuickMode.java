@@ -19,7 +19,7 @@ public class QuickMode implements Mode {
     
     private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
     
-    private static final int PERIOD = 60 * 15;
+    private static final int PERIOD = 60 * 1;
     
     private static final String modeNameStr = "QUICKMODE";
 
