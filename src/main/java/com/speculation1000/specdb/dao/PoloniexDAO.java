@@ -31,7 +31,7 @@ public class PoloniexDAO implements MarketDAO {
 
 	@Override
 	public void restoreMarkets() throws SpecDbException {
-		Connection connection = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+        Connection connection = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 		
 		//Get oldest market date for poloniex
 		long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());

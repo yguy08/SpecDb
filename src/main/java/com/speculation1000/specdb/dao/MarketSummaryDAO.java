@@ -32,7 +32,6 @@ public class MarketSummaryDAO {
     	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Updated polo successful");
 		List<Market> bittrexMarkets = new BittrexDAO().getLatestMarkets();
     	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Updated trex successful");
-		List<Market> marketsToUpdate = getCleanUpList(dbce);
     	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","got clean up list successful");
     	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
     	try{
@@ -74,6 +73,7 @@ public class MarketSummaryDAO {
         sb.append("\n");
         sb.append("********************************\n");
         sb.append("          [ TICKERTAPE ]\n");
+        sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
         for(Market m : marketList){
         	sb.append(m.toString() + "\n");
         }
