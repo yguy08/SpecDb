@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.market.Market;
 
 public class DeleteRecord {
 	

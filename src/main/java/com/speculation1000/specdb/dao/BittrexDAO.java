@@ -1,6 +1,8 @@
 package com.speculation1000.specdb.dao;
 
 import java.util.List;
+import java.util.logging.Level;
+
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.dto.BittrexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;
@@ -14,6 +16,7 @@ public class BittrexDAO implements MarketDAO {
 	public List<Market> getLatestMarkets() throws SpecDbException {
 		try{
 			List<Market> marketList = new BittrexDTO().getLatestMarketList();
+			specLogger.logp(Level.INFO, BittrexDAO.class.getName(), "getLatestMarkets", "Got latest bittrex markets");
 			return marketList;
 		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());

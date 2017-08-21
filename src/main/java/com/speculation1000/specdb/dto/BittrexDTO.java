@@ -1,7 +1,6 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +10,9 @@ import java.util.logging.Level;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.bittrex.v1.BittrexExchange;
-import org.knowm.xchange.bittrex.v1.BittrexAdapters;
 import org.knowm.xchange.bittrex.v1.dto.marketdata.BittrexTicker;
 import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.dto.marketdata.Ticker;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
@@ -33,6 +30,7 @@ public class BittrexDTO implements ExchangeDTO {
 		Map<CurrencyPair, BittrexTicker> bittrexChartData;
 		try {
 			bittrexChartData = getBittrexChartData();
+			specLogger.logp(Level.INFO, BittrexDTO.class.getName(), "getLatestMarketList", "Got Bittrex Chart Data");
 		} catch (IOException e1) {
 			throw new SpecDbException(e1.getMessage());
 		}

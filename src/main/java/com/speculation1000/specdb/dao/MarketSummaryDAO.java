@@ -48,7 +48,8 @@ public class MarketSummaryDAO {
 	
 	public static List<Market> getCleanUpList(DbConnectionEnum dbce){
     	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-		String sqlCommand = "SELECT * FROM Markets WHERE Date = " + todayMidnight;
+    	//8:00 -> 8:15 nothing populates bug
+		String sqlCommand = "SELECT * FROM Markets WHERE Date = " + todayMidnight + " ORDER BY Counter,Base ASC";
 		Connection conn = DbConnection.connect(dbce);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
 		try{
