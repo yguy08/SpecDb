@@ -5,7 +5,7 @@ echo [ STATUS REPORT ]
 echo *****************
 
 echo copying target files from Raspberry Pi
-sftp pi@192.168.1.197 <<zzz23EndOfSftpzzz23
+sftp pi@192.168.1.151 <<zzz23EndOfSftpzzz23
   lcd ~/SpecDb
   cd /home/pi/
   get -r SpecDb SpecDbPi

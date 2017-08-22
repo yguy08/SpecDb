@@ -7,7 +7,7 @@ TMP_DIR=~/SpecDb/tmp
 TARGET=~/SpecDb/target
 
 echo ssh to pi
-ssh pi@192.168.1.197 <<zzz23EndOfStatuszzz23
+ssh pi@192.168.1.151 <<zzz23EndOfStatuszzz23
   cd /home/pi/SpecDb/
   nohup java -cp target/specdb-1.0.jar com.speculation1000.specdb.start.StartApp $1 &
   ps -e | grep java
