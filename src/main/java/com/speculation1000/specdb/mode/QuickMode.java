@@ -11,7 +11,7 @@ import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
-import com.speculation1000.specdb.start.SystemStatus;
+import com.speculation1000.specdb.start.StatusString;
 
 public class QuickMode implements Mode {
     
@@ -49,21 +49,13 @@ public class QuickMode implements Mode {
         }
         
         try{
-            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",MarketSummaryDAO.getEntryStatus());
-        }catch(Exception e){
-        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting entry status");
-        }
-        
-        try{
+            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StatusString.getTickerString());
             specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StartRun.getEndRunMessage());
+            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", StatusString.getLongEntriesString());
+            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", StatusString.getShortEntriesString());
+            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StatusString.getSystemStatus());
         }catch(Exception e){
-        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting end run status");
-        }
-        
-        try{
-            specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",SystemStatus.getSystemStatus());
-        }catch(Exception e){
-        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting system status");
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting status messages");
         }
         
     }
