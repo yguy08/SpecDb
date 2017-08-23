@@ -1,4 +1,16 @@
-Aug 21, 2017 6:47:31 PM com.speculation1000.specvault.db.DbConnection connect
+Aug 22, 2017 7:50:44 PM com.speculation1000.specvault.db.DbConnection connect
 INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
-Aug 21, 2017 6:47:36 PM com.speculation1000.specvault.db.DbConnection connect
+Aug 22, 2017 7:50:48 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:50:54 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:51:01 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:51:06 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:51:12 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:51:17 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
+Aug 22, 2017 7:51:22 PM com.speculation1000.specvault.db.DbConnection connect
 INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
