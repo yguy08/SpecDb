@@ -30,15 +30,14 @@ public class DbConnection {
         try {
         	Class.forName(dbce.getClassForName());
             conn = DriverManager.getConnection(dbce.getConnectionString());
-            specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "Connection to " + dbce.getConnectionString() + " established");
         } catch (SQLException ex) {
         	while (ex != null) {
-            	specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "SQLException: " + ex.getMessage());
+            	specLogger.logp(Level.SEVERE, DbConnection.class.getName(), "connect", ex.getMessage());
 	            ex = ex.getNextException();
 	        }
 	        throw new RuntimeException("Error");
         } catch (ClassNotFoundException e) {
-        	specLogger.logp(Level.INFO, DbConnection.class.getName(), "connect", "ClassNotFoundException: " + e.getMessage());
+        	specLogger.logp(Level.SEVERE, DbConnection.class.getName(), "connect", e.getMessage());
 		}
         return conn;
 	}
