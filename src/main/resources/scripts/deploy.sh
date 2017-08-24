@@ -30,7 +30,7 @@ echo Copying target files to Raspberry Pi...
 
 cd $TARGET
 
-sftp pi@192.168.1.197 <<zzz23EndOfSftpzzz23
+sftp pi@192.168.1.151 <<zzz23EndOfSftpzzz23
   cd /home/pi/SpecDb/target
   put -r $TARGET/specdb-1.0.jar   
   exit
