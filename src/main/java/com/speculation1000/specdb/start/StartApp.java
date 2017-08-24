@@ -34,6 +34,7 @@ public class StartApp {
 		
 		try{
 			Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db");
 			CreateTable.createTable(conn);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Market table created (if it didn't already exist)");
 			conn.close();
