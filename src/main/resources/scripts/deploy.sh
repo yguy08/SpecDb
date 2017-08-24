@@ -7,6 +7,7 @@ echo *****************
 APP_DIR=~/SpecDb
 TARGET=~/SpecDb/target
 TMP_DIR=~/SpecDb/tmp
+SCRIPTS=~/SpecDb/src/main/rescources/scripts
 
 echo cleaning up raspberry pi
 ssh pi@192.168.1.151 <<zzz23EndOfStatuszzz23
@@ -25,6 +26,9 @@ ssh pi@192.168.1.151 <<zzz23EndOfStatuszzz23
   mkdir /home/pi/SpecDb/target
   echo Cleaning up old log file
   rm -r /home/pi/SpecDb/logs/Spec*
+  echo Cleaning up scripts folder
+  rm -r /home/pi/SpecDb/scripts
+  mkdir /home/pi/SpecDb/scripts
   exit
 zzz23EndOfStatuszzz23
 
@@ -36,7 +40,9 @@ cd $TARGET
 
 sftp pi@192.168.1.151 <<zzz23EndOfSftpzzz23
   cd /home/pi/SpecDb/target
-  put -r $TARGET/specdb-1.0.jar   
+  put -r $TARGET/specdb-1.0.jar
+  cd /home/pi/SpecDb/scripts
+  put -r $SCRIPTS/cleanlogs.sh      
   exit
 zzz23EndOfSftpzzz23
 
