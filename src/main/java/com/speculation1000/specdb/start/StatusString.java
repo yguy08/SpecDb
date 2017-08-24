@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.start;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class StatusString {
         sb.append(SpecDbDate.instantToLogStringFormat(DbServer.DB_START_UP_TS));
         sb.append("(Uptime: " + SpecDbTime.uptimePrettyStr(DbServer.getSystemUptime()) + ")\n");
         sb.append("* H2 DB Status: ");
-        sb.append(DbServer.getH2ServerStatus() + " *\n");
+        sb.append(DbServer.getH2ServerStatus() + "\n");
         sb.append("********************************\n");
         return sb.toString();
 	}
