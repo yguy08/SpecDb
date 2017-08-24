@@ -13,14 +13,18 @@ ssh pi@192.168.1.151 <<zzz23EndOfStatuszzz23
   echo stopping h2 server!
   cd /home/pi/SpecDb/
   java -cp target/specdb-1.0.jar com.speculation1000.specdb.start.DbServer stop
+  sleep 20
   echo h2 server stopped!
   echo Killing java process on Raspberry pi...
   killall -w java
+  sleep 20
   echo java processes stopped!
   ps -e | grep java  
   echo Removing specdb jar from pi
   rm -r /home/pi/SpecDb/target
   mkdir /home/pi/SpecDb/target
+  echo Cleaning up old log file
+  rm -r /home/pi/SpecDb/logs/Spec*
   exit
 zzz23EndOfStatuszzz23
 
