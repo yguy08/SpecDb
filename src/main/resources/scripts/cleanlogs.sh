@@ -10,7 +10,11 @@ echo "Starting backup to SpecDb0.log..."
 
 cd /home/pi/SpecDb/logs
 mv SpecDb0.log SpecDb0$_now.log
-rm SpecDb0.log  
+rm SpecDb0.log
 
 
-
+//chron job to look for log file and recreate if neccessary
+if [ ! -f /tomcat_dir/log4j.log ]
+then
+  `touch /tomcat_dir/log4j.log`;
+fi
