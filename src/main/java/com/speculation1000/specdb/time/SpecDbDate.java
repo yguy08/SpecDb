@@ -45,18 +45,6 @@ public class SpecDbDate {
 		Instant instant = Instant.ofEpochSecond(epochSeconds);
 		return ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC")).format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
 	}
-
-	public static boolean isNewDay(Instant instant) {
-		ZoneId z = ZoneId.of( "Etc/UTC" );
-		ZonedDateTime zdt = instant.atZone(z);
-		int hour = zdt.getHour();
-		int min = zdt.getMinute();
-		if(hour == 0 && min < 15){
-			return true;
-		}else{
-			return false;
-		}
-	}
 	
 	/**
 	 * @param instant
@@ -75,22 +63,6 @@ public class SpecDbDate {
 		Duration duration = Duration.between(zdt, nextHour);
         int initalDelay = (int) duration.toMinutes();
 		return initalDelay;
-	}
-	
-	/**
-	 * 
-	 * @param instant to compare
-	 * @returns days from today
-	 */
-	public static int daysFromInstantToToday(Instant instantToCompare){
-		Instant today = getTodayMidnightInstant(Instant.now());
-		long diff = today.getEpochSecond() - instantToCompare.getEpochSecond();
-		return (int) diff;
-	}
-	
-	public static void main(String[]args){
-		System.out.println("Today: " + getTodayMidnightEpochSeconds(Instant.now()));
-		System.out.println("Yesterday: " + getYesterdayEpochSeconds(Instant.now()));
 	}
 
 }

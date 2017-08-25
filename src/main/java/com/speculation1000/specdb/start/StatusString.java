@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.start;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class StatusString {
         sb.append(" (Uptime: " + SpecDbTime.uptimePrettyStr(StartApp.getSystemUptime()) + ")\n");
         sb.append("* H2 DB Running since: ");
         sb.append(SpecDbDate.instantToLogStringFormat(DbServer.DB_START_UP_TS));
-        sb.append("(Uptime: " + SpecDbTime.uptimePrettyStr(DbServer.getSystemUptime()) + ")\n");
+        sb.append(" (Uptime: " + SpecDbTime.uptimePrettyStr(DbServer.getSystemUptime()) + ")\n");
         sb.append("* H2 DB Status: ");
         sb.append(DbServer.getH2ServerStatus() + "\n");
         sb.append("********************************\n");
@@ -49,6 +48,7 @@ public class StatusString {
 	public static String getLongEntriesString(){
 		StringBuilder sb = new StringBuilder();
 		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayHigh(DbConnectionEnum.H2_MAIN, 25);
+	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ LONG ENTRIES ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
@@ -62,6 +62,7 @@ public class StatusString {
 	public static String getShortEntriesString(){
 		StringBuilder sb = new StringBuilder();
 		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayLow(DbConnectionEnum.H2_MAIN, 25);
+	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ SHORT ENTRIES ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");

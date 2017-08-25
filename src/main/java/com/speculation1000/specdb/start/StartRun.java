@@ -32,7 +32,6 @@ public class StartRun {
         sb.append("            [START]\n");
         sb.append("* At: ");
         sb.append(SpecDbDate.instantToLogStringFormat(StartRun.getStartRunTS()) + "\n");
-        sb.append("* New Day: " + SpecDbDate.isNewDay(StartRun.getStartRunTS()) + "\n");
         sb.append("********************************\n");
         return sb.toString();
 	}
