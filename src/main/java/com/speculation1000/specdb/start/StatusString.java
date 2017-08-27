@@ -50,7 +50,7 @@ public class StatusString {
 		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayHigh(DbConnectionEnum.H2_MAIN, 25);
 	    sb.append("\n");
 		sb.append("********************************\n");
-	    sb.append("          [ LONG ENTRIES ]\n");
+	    sb.append("          [ HIGHS ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
 	    for(Market m : marketList){
 	    	sb.append(m.toString() + "\n");
@@ -64,7 +64,7 @@ public class StatusString {
 		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayLow(DbConnectionEnum.H2_MAIN, 25);
 	    sb.append("\n");
 		sb.append("********************************\n");
-	    sb.append("          [ SHORT ENTRIES ]\n");
+	    sb.append("          [ LOWS ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
 	    for(Market m : marketList){
 	    	sb.append(m.toString() + "\n");

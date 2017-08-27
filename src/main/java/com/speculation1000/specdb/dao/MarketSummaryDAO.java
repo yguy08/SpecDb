@@ -143,12 +143,18 @@ public class MarketSummaryDAO {
 		List<Market> maxCloseList = getMaxCloseList(DbConnectionEnum.H2_MAIN,25);
 		List<Market> currentClose = getCurrentCloseList(DbConnectionEnum.H2_MAIN);
 		List<Market> marketsAtHighList = new ArrayList<>();
-		for(int i = 0; i < maxCloseList.size();i++){
-			BigDecimal maxClose = maxCloseList.get(i).getClose();
-			BigDecimal current = currentClose.get(i).getClose();
-			if(current.compareTo(maxClose) == 0){
-				marketsAtHighList.add(currentClose.get(i));
-			}					
+		for(Market market : currentClose){
+			for(Market m : maxCloseList){
+				String marketStr = market.getBase()+market.getCounter()+market.getExchange();
+				String mStr = m.getBase()+m.getCounter()+m.getExchange();
+				if(marketStr.equalsIgnoreCase(mStr)){
+					BigDecimal maxClose = m.getClose();
+					BigDecimal current = market.getClose();
+					if(current.compareTo(maxClose) == 0){
+						marketsAtHighList.add(market);
+					}
+				}
+			}
 		}
 		return marketsAtHighList; 
 	}
@@ -157,12 +163,18 @@ public class MarketSummaryDAO {
 		List<Market> minCloseList = getMinCloseList(DbConnectionEnum.H2_MAIN,25);
 		List<Market> currentClose = getCurrentCloseList(DbConnectionEnum.H2_MAIN);
 		List<Market> marketsAtLowList = new ArrayList<>();
-		for(int i = 0; i < minCloseList.size();i++){
-			BigDecimal minClose = minCloseList.get(i).getClose();
-			BigDecimal current = currentClose.get(i).getClose();
-			if(current.compareTo(minClose) == 0){
-				marketsAtLowList.add(currentClose.get(i));
-			}					
+		for(Market market : currentClose){
+			for(Market m : minCloseList){
+				String marketStr = market.getBase()+market.getCounter()+market.getExchange();
+				String mStr = m.getBase()+m.getCounter()+m.getExchange();
+				if(marketStr.equalsIgnoreCase(mStr)){
+					BigDecimal maxClose = m.getClose();
+					BigDecimal current = market.getClose();
+					if(current.compareTo(maxClose) == 0){
+						marketsAtLowList.add(market);
+					}
+				}
+			}
 		}
 		return marketsAtLowList; 
 	}

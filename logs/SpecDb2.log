@@ -1,0 +1,2 @@
+Aug 26, 2017 3:18:11 PM com.speculation1000.specvault.db.DbConnection connect
+INFO: Connection to jdbc:h2:tcp://192.168.1.151:8082//home/pi/SpecDb/db/Speculation1000-H2 established
