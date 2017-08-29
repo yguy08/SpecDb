@@ -2,7 +2,7 @@ package com.speculation1000.specdb.market;
 
 import java.math.BigDecimal;
 
-public class Market {
+public class Market implements Comparable<Market> {
 		
 	private String base;
 	
@@ -23,6 +23,20 @@ public class Market {
 	private int volume;
 	
 	private BigDecimal trueRange;
+	
+	public String getSymbol(){
+		return base+counter+":"+exchange;
+	}
+	
+	/**
+	 * 
+	 * @param symbol - combined Base,Counter,Exchange in one string with format: BaseCounter:Exchange
+	 */
+	public void setSymbol(String symbol){
+		this.base = symbol.substring(0, symbol.indexOf("/"));
+		this.counter = symbol.substring(symbol.indexOf("/")+1, symbol.indexOf(":"));
+		this.exchange = symbol.substring(symbol.indexOf(":")+1);
+	}
 	
 	public String getBase(){
 		return base;
@@ -107,5 +121,10 @@ public class Market {
 	@Override
 	public String toString(){
 		return base + counter + ":" + exchange + " " + "@" + close;
+	}
+
+	@Override
+	public int compareTo(Market o) {
+		return this.getSymbol().compareTo(o.getSymbol());
 	}
 }
