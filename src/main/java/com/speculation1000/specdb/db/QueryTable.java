@@ -55,6 +55,9 @@ public class QueryTable {
             		case "VOLUME":
             			market.setVolume(resultSet.getInt(z));
             			break;
+            		case "SYMBOL":
+            			market.setSymbol(resultSet.getString(z));
+            			break;
             		default:
             			break;
             		}
