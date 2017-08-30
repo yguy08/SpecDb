@@ -18,7 +18,7 @@ import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.MarketStatus;
+import com.speculation1000.specdb.market.MarketStatusContent;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -222,7 +222,7 @@ public class MarketSummaryDAO {
 		return marketList;		
 	}
 	
-	public static List<MarketStatus> getMarketStatusList(DbConnectionEnum dbce){
+	public static List<MarketStatusContent> getMarketStatusList(DbConnectionEnum dbce){
 		List<Market> distinctList = getDistinctMarkets(DbConnectionEnum.H2_MAIN);
 		List<Market> marketList = getLastXDayList(DbConnectionEnum.H2_MAIN,250);
 		Map<String,List<Market>> marketMap = new HashMap<>();
@@ -238,18 +238,18 @@ public class MarketSummaryDAO {
 			}
 		}		
 		System.out.println("***** MAP *****");
-		List<MarketStatus> marketStatusList = new ArrayList<>();
+		List<MarketStatusContent> marketStatusList = new ArrayList<>();
 		for(Map.Entry<String, List<Market>> e : marketMap.entrySet()){
 			System.out.println(e.getKey());
-			MarketStatus ms = new MarketStatus(e.getKey(),e.getValue());
+			MarketStatusContent ms = new MarketStatusContent(e.getKey(),e.getValue());
 			marketStatusList.add(ms);
 		}
 		return marketStatusList;		
 	}
 	
 	public static void main(String[] args){
-		List<MarketStatus> marketStatusList = getMarketStatusList(DbConnectionEnum.H2_MAIN);
-		for(MarketStatus ms : marketStatusList){
+		List<MarketStatusContent> marketStatusList = getMarketStatusList(DbConnectionEnum.H2_MAIN);
+		for(MarketStatusContent ms : marketStatusList){
 			System.out.println(ms.toString());
 		}
 	}

@@ -17,12 +17,8 @@ public class MarketStatus {
 	private static List<MarketStatusContent> marketStatusList;
 	
 	public static void updateMarketStatusList(){
-		try {
-			marketStatusList = MarketSummaryDAO.getMarketStatusList(DbConnectionEnum.H2_MAIN);
-			specLogger.logp(Level.INFO, MarketStatus.class.getName(), "updateMarketStatusList", "Retrieved market status list!");
-		} catch (SpecDbException e) {
-			specLogger.logp(Level.SEVERE, MarketStatus.class.getName(), "updateMarketStatusList", "Failed to retrieve market status list");
-		}
+		marketStatusList = MarketSummaryDAO.getMarketStatusList(DbConnectionEnum.H2_MAIN);
+		specLogger.logp(Level.INFO, MarketStatus.class.getName(), "updateMarketStatusList", "Retrieved market status list!");
 	}
 	
 	public static List<MarketStatusContent> getMarketStatusList(){
