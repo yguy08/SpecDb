@@ -22,8 +22,6 @@ public class Market implements Comparable<Market> {
 	
 	private int volume;
 	
-	private BigDecimal trueRange;
-	
 	public String getSymbol(){
 		return base+counter+":"+exchange;
 	}
@@ -108,14 +106,6 @@ public class Market implements Comparable<Market> {
 	
 	public void setVolume(int volume){
 		this.volume = volume;
-	}
-	
-	public BigDecimal getTrueRange(){
-		return trueRange;
-	}
-	
-	public void setTrueRange(BigDecimal trueRange){
-		this.trueRange = trueRange;
 	}
 	
 	@Override
