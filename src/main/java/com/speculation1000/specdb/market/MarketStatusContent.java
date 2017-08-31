@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class MarketStatusContent {
@@ -29,7 +30,7 @@ public class MarketStatusContent {
 		setClosePriceMap(marketList);
 		setHighPriceMap(marketList);
 		setLowPriceMap(marketList);
-		setDayHighLowMap(marketList);
+		setDayHighLowMap(closePriceMap);
 		setAtrMap(marketList);
 	}
 
@@ -79,52 +80,46 @@ public class MarketStatusContent {
 		return lowPriceMap;
 	}
 	
-	private void setDayHighLowMap(List<Market> marketList) {
-		Collections.reverse(marketList);
-		int count;
-		BigDecimal currentPrice;
-		BigDecimal prevPrice;
-		if(marketList.size() < 2){
-			return;
-		}
-		for(int i = 2; i < marketList.size();i++){
-			count = 0;
-			currentPrice = marketList.get(i).getClose();
-			prevPrice 	= marketList.get(i-1).getClose();
-			boolean isHigher = (currentPrice.compareTo(prevPrice) >= 0);
-			if(isHigher){
-				count++;
-				for(int z = i-2; z >= 0;z--){
-					prevPrice 	= marketList.get(z).getClose();
-					isHigher 	= (currentPrice.compareTo(prevPrice) >= 0);
-					if(isHigher){
-						count++;
-						if(count>=55){
-							dayHighLowMap.put(marketList.get(i).getDate(), count);
-							break;
-						}
-					}else{
-						dayHighLowMap.put(marketList.get(i).getDate(), count);
-						break;
-					}
-				}
+	private void setDayHighLowMap(TreeMap<Long,BigDecimal> closePriceMap) {
+		for(Entry<Long,BigDecimal> e : closePriceMap.entrySet()){
+			long date = e.getKey();
+			BigDecimal close = e.getValue();
+			boolean hasNext = (closePriceMap.higherKey(date)) != null;
+			boolean isHigh;
+			long tmpDate = date;
+			long dateP;
+			BigDecimal closeP;
+			int count = 0;
+			if(hasNext){
+				dateP = closePriceMap.higherKey(date);
+				closeP = closePriceMap.get(dateP);
+				isHigh = close.compareTo(closeP) >= 0 ? true : false;
 			}else{
-				count++;
-				for(int z = i-2;z > 0;z--){
-					prevPrice 	= marketList.get(z).getClose();
-					isHigher = (currentPrice.compareTo(prevPrice)>=0);
-					if(!(isHigher)){
-						count++;
-						if(count>=55){
-							dayHighLowMap.put(marketList.get(i).getDate(), (-count));
-							break;
-						}
-					}else{
-						dayHighLowMap.put(marketList.get(i).getDate(), (-count));
-						break;
-					}
-				}
+				dayHighLowMap.put(date,count);
+				break;
 			}
+			while(hasNext){
+			    dateP = closePriceMap.higherKey(tmpDate);
+				closeP = closePriceMap.get(dateP);
+			    if(isHigh){
+				    if(close.compareTo(closeP) >= 0){
+				    	count++;
+				    }else{
+				    	dayHighLowMap.put(date,count);
+					    break;
+				    }
+			    }else{
+				    if(close.compareTo(closeP) < 0){
+				    	count--;
+				    }else{
+				    	dayHighLowMap.put(date,count);
+					    break;
+				    }
+			    }
+			    tmpDate-=86400;
+				hasNext = (closePriceMap.higherKey(tmpDate)) != null;
+			}			
+			dayHighLowMap.put(date, count);
 		}
 	}
 	
