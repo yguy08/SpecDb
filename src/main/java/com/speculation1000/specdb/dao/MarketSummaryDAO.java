@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -51,98 +50,6 @@ public class MarketSummaryDAO {
     	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","inserted trex list");
 	}
 	
-	public static List<Market> getCleanUpList(DbConnectionEnum dbce){
-    	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-		String sqlCommand = "SELECT * FROM Markets WHERE Date = " + todayMidnight + " ORDER BY Counter,Base ASC";
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getCleanUpList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
-	}
-	
-	public static List<Market> getTickerList(DbConnectionEnum dbce){
-		String sqlCommand = "SELECT * FROM Markets WHERE Date = (SELECT Max(Date) Date FROM Markets)" 
-							+ " ORDER BY Counter,Base ASC";
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getTickerList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
-	}
-	
-	public static List<Market> getMaxCloseList(DbConnectionEnum dbce, int days){
-		Instant instant = Instant.now().minusSeconds(86400 * days);
-		String sqlCommand = "SELECT Base,Counter,Exchange,Max(Close) Close" 
-				+ " FROM Markets" 
-				+ " WHERE Date >= " + SpecDbDate.getTodayMidnightEpochSeconds(instant) 
-				+ " GROUP BY Base,Counter,Exchange" 
-				+ " ORDER BY Counter,Base ASC";
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getMaxCloseList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
-	}
-	
-	public static List<Market> getMinCloseList(DbConnectionEnum dbce, int days){
-		Instant instant = Instant.now().minusSeconds(86400 * days);
-		String sqlCommand = "SELECT Base,Counter,Exchange,Min(Close) Close" 
-				+ " FROM Markets" 
-				+ " WHERE Date >= " + SpecDbDate.getTodayMidnightEpochSeconds(instant) 
-				+ " GROUP BY Base,Counter,Exchange" 
-				+ " ORDER BY Counter,Base ASC";
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getMinCloseList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
-	}
-	
-	public static List<Market> getCurrentCloseList(DbConnectionEnum dbce){
-		Instant instant = Instant.now();
-		String sqlCommand = "SELECT Base,Counter,Exchange,Max(Close) Close" 
-				+ " FROM Markets" 
-				+ " WHERE Date = " + SpecDbDate.getTodayMidnightEpochSeconds(instant) 
-				+ " GROUP BY Base,Counter,Exchange" 
-				+ " ORDER BY Counter,Base ASC";
-		Connection conn = DbConnection.connect(dbce);
-		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getCurrentCloseList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
-		return marketList;
-	}
-	
 	public static List<Market> getLastXDayList(DbConnectionEnum dbce, int days){
 		Instant instant = Instant.now().minusSeconds(86400 * days);
 		String sqlCommand = "SELECT * FROM Markets WHERE Date >= " + SpecDbDate.getTodayMidnightEpochSeconds(instant)
@@ -160,46 +67,6 @@ public class MarketSummaryDAO {
 		}
 		Collections.sort(marketList);
 		return marketList;
-	}
-	
-	public static List<Market> getMarketsAtXDayHigh(DbConnectionEnum dbce,int days){
-		List<Market> maxCloseList = getMaxCloseList(DbConnectionEnum.H2_MAIN,25);
-		List<Market> currentClose = getCurrentCloseList(DbConnectionEnum.H2_MAIN);
-		List<Market> marketsAtHighList = new ArrayList<>();
-		for(Market market : currentClose){
-			for(Market m : maxCloseList){
-				String marketStr = market.getBase()+market.getCounter()+market.getExchange();
-				String mStr = m.getBase()+m.getCounter()+m.getExchange();
-				if(marketStr.equalsIgnoreCase(mStr)){
-					BigDecimal maxClose = m.getClose();
-					BigDecimal current = market.getClose();
-					if(current.compareTo(maxClose) == 0){
-						marketsAtHighList.add(market);
-					}
-				}
-			}
-		}
-		return marketsAtHighList; 
-	}
-	
-	public static List<Market> getMarketsAtXDayLow(DbConnectionEnum dbce,int days){
-		List<Market> minCloseList = getMinCloseList(DbConnectionEnum.H2_MAIN,25);
-		List<Market> currentClose = getCurrentCloseList(DbConnectionEnum.H2_MAIN);
-		List<Market> marketsAtLowList = new ArrayList<>();
-		for(Market market : currentClose){
-			for(Market m : minCloseList){
-				String marketStr = market.getBase()+market.getCounter()+market.getExchange();
-				String mStr = m.getBase()+m.getCounter()+m.getExchange();
-				if(marketStr.equalsIgnoreCase(mStr)){
-					BigDecimal maxClose = m.getClose();
-					BigDecimal current = market.getClose();
-					if(current.compareTo(maxClose) == 0){
-						marketsAtLowList.add(market);
-					}
-				}
-			}
-		}
-		return marketsAtLowList; 
 	}
 	
 	public static void restoreMarkets() throws SpecDbException{
@@ -236,22 +103,13 @@ public class MarketSummaryDAO {
 					break;
 				}
 			}
-		}		
-		System.out.println("***** MAP *****");
+		}
 		List<MarketStatusContent> marketStatusList = new ArrayList<>();
 		for(Map.Entry<String, List<Market>> e : marketMap.entrySet()){
-			System.out.println(e.getKey());
 			MarketStatusContent ms = new MarketStatusContent(e.getKey(),e.getValue());
 			marketStatusList.add(ms);
 		}
 		return marketStatusList;		
-	}
-	
-	public static void main(String[] args){
-		List<MarketStatusContent> marketStatusList = getMarketStatusList(DbConnectionEnum.H2_MAIN);
-		for(MarketStatusContent ms : marketStatusList){
-			System.out.println(ms.toString());
-		}
 	}
 
 }
