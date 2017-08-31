@@ -3,9 +3,7 @@ package com.speculation1000.specdb.start;
 import java.time.Instant;
 import java.util.List;
 
-import com.speculation1000.specdb.dao.MarketSummaryDAO;
-import com.speculation1000.specdb.db.DbConnectionEnum;
-import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.MarketStatusContent;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
 
@@ -33,13 +31,13 @@ public class StatusString {
 
 	public static String getTickerString(){
 	    StringBuilder sb = new StringBuilder();
-	    List<Market> marketList = MarketSummaryDAO.getTickerList(DbConnectionEnum.H2_MAIN);
+	    List<MarketStatusContent> marketList = MarketStatus.getMarketStatusList();
 	    sb.append("\n");
 	    sb.append("********************************\n");
 	    sb.append("          [ TICKERTAPE ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-	    for(Market m : marketList){
-	    	sb.append(m.toString() + "\n");
+	    for(MarketStatusContent m : marketList){
+	    	sb.append(m.getSymbol() + " @" + m.getCurrentPrice() + "\n");
 	    }
 	    sb.append("********************************\n");
 	    return sb.toString();		
@@ -47,13 +45,15 @@ public class StatusString {
 	
 	public static String getLongEntriesString(){
 		StringBuilder sb = new StringBuilder();
-		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayHigh(DbConnectionEnum.H2_MAIN, 25);
+		List<MarketStatusContent> marketList = MarketStatus.getMarketStatusList();
 	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ HIGHS ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-	    for(Market m : marketList){
-	    	sb.append(m.toString() + "\n");
+	    for(MarketStatusContent m : marketList){
+	    	if(m.getDayHighLowMap().firstEntry().getValue() >= 25){
+	    		sb.append(m.getSymbol() + " @" + m.getCurrentPrice() + "\n");
+	    	}
 	    }
 	    sb.append("********************************\n");
 	    return sb.toString();
@@ -61,13 +61,15 @@ public class StatusString {
 	
 	public static String getShortEntriesString(){
 		StringBuilder sb = new StringBuilder();
-		List<Market> marketList = MarketSummaryDAO.getMarketsAtXDayLow(DbConnectionEnum.H2_MAIN, 25);
+		List<MarketStatusContent> marketList = MarketStatus.getMarketStatusList();
 	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ LOWS ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-	    for(Market m : marketList){
-	    	sb.append(m.toString() + "\n");
+	    for(MarketStatusContent m : marketList){
+	    	if(m.getDayHighLowMap().firstEntry().getValue()<= -25){
+	    		sb.append(m.getSymbol() + " @" + m.getCurrentPrice() + "\n");
+	    	}
 	    }
 	    sb.append("********************************\n");
 	    return sb.toString();
