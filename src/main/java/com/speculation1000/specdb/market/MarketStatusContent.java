@@ -24,6 +24,8 @@ public class MarketStatusContent {
 	
 	private TreeMap<Long,BigDecimal> atrMap = new TreeMap<>(Collections.reverseOrder());
 	
+	private String toStr;
+	
 	public MarketStatusContent(String symbol, List<Market> marketList){
 		setSymbol(symbol);
 		setCurrentPrice(marketList.get(0).getClose());
@@ -162,5 +164,13 @@ public class MarketStatusContent {
 	
 	public TreeMap<Long,BigDecimal> getAtrMap(){
 		return atrMap;
+	}
+	
+	public void setToStr(String toStr){
+		this.toStr = toStr;
+	}
+	
+	public String toString(){
+		return toStr;
 	}
 }

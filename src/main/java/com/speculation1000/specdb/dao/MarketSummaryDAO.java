@@ -90,8 +90,8 @@ public class MarketSummaryDAO {
 	}
 	
 	public static List<MarketStatusContent> getMarketStatusList(DbConnectionEnum dbce){
-		List<Market> distinctList = getDistinctMarkets(DbConnectionEnum.H2_MAIN);
-		List<Market> marketList = getLastXDayList(DbConnectionEnum.H2_MAIN,250);
+		List<Market> distinctList = getDistinctMarkets(dbce);
+		List<Market> marketList = getLastXDayList(dbce,250);
 		Map<String,List<Market>> marketMap = new HashMap<>();
 		for(Market m : distinctList){
 			List<Market> tmpList = new ArrayList<>();

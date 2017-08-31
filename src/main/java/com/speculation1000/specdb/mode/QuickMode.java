@@ -50,7 +50,7 @@ public class QuickMode implements Mode {
         }
         
         try{
-        	MarketStatus.updateMarketStatusList();
+        	MarketStatus.updateMarketStatusList(DbConnectionEnum.H2_MAIN);
         }catch(Exception e){
         	
         }

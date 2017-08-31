@@ -14,24 +14,13 @@ public class MarketStatus {
 	
 	private static List<MarketStatusContent> marketStatusList;
 	
-	public static void updateMarketStatusList(){
-		marketStatusList = MarketSummaryDAO.getMarketStatusList(DbConnectionEnum.H2_MAIN);
+	public static void updateMarketStatusList(DbConnectionEnum dbce){
+		marketStatusList = MarketSummaryDAO.getMarketStatusList(dbce);
 		specLogger.logp(Level.INFO, MarketStatus.class.getName(), "updateMarketStatusList", "Retrieved market status list!");
 	}
 	
 	public static List<MarketStatusContent> getMarketStatusList(){
 		return marketStatusList;
-	}
-	
-	public static void main(String[]args){
-		updateMarketStatusList();
-		for(MarketStatusContent msc : marketStatusList){
-			System.out.println("***");
-			System.out.println(msc.getSymbol());
-			System.out.println(msc.getClosePriceMap());
-			System.out.println(msc.getDayHighLowMap());
-			System.out.println(msc.getAtrMap());
-		}
 	}
 
 	
