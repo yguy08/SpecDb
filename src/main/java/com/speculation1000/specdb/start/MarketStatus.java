@@ -1,8 +1,6 @@
 package com.speculation1000.specdb.start;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
@@ -28,19 +26,11 @@ public class MarketStatus {
 	public static void main(String[]args){
 		updateMarketStatusList();
 		for(MarketStatusContent msc : marketStatusList){
+			System.out.println("***");
 			System.out.println(msc.getSymbol());
-			for(Map.Entry<Long,BigDecimal> e : msc.getClosePriceMap().entrySet()){
-				System.out.print(e.getKey() + " " + e.getValue() + " ");
-			}
-			System.out.println("");
-			for(Map.Entry<Long,Integer> e : msc.getDayHighLowMap().entrySet()){
-				System.out.print(e.getKey() + " " + e.getValue() + " ");
-			}
-			System.out.println("");
-			for(Map.Entry<Long,BigDecimal> e : msc.getAtrMap().entrySet()){
-				System.out.print(e.getKey() + " " + e.getValue() + " ");
-			}
-			System.out.println("");
+			System.out.println(msc.getClosePriceMap());
+			System.out.println(msc.getDayHighLowMap());
+			System.out.println(msc.getAtrMap());
 		}
 	}
 
