@@ -3,7 +3,9 @@ package com.speculation1000.specdb.market;
 import java.math.BigDecimal;
 
 public class Market implements Comparable<Market> {
-		
+	
+	private String symbol;
+	
 	private String base;
 	
 	private String counter;
@@ -26,14 +28,10 @@ public class Market implements Comparable<Market> {
 		return base+counter+":"+exchange;
 	}
 	
-	/**
-	 * 
-	 * @param symbol - combined Base,Counter,Exchange in one string with format: BaseCounter:Exchange
-	 */
 	public void setSymbol(String symbol){
-		this.base = symbol.substring(0, symbol.indexOf("/"));
-		this.counter = symbol.substring(symbol.indexOf("/")+1, symbol.indexOf(":"));
-		this.exchange = symbol.substring(symbol.indexOf(":")+1);
+		setBase(symbol.substring(0, symbol.indexOf("/")));
+		setCounter(symbol.substring(symbol.indexOf("/")+1, symbol.indexOf(":")));
+		setExchange(symbol.substring(symbol.indexOf(":")+1));
 	}
 	
 	public String getBase(){
