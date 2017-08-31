@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.start.MarketStatus;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
 import com.speculation1000.specdb.start.StatusString;
@@ -46,6 +47,12 @@ public class QuickMode implements Mode {
         	specLogger.logp(Level.INFO, QuickMode.class.getName(),"run","Restore successful");
         }catch(SpecDbException e){
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error during restore");
+        }
+        
+        try{
+        	MarketStatus.updateMarketStatusList();
+        }catch(Exception e){
+        	
         }
         
         try{
