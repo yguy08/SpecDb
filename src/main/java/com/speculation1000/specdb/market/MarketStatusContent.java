@@ -84,7 +84,7 @@ public class MarketStatusContent {
 		int count;
 		BigDecimal currentPrice;
 		BigDecimal prevPrice;
-		if(marketList.size() < 5){
+		if(marketList.size() < 2){
 			return;
 		}
 		for(int i = 2; i < marketList.size();i++){
