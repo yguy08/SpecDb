@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 
 public class Market implements Comparable<Market> {
 	
-	private String symbol;
-	
 	private String base;
 	
 	private String counter;
@@ -26,12 +24,6 @@ public class Market implements Comparable<Market> {
 	
 	public String getSymbol(){
 		return base+counter+":"+exchange;
-	}
-	
-	public void setSymbol(String symbol){
-		setBase(symbol.substring(0, symbol.indexOf("/")));
-		setCounter(symbol.substring(symbol.indexOf("/")+1, symbol.indexOf(":")));
-		setExchange(symbol.substring(symbol.indexOf(":")+1));
 	}
 	
 	public String getBase(){

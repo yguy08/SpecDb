@@ -75,7 +75,7 @@ public class MarketSummaryDAO {
 	}
 	
 	public static List<Market> getDistinctMarkets(DbConnectionEnum dbce){
-		String sqlCommand = "SELECT DISTINCT(CONCAT(Base,'/',Counter,':',Exchange)) AS Symbol FROM MARKETS order by Symbol ASC";
+		String sqlCommand = "SELECT DISTINCT Base,Counter,Exchange FROM MARKETS order by counter,base ASC";
 		Connection conn = DbConnection.connect(dbce);
 		List<Market> marketList = QueryTable.genericMarketQuery(conn, sqlCommand);
 		try{

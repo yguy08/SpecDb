@@ -52,7 +52,7 @@ public class QuickMode implements Mode {
         try{
         	MarketStatus.updateMarketStatusList(DbConnectionEnum.H2_MAIN);
         }catch(Exception e){
-        	
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error updating market status list!");
         }
         
         try{
