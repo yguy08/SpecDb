@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class MarketStatusContent {
+public class MarketStatusContent implements Comparable<MarketStatusContent> {
 	
 	private String symbol;
 	
@@ -172,5 +172,10 @@ public class MarketStatusContent {
 	
 	public String toString(){
 		return toStr;
+	}
+
+	@Override
+	public int compareTo(MarketStatusContent o) {
+		return this.getSymbol().compareTo(o.getSymbol());
 	}
 }
