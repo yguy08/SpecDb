@@ -1,25 +1,41 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
+import org.knowm.xchange.ExchangeSpecification;
+import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.account.Balance;
+import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.poloniex.PoloniexExchange;
 import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
+import org.knowm.xchange.poloniex.dto.trade.PoloniexUserTrade;
+import org.knowm.xchange.poloniex.service.PoloniexAccountServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexChartDataPeriodType;
 import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
+import org.knowm.xchange.poloniex.service.PoloniexTradeService;
+import org.knowm.xchange.poloniex.service.PoloniexTradeServiceRaw;
+import org.knowm.xchange.service.trade.TradeService;
 
+import com.speculation1000.specdb.dao.MarketSummaryDAO;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.StartRun;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -103,6 +119,60 @@ public class PoloniexDTO implements ExchangeDTO {
 			}
 		}
 		return poloChartDataMap;
+	}
+
+	@Override
+	public BigDecimal getAccountBalance() {
+		BigDecimal balance = new BigDecimal(0.00);
+		Map<String,BigDecimal> closeMap = MarketSummaryDAO.getCurrentCloseMap(DbConnectionEnum.H2_CONNECT);
+		Exchange poloniex = getPoloExchangeSpec();
+		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloniex.getAccountService();
+		try {
+			for(Balance b : accountService.getWallets()) {
+				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
+					if(!b.getCurrency().equals(Currency.BTC)) {
+						BigDecimal currentPrice = closeMap.get(b.getCurrency()+"BTC"+":"+"POLO");
+						BigDecimal btcTotal = currentPrice.multiply(b.getTotal());
+						balance = balance.add(btcTotal);
+					}else {
+						balance = balance.add(b.getTotal());
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return balance;
+	}
+	
+	private Exchange getPoloExchangeSpec() {
+		  ExchangeSpecification spec = new ExchangeSpecification(PoloniexExchange.class);
+	      Config config = new Config();
+		  spec.setApiKey(config.getKey());
+		  spec.setSecretKey(config.getSecret());
+		  return ExchangeFactory.INSTANCE.createExchange(spec);
+	}
+
+	@Override
+	public String getOpenTrades() {
+		Exchange poloniex = getPoloExchangeSpec();
+		TradeService tradeService = poloniex.getTradeService();
+		List<Market> marketList = MarketSummaryDAO.getLastXDayList(DbConnectionEnum.H2_CONNECT,1);
+		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloniex.getAccountService();
+		long startTime = (new Date().getTime() / 1000) - 10 * 365 * 24 * 60 * 60;
+		long endTime = new Date().getTime() / 1000;
+		try {
+			Map<String,PoloniexUserTrade[]> tradeMap = (((PoloniexTradeServiceRaw) tradeService).returnTradeHistory(startTime, endTime));
+			for(Entry<String, PoloniexUserTrade[]> e : tradeMap.entrySet()){
+				for(PoloniexUserTrade trade : e.getValue()){
+					System.out.println(e.getKey() + " " + trade.toString());
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

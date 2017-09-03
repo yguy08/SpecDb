@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.Instant;
 import java.util.List;
@@ -74,6 +75,18 @@ public class PoloniexDAO implements MarketDAO {
 		}else{			
 			specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo Restore: Nothing to restore!");			
 		}
+	}
+
+	@Override
+	public BigDecimal getAccountBalance() throws SpecDbException {
+		BigDecimal accountBalance = new PoloniexDTO().getAccountBalance();
+		return accountBalance;
+	}
+
+	@Override
+	public String getOpenTrades() throws SpecDbException {
+		new PoloniexDTO().getOpenTrades();
+		return null;
 	}
 
 }

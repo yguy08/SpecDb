@@ -3,6 +3,7 @@ package com.speculation1000.specdb.start;
 import java.time.Instant;
 import java.util.List;
 
+import com.speculation1000.specdb.dao.AccountDAO;
 import com.speculation1000.specdb.market.MarketStatusContent;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
@@ -32,7 +33,6 @@ public class StatusString {
 	public static String getTickerString(){
 	    StringBuilder sb = new StringBuilder();
 	    List<MarketStatusContent> marketList = MarketStatus.getMarketStatusList();
-	    sb.append("\n");
 	    sb.append("********************************\n");
 	    sb.append("          [ TICKERTAPE ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
@@ -71,6 +71,17 @@ public class StatusString {
 	    		sb.append(m.getSymbol() + " @" + m.getCurrentPrice() + "\n");
 	    	}
 	    }
+	    sb.append("********************************\n");
+	    return sb.toString();
+	}
+	
+	public static String getBalanceStr() throws SpecDbException{
+		StringBuilder sb = new StringBuilder();
+	    sb.append("\n");
+		sb.append("********************************\n");
+	    sb.append("          [ BALANCE ]\n");
+	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+		sb.append(AccountDAO.getAccountBalance()+"\n");
 	    sb.append("********************************\n");
 	    return sb.toString();
 	}

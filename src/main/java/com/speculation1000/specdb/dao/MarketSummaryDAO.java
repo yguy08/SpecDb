@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -110,6 +111,15 @@ public class MarketSummaryDAO {
 			marketStatusList.add(ms);
 		}
 		return marketStatusList;		
+	}
+	
+	public static Map<String,BigDecimal> getCurrentCloseMap(DbConnectionEnum dbce){
+		Map<String,BigDecimal> closeMap = new HashMap<>();
+		List<Market> marketList = getLastXDayList(dbce,1);
+		for(Market m : marketList) {
+			closeMap.put(m.getSymbol(), m.getClose());
+		}
+		return closeMap;
 	}
 
 }

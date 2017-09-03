@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -26,5 +27,17 @@ public class BittrexDAO implements MarketDAO {
 	@Override
 	public void restoreMarkets() {
 				
+	}
+
+	@Override
+	public BigDecimal getAccountBalance() throws SpecDbException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getOpenTrades() throws SpecDbException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,18 @@ public class BittrexDTO implements ExchangeDTO {
 			trexTickerMap.put(cp, t);
 		}
 		return trexTickerMap;
+	}
+
+	@Override
+	public BigDecimal getAccountBalance() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getOpenTrades() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

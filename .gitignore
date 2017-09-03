@@ -12,6 +12,8 @@
 #mac
 .DS_Store
 
+config.properties
+
 #eclipse
 .classpath
 .project
