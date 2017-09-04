@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.start.MarketStatus;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StartRun;
 import com.speculation1000.specdb.start.StatusString;
@@ -53,11 +54,19 @@ public class StandardMode implements Mode {
         }
         
         try{
+        	MarketStatus.updateMarketStatusList(DbConnectionEnum.H2_MAIN);
+        }catch(Exception e){
+        	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error updating market status list!");
+        }
+        
+        try{
             specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StatusString.getTickerString());
             specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StartRun.getEndRunMessage());
             specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getLongEntriesString());
             specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getShortEntriesString());
             specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StatusString.getSystemStatus());
+            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getBalanceStr());
+            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getOpenTradesStr());
         }catch(Exception e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error getting status messages");
         }

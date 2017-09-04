@@ -62,6 +62,7 @@ public class QuickMode implements Mode {
             specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", StatusString.getShortEntriesString());
             specLogger.logp(Level.INFO, QuickMode.class.getName(),"run",StatusString.getSystemStatus());
             specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", StatusString.getBalanceStr());
+            specLogger.logp(Level.INFO, QuickMode.class.getName(), "run", StatusString.getOpenTradesStr());
         }catch(Exception e){
         	specLogger.logp(Level.SEVERE, QuickMode.class.getName(),"run","Error getting status messages");
         }

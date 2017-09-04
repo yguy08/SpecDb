@@ -115,7 +115,7 @@ public class MarketSummaryDAO {
 	
 	public static Map<String,BigDecimal> getCurrentCloseMap(DbConnectionEnum dbce){
 		Map<String,BigDecimal> closeMap = new HashMap<>();
-		List<Market> marketList = getLastXDayList(dbce,1);
+		List<Market> marketList = getLastXDayList(dbce,0);
 		for(Market m : marketList) {
 			closeMap.put(m.getSymbol(), m.getClose());
 		}

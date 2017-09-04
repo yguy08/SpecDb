@@ -85,8 +85,8 @@ public class PoloniexDAO implements MarketDAO {
 
 	@Override
 	public String getOpenTrades() throws SpecDbException {
-		new PoloniexDTO().getOpenTrades();
-		return null;
+		String openTradesStr = new PoloniexDTO().getOpenTrades();
+		return openTradesStr;
 	}
 
 }

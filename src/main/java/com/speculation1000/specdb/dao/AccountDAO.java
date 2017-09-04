@@ -20,15 +20,14 @@ public class AccountDAO {
 	}
 	
 	public static String getOpenTrades() throws SpecDbException{
-		new PoloniexDAO().getOpenTrades();
-		return "";
+		String openTrades = new PoloniexDAO().getOpenTrades();
+		return openTrades;
 	}
 	
 	public static void main(String[] args) {
 		try {
 			System.out.println(getOpenTrades());
 		} catch (SpecDbException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

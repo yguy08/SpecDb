@@ -5,12 +5,10 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
@@ -19,15 +17,13 @@ import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.account.Balance;
-import org.knowm.xchange.dto.trade.UserTrades;
+import org.knowm.xchange.dto.marketdata.Trade;
 import org.knowm.xchange.poloniex.PoloniexExchange;
 import org.knowm.xchange.poloniex.dto.marketdata.PoloniexChartData;
-import org.knowm.xchange.poloniex.dto.trade.PoloniexUserTrade;
 import org.knowm.xchange.poloniex.service.PoloniexAccountServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexChartDataPeriodType;
 import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexTradeService;
-import org.knowm.xchange.poloniex.service.PoloniexTradeServiceRaw;
 import org.knowm.xchange.service.trade.TradeService;
 
 import com.speculation1000.specdb.dao.MarketSummaryDAO;
@@ -157,22 +153,46 @@ public class PoloniexDTO implements ExchangeDTO {
 	public String getOpenTrades() {
 		Exchange poloniex = getPoloExchangeSpec();
 		TradeService tradeService = poloniex.getTradeService();
-		List<Market> marketList = MarketSummaryDAO.getLastXDayList(DbConnectionEnum.H2_CONNECT,1);
 		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloniex.getAccountService();
-		long startTime = (new Date().getTime() / 1000) - 10 * 365 * 24 * 60 * 60;
-		long endTime = new Date().getTime() / 1000;
+		BigDecimal balance = new BigDecimal(0.00);
+		StringBuilder sb = new StringBuilder();
+		Map<CurrencyPair,List<Trade>> tradeMap = new HashMap<>();
 		try {
-			Map<String,PoloniexUserTrade[]> tradeMap = (((PoloniexTradeServiceRaw) tradeService).returnTradeHistory(startTime, endTime));
-			for(Entry<String, PoloniexUserTrade[]> e : tradeMap.entrySet()){
-				for(PoloniexUserTrade trade : e.getValue()){
-					System.out.println(e.getKey() + " " + trade.toString());
+			for(Balance b : accountService.getWallets()) {
+				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
+					if(!b.getCurrency().equals(Currency.BTC)) {
+						CurrencyPair currencyPair = new CurrencyPair(b.getCurrency(),Currency.BTC);
+					    PoloniexTradeService.PoloniexTradeHistoryParams params = new PoloniexTradeService.PoloniexTradeHistoryParams();
+					    params.setCurrencyPair(currencyPair);
+
+					    params.setStartTime(Date.from(Instant.now().minusSeconds(86400 * 10 * 365)));
+
+					    params.setEndTime(new Date());
+					    
+					    List<Trade> tradeList = new ArrayList<>();
+					    for(Trade ut : tradeService.getTradeHistory(params).getTrades()) {
+					    	tradeList.add(ut);		    	
+					    }
+					    tradeMap.put(currencyPair, tradeList);
+					}else {
+						balance = balance.add(b.getTotal());
+					}
+				}
+			}
+			
+			for(Map.Entry<CurrencyPair, List<Trade>> e : tradeMap.entrySet()){
+				if(e.getValue().size()>0) {
+					Instant first = Instant.ofEpochMilli(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime());
+					if(first.compareTo(Instant.now().minusSeconds(86400 * 31)) >= 0) {
+						String ts = SpecDbDate.longToLogStringFormat(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime() / 1000);
+						sb.append(ts + " " + e.getKey() + " @" + e.getValue().get(e.getValue().size()-1).getPrice() + " " + e.getValue().get(e.getValue().size()-1).getType() + "\n");
+					}
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return sb.toString();
 	}
 
 }
