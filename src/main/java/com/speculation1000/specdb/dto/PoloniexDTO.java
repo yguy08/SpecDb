@@ -32,7 +32,7 @@ import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.Config;
-import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.start.StandardMode;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class PoloniexDTO implements ExchangeDTO {
@@ -40,10 +40,14 @@ public class PoloniexDTO implements ExchangeDTO {
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
 	private static final Instant OLD_DATE = Instant.ofEpochSecond(0);
+	
+	private static final Exchange poloDefault = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
+	
+	private static final Exchange poloAuthenticated = getPoloExchangeSpec();
 
 	@Override
 	public List<Market> getLatestMarketList() {
-		Instant start = StartRun.getStartRunTS();
+		Instant start = StandardMode.getStartRunTS();
 		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(start);
 		long end = 9999999999L;		
 		
@@ -100,13 +104,12 @@ public class PoloniexDTO implements ExchangeDTO {
 	}
 	
 	private Map<CurrencyPair,List<PoloniexChartData>> getPoloniexChartData(long start, long end){
-		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
 		Map<CurrencyPair,List<PoloniexChartData>> poloChartDataMap = new HashMap<>();
-		List<CurrencyPair> pairList = exchange.getExchangeSymbols();
+		List<CurrencyPair> pairList = poloDefault.getExchangeSymbols();
 		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "getPoloniexChartData", "Loading Polo markets from Polo API...");
 		for(CurrencyPair pair : pairList){
 			try {
-				List<PoloniexChartData> poloniexChartData = (Arrays.asList(((PoloniexMarketDataServiceRaw) exchange.getMarketDataService())
+				List<PoloniexChartData> poloniexChartData = (Arrays.asList(((PoloniexMarketDataServiceRaw) poloDefault.getMarketDataService())
 						.getPoloniexChartData(pair, start,
 						end, PoloniexChartDataPeriodType.PERIOD_86400)));
 				poloChartDataMap.put(pair, poloniexChartData);
@@ -141,21 +144,18 @@ public class PoloniexDTO implements ExchangeDTO {
 		return balance;
 	}
 	
-	private Exchange getPoloExchangeSpec() {
+	private static Exchange getPoloExchangeSpec() {
 		  ExchangeSpecification spec = new ExchangeSpecification(PoloniexExchange.class);
 	      Config config = new Config();
-		  spec.setApiKey(config.getKey());
-		  spec.setSecretKey(config.getSecret());
+		  spec.setApiKey(config.getPoloKey());
+		  spec.setSecretKey(config.getPoloSecret());
 		  return ExchangeFactory.INSTANCE.createExchange(spec);
 	}
 
-	@Override
-	public String getOpenTrades() {
-		Exchange poloniex = getPoloExchangeSpec();
-		TradeService tradeService = poloniex.getTradeService();
-		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloniex.getAccountService();
+	public void getOpenTrades() {
+		TradeService tradeService = poloAuthenticated.getTradeService();
+		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloAuthenticated.getAccountService();
 		BigDecimal balance = new BigDecimal(0.00);
-		StringBuilder sb = new StringBuilder();
 		Map<CurrencyPair,List<Trade>> tradeMap = new HashMap<>();
 		try {
 			for(Balance b : accountService.getWallets()) {
@@ -164,14 +164,11 @@ public class PoloniexDTO implements ExchangeDTO {
 						CurrencyPair currencyPair = new CurrencyPair(b.getCurrency(),Currency.BTC);
 					    PoloniexTradeService.PoloniexTradeHistoryParams params = new PoloniexTradeService.PoloniexTradeHistoryParams();
 					    params.setCurrencyPair(currencyPair);
-
 					    params.setStartTime(Date.from(Instant.now().minusSeconds(86400 * 10 * 365)));
-
 					    params.setEndTime(new Date());
-					    
 					    List<Trade> tradeList = new ArrayList<>();
 					    for(Trade ut : tradeService.getTradeHistory(params).getTrades()) {
-					    	tradeList.add(ut);		    	
+					    	tradeList.add(ut);					    	
 					    }
 					    tradeMap.put(currencyPair, tradeList);
 					}else {
@@ -179,20 +176,17 @@ public class PoloniexDTO implements ExchangeDTO {
 					}
 				}
 			}
-			
 			for(Map.Entry<CurrencyPair, List<Trade>> e : tradeMap.entrySet()){
-				if(e.getValue().size()>0) {
+				if(e.getValue().size() > 0) {
 					Instant first = Instant.ofEpochMilli(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime());
 					if(first.compareTo(Instant.now().minusSeconds(86400 * 31)) >= 0) {
 						String ts = SpecDbDate.longToLogStringFormat(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime() / 1000);
-						sb.append(ts + " " + e.getKey() + " @" + e.getValue().get(e.getValue().size()-1).getPrice() + " " + e.getValue().get(e.getValue().size()-1).getType() + "\n");
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return sb.toString();
 	}
 
 }
