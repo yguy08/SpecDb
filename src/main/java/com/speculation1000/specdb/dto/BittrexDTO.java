@@ -18,7 +18,7 @@ import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
-import com.speculation1000.specdb.start.StartRun;
+import com.speculation1000.specdb.start.StandardMode;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class BittrexDTO implements ExchangeDTO {
@@ -27,7 +27,7 @@ public class BittrexDTO implements ExchangeDTO {
 
 	@Override
 	public List<Market> getLatestMarketList() throws SpecDbException {
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StartRun.getStartRunTS());
+		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
 		Map<CurrencyPair, BittrexTicker> bittrexChartData;
 		try {
 			bittrexChartData = getBittrexChartData();
@@ -76,12 +76,6 @@ public class BittrexDTO implements ExchangeDTO {
 
 	@Override
 	public BigDecimal getAccountBalance() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getOpenTrades() {
 		// TODO Auto-generated method stub
 		return null;
 	}
