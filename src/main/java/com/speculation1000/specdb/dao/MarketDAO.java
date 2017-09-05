@@ -13,7 +13,5 @@ public interface MarketDAO {
 	void restoreMarkets() throws SpecDbException;
 	
 	BigDecimal getAccountBalance() throws SpecDbException;
-	
-	String getOpenTrades() throws SpecDbException;
 
 }
