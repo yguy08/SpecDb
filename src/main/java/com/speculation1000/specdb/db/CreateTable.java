@@ -25,7 +25,6 @@ public class CreateTable {
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
-            specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", "Table created");
             tmpStatement.close();
         } catch (java.sql.SQLException ex) {
         	while (ex != null) {
@@ -36,22 +35,14 @@ public class CreateTable {
         }
 	}
 	
-	public static void createEntryTable(Connection connection){
-		String strSql = "CREATE TABLE IF NOT EXISTS entries (\n"
-                + "Base character NOT NULL,\n"
-                + "Counter character NOT NULL,\n"
-                + "Exchange character NOT NULL,\n"
+	public static void createAccountTable(Connection connection){
+		String strSql = "CREATE TABLE IF NOT EXISTS account (\n"
                 + "Date long NOT NULL,\n"
-                + " High decimal,\n"
-                + " Low decimal,\n"
-                + " Open decimal,\n"
-                + " Close decimal,\n"
-                + " Volume int\n"
+                + "Balance decimal NOT NULL\n"
                 + ");";
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
-            specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", "Table created");
             tmpStatement.close();
         } catch (java.sql.SQLException ex) {
         	while (ex != null) {
