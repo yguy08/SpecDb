@@ -37,13 +37,8 @@ public class MarketSummaryDAO {
     	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","Updated polo successful");
 		List<Market> bittrexMarkets = new BittrexDAO().getLatestMarkets();
     	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","Updated trex successful");
-    	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","got clean up list successful");
     	long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-    	try{
-    		DeleteRecord.deleteBulkMarkets(dbce, todayMidnight);
-    	}catch(Exception e){
-        	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList",e.getMessage());
-    	}
+    	DeleteRecord.deleteBulkMarkets(dbce, todayMidnight);
     	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","deleted clean up list");
 		InsertRecord.insertBatchMarkets(dbce, poloMarket);
     	specLogger.logp(Level.INFO, MarketSummaryDAO.class.getName(),"updateTickerList","inserted polo list");
