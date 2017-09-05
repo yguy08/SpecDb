@@ -9,9 +9,6 @@ import com.speculation1000.specdb.db.CreateTable;
 import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.mode.Mode;
-import com.speculation1000.specdb.mode.ModeFactory;
-import com.speculation1000.specdb.mode.StandardMode;
 import com.speculation1000.specdb.time.SpecDbDate;
 
 public class StartApp {
@@ -20,10 +17,9 @@ public class StartApp {
 	
 	private static final Instant APP_START_UP_TS = Instant.now();
 	
-	protected static Mode mode;
-	
 	public StartApp(){
-		specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", StartApp.startUpStatusMessage());
+		
+		startUpStatusMessage();
 		
 		try {
 			DbServer.startDB();
@@ -33,10 +29,15 @@ public class StartApp {
 		}
 		
 		try{
+			//check db connection
 			Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db");
+			//create market table (if it doesn't exist)
 			CreateTable.createTable(conn);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Market table created (if it didn't already exist)");
+			//create account table (if it doesn't exist)			
+			CreateTable.createAccountTable(conn);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Account table created (if it didn't already exist)");
 			conn.close();
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server" + e.getMessage());
@@ -45,13 +46,8 @@ public class StartApp {
 
 	public static void main(String[] args) {
 		new StartApp();
-		if(args.length > 0){
-			mode = ModeFactory.getMode(args[0]);
-		}else{
-			mode = new StandardMode();
-		}
-		
-		mode.startRun();
+		Config config = new Config();
+		new StandardMode(config).startRun();
 	}
 
 	public static Instant getStartUpTs() {
@@ -65,7 +61,7 @@ public class StartApp {
 		return Instant.now().getEpochSecond() - StartApp.getStartUpTs().getEpochSecond();
 	}
 	
-	public static String startUpStatusMessage(){
+	public static void startUpStatusMessage(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
 		sb.append("********** SpecDb ************** \n");
@@ -75,7 +71,7 @@ public class StartApp {
 		sb.append("* At: ");
 		sb.append(SpecDbDate.instantToLogStringFormat(getStartUpTs()) + "\n");
 		sb.append("********************************\n");		
-		return sb.toString();
+		specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", sb.toString());
 	}
 
 }
