@@ -38,6 +38,9 @@ public class StartApp {
 			//create account table (if it doesn't exist)			
 			CreateTable.createAccountTable(conn);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Account table created (if it didn't already exist)");
+			//create trade table (if it doesn't exist)
+			CreateTable.createTradeTable(conn);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Trade table created (if it didn't already exist)");
 			conn.close();
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server" + e.getMessage());

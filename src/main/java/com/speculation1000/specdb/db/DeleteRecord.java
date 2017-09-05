@@ -50,6 +50,26 @@ public class DeleteRecord {
 	        throw new RuntimeException("Error");
 		}		
 	}
+	
+	public static int[] deleteTradeRecords(DbConnectionEnum dbce){
+		Connection conn = DbConnection.connect(dbce);
+		try{
+			String deleteSql = "DELETE FROM trade WHERE isOpen = true";              
+			PreparedStatement st = conn.prepareStatement(deleteSql);
+			st.addBatch();
+			int[] results = st.executeBatch();
+			st.close();
+			conn.close();
+			return results;
+		}catch(SQLException ex){
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, DeleteRecord.class.getName(), "deleteAccountRecords", "SQLException: " + ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+		}		
+	}
+
 
 
 }

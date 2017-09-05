@@ -1,4 +1,2 @@
-Sep 03, 2017 9:49:49 AM com.speculation1000.specdb.db.DbConnection static
-INFO: Db directory created/exits
-Sep 03, 2017 9:50:31 AM com.speculation1000.specdb.start.MarketStatus updateMarketStatusList
-INFO: Retrieved market status list!
+Sep 05, 2017 7:47:05 PM com.speculation1000.specdb.start.DbServer startDb
+INFO: H2 DbServer stopped

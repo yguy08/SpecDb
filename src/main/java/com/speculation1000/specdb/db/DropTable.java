@@ -14,7 +14,7 @@ public class DropTable {
 	private static final String DROP_TABLE = DropTable.class.getName();
 	
 	public static void dropTable(Connection connection){
-		String sql = "DROP TABLE IF EXISTS markets";
+		String sql = "DROP TABLE IF EXISTS market";
         try {
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(sql);

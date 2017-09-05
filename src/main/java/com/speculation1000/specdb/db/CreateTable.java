@@ -52,5 +52,31 @@ public class CreateTable {
 	        throw new RuntimeException("Error");
         }
 	}
+	
+	public static void createTradeTable(Connection connection){
+		String strSql = "CREATE TABLE IF NOT EXISTS trade (\n"
+                + "Base character NOT NULL,\n"
+                + "Counter character NOT NULL,\n"
+                + "Exchange character NOT NULL,\n"
+                + "Date long NOT NULL,\n"
+                + "Price decimal NOT NULL,\n"
+                + "Amount decimal NOT NULL,\n"
+                + "Total decimal NOT NULL,\n"
+                + "Stop decimal NOT NULL,\n"
+                + "CurrentPrice decimal NOT NULL,\n"
+                + "isOpen boolean NOT NULL\n"
+                + ");";
+        try {
+            Statement tmpStatement = connection.createStatement();
+            tmpStatement.executeUpdate(strSql);
+            tmpStatement.close();
+        } catch (java.sql.SQLException ex) {
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }
+	}
 
 }

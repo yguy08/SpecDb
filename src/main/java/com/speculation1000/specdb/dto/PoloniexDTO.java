@@ -124,8 +124,7 @@ public class PoloniexDTO implements ExchangeDTO {
 	public BigDecimal getAccountBalance() {
 		BigDecimal balance = new BigDecimal(0.00);
 		Map<String,BigDecimal> closeMap = MarketSummaryDAO.getCurrentCloseMap(DbConnectionEnum.H2_CONNECT);
-		Exchange poloniex = getPoloExchangeSpec();
-		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloniex.getAccountService();
+		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloAuthenticated.getAccountService();
 		try {
 			for(Balance b : accountService.getWallets()) {
 				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
@@ -180,7 +179,7 @@ public class PoloniexDTO implements ExchangeDTO {
 				if(e.getValue().size() > 0) {
 					Instant first = Instant.ofEpochMilli(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime());
 					if(first.compareTo(Instant.now().minusSeconds(86400 * 31)) >= 0) {
-						String ts = SpecDbDate.longToLogStringFormat(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime() / 1000);
+						//String ts = SpecDbDate.longToLogStringFormat(e.getValue().get(e.getValue().size()-1).getTimestamp().getTime() / 1000);
 					}
 				}
 			}

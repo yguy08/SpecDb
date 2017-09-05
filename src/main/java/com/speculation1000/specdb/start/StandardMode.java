@@ -84,7 +84,6 @@ public class StandardMode implements Runnable {
             specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getShortEntriesString());
             specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StatusString.getSystemStatus());
             specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getBalanceStr());
-            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getOpenTradesStr());
         }catch(Exception e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error getting status messages");
         }

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.trade.SpecDbTrade;
 
 public class InsertRecord {
 	
@@ -96,6 +97,44 @@ public class InsertRecord {
 	        tmpStatement.setBigDecimal(2, balance);
     		tmpStatement.execute();
 	        tmpStatement.close();
+        } catch (SQLException ex) {
+        	StringBuffer sb = new StringBuffer();
+	        sb.append("SQLException information\n");
+	        while (ex != null) {
+	            sb.append("Error msg: " + ex.getMessage() + "\n");
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }
+	}
+	
+	public static void insertUpdatedTrades(DbConnectionEnum dbce,List<SpecDbTrade> tradeList){
+		String sqlCommand = "INSERT INTO trade(Base,Counter,Exchange,Date,Price,Amount,Total,Stop,CurrentPrice,isOpen) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        try {
+        	Connection connection = DbConnection.connect(dbce);
+            PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
+	        for(int i = 0; i < tradeList.size();i++){
+        		SpecDbTrade sbt = tradeList.get(i);
+        		tmpStatement.setString(1, sbt.getBase());
+        		tmpStatement.setString(2, sbt.getCounter());
+        		tmpStatement.setString(3, sbt.getExchange());
+        		tmpStatement.setLong(4,sbt.getDate());
+        		tmpStatement.setBigDecimal(5, sbt.getPrice());
+        		tmpStatement.setBigDecimal(6, sbt.getAmount());
+        		tmpStatement.setBigDecimal(7,sbt.getTotal());
+        		tmpStatement.setBigDecimal(8, sbt.getStop());
+        		tmpStatement.setBigDecimal(9,sbt.getCurrentPrice());
+        		tmpStatement.setBoolean(10,sbt.isOpen());
+        		tmpStatement.addBatch();
+        	if((i % 10000 == 0 && i != 0) || i == tradeList.size() - 1){
+        		specLogger.logp(Level.INFO, InsertRecord.class.getName(),"insertUpdatedTrades", "Adding batch: " + i);
+        		long start = System.currentTimeMillis();
+        		tmpStatement.executeBatch();
+    	        long end = System.currentTimeMillis();
+    	        specLogger.logp(Level.INFO, InsertRecord.class.getName(),"insertUpdatedTrades", "total time taken to insert the batch = " + (end - start) + " ms");
+        	}
+        }
+            tmpStatement.close();
         } catch (SQLException ex) {
         	StringBuffer sb = new StringBuffer();
 	        sb.append("SQLException information\n");

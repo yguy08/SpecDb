@@ -86,16 +86,5 @@ public class StatusString {
 	    sb.append("********************************\n");
 	    return sb.toString();
 	}
-	
-	public static String getOpenTradesStr() throws SpecDbException {
-		StringBuilder sb = new StringBuilder();
-	    sb.append("\n");
-		sb.append("********************************\n");
-	    sb.append("          [ OPEN TRADES ]\n");
-	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-		//sb.append(AccountDAO.getOpenTrades()+"\n");
-	    sb.append("********************************\n");
-	    return sb.toString();		
-	}
 
 }
