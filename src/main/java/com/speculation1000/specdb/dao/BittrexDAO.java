@@ -34,10 +34,4 @@ public class BittrexDAO implements MarketDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getOpenTrades() throws SpecDbException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
