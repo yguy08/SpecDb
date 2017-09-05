@@ -7,11 +7,15 @@ import java.util.Properties;
 
 public class Config {
 	
-	private String DATABASE;
+	private String database;
 	
-	private String KEY;
+	private String polokey;
 	
-	private String SECRET;
+	private String polosecret;
+	
+	private String initialdelay;
+	
+	private String runperiod;
 	
 	public Config(){
 		Properties prop = new Properties();
@@ -24,9 +28,11 @@ public class Config {
 			// load a properties file
 			prop.load(input);
 			
-			DATABASE = prop.getProperty("database");
-			KEY = prop.getProperty("api-key");
-			SECRET = prop.getProperty("api-secret");
+			database = prop.getProperty("database");
+			polokey = prop.getProperty("api-key");
+			polosecret = prop.getProperty("api-secret");
+			initialdelay = prop.getProperty("initial-delay");
+			runperiod = prop.getProperty("run-period");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -42,15 +48,27 @@ public class Config {
 	}
 	
 	public String getDatabase(){
-		return DATABASE;
+		return database;
 	}
 	
-	public String getKey() {
-		return KEY;
+	public String getPoloKey() {
+		return polokey;
 	}
 	
-	public String getSecret() {
-		return SECRET;
+	public String getPoloSecret() {
+		return polosecret;
+	}
+	
+	public boolean getInitialDelay(){
+		if(initialdelay.equalsIgnoreCase("true")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public int getRunPeriod(){
+		return Integer.parseInt(runperiod);
 	}
 
 }
