@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -75,6 +76,26 @@ public class InsertRecord {
         	}
         }
             tmpStatement.close();
+        } catch (SQLException ex) {
+        	StringBuffer sb = new StringBuffer();
+	        sb.append("SQLException information\n");
+	        while (ex != null) {
+	            sb.append("Error msg: " + ex.getMessage() + "\n");
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }
+	}
+	
+	public static void insertAccountBalance(DbConnectionEnum dbce, BigDecimal balance, long date){
+		String sqlCommand = "INSERT INTO account(Date,Balance) VALUES(?,?)";
+        try {
+        	Connection connection = DbConnection.connect(dbce);
+            PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
+	        tmpStatement.setLong(1, date);
+	        tmpStatement.setBigDecimal(2, balance);
+    		tmpStatement.execute();
+	        tmpStatement.close();
         } catch (SQLException ex) {
         	StringBuffer sb = new StringBuffer();
 	        sb.append("SQLException information\n");
