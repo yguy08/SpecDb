@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
@@ -70,6 +72,25 @@ public class QueryTable {
 	        }
 	        throw new RuntimeException("Error");
         }
+	}
+	
+	public static TreeMap<Long,BigDecimal> genericAccountQuery(Connection connection, String sqlCommand){
+        try {
+        	TreeMap<Long,BigDecimal> accountMap = new TreeMap<>();
+            Statement tmpStatement = connection.createStatement();
+            ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
+            while(resultSet.next()){
+            	accountMap.put(resultSet.getLong(1), resultSet.getBigDecimal(2));
+            }
+            tmpStatement.close();
+            return accountMap;
+        } catch (SQLException ex) {
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "genericMarketQuery", ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }		
 	}
 
 }
