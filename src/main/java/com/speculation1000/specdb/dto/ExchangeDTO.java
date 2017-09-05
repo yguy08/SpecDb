@@ -13,7 +13,5 @@ public interface ExchangeDTO {
 	
 	BigDecimal getAccountBalance();
 	
-	String getOpenTrades();
-	
 
 }
