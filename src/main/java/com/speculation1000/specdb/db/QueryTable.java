@@ -19,9 +19,10 @@ public class QueryTable {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
-	public static List<Market> genericMarketQuery(Connection connection, String sqlCommand){
+	public static List<Market> genericMarketQuery(DbConnectionEnum dbce, String sqlCommand){
         try {
-            Statement tmpStatement = connection.createStatement();
+        	Connection conn = DbConnection.connect(dbce);
+            Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int i = rsmd.getColumnCount();
@@ -65,6 +66,7 @@ public class QueryTable {
             	marketList.add(market);
             }
             tmpStatement.close();
+            conn.close();
             return marketList;
         } catch (SQLException ex) {
         	while (ex != null) {
@@ -75,15 +77,17 @@ public class QueryTable {
         }
 	}
 	
-	public static TreeMap<Long,BigDecimal> genericAccountQuery(Connection connection, String sqlCommand){
+	public static TreeMap<Long,BigDecimal> genericAccountQuery(DbConnectionEnum dbce, String sqlCommand){
         try {
+        	Connection conn = DbConnection.connect(dbce);
         	TreeMap<Long,BigDecimal> accountMap = new TreeMap<>();
-            Statement tmpStatement = connection.createStatement();
+            Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             while(resultSet.next()){
             	accountMap.put(resultSet.getLong(1), resultSet.getBigDecimal(2));
             }
             tmpStatement.close();
+            conn.close();
             return accountMap;
         } catch (SQLException ex) {
         	while (ex != null) {
@@ -94,9 +98,10 @@ public class QueryTable {
         }		
 	}
 	
-	public static List<SpecDbTrade> genericTradeQuery(Connection connection, String sqlCommand){
+	public static List<SpecDbTrade> genericTradeQuery(DbConnectionEnum dbce, String sqlCommand){
         try {
-            Statement tmpStatement = connection.createStatement();
+        	Connection conn = DbConnection.connect(dbce);
+            Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int i = rsmd.getColumnCount();
@@ -143,6 +148,7 @@ public class QueryTable {
             	tradeList.add(sbt);
             }
             tmpStatement.close();
+            conn.close();
             return tradeList;
         } catch (SQLException ex) {
         	while (ex != null) {
