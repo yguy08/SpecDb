@@ -5,12 +5,23 @@ import java.sql.Statement;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.start.SpecDbException;
 
 public class CreateTable {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
-	public static void createTable(Connection connection){
+	public CreateTable(DbConnectionEnum dbce) throws SpecDbException {
+		try{
+			createMarketTable(dbce);
+			createAccountTable(dbce);
+			createTradeTable(dbce);
+		}catch(Exception e){
+			throw new SpecDbException(e.getMessage());
+		}
+	}
+	
+	public static void createMarketTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS markets (\n"
                 + "Base character NOT NULL,\n"
                 + "Counter character NOT NULL,\n"
@@ -23,9 +34,11 @@ public class CreateTable {
                 + " Volume int\n"
                 + ");";
         try {
+        	Connection connection = DbConnection.connect(dbce);
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
+            connection.close();
         } catch (java.sql.SQLException ex) {
         	while (ex != null) {
             	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
@@ -35,15 +48,17 @@ public class CreateTable {
         }
 	}
 	
-	public static void createAccountTable(Connection connection){
+	public static void createAccountTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS account (\n"
                 + "Date long NOT NULL,\n"
                 + "Balance decimal NOT NULL\n"
                 + ");";
         try {
+        	Connection connection = DbConnection.connect(dbce);
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
+            connection.close();
         } catch (java.sql.SQLException ex) {
         	while (ex != null) {
             	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
@@ -53,7 +68,7 @@ public class CreateTable {
         }
 	}
 	
-	public static void createTradeTable(Connection connection){
+	public static void createTradeTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS trade (\n"
                 + "Base character NOT NULL,\n"
                 + "Counter character NOT NULL,\n"
@@ -67,9 +82,11 @@ public class CreateTable {
                 + "isOpen boolean NOT NULL\n"
                 + ");";
         try {
+        	Connection connection = DbConnection.connect(dbce);
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
+            connection.close();
         } catch (java.sql.SQLException ex) {
         	while (ex != null) {
             	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
