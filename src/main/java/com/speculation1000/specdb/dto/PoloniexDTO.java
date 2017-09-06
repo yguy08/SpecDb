@@ -26,7 +26,7 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexTradeService;
 import org.knowm.xchange.service.trade.TradeService;
 
-import com.speculation1000.specdb.dao.MarketSummaryDAO;
+import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
@@ -41,9 +41,23 @@ public class PoloniexDTO implements ExchangeDTO {
 	
 	private static final Instant OLD_DATE = Instant.ofEpochSecond(0);
 	
-	private static final Exchange poloDefault = ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
+	private static Exchange poloDefault; 
 	
-	private static final Exchange poloAuthenticated = getPoloExchangeSpec();
+	private static Exchange poloAuthenticated; 
+	
+	static{
+		try{
+			poloDefault	= ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
+			poloAuthenticated = getPoloExchangeSpec();
+		}catch(Exception e){
+			try {
+				throw new Exception(e.getMessage());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	public List<Market> getLatestMarketList() {
@@ -123,7 +137,7 @@ public class PoloniexDTO implements ExchangeDTO {
 	@Override
 	public BigDecimal getAccountBalance() {
 		BigDecimal balance = new BigDecimal(0.00);
-		Map<String,BigDecimal> closeMap = MarketSummaryDAO.getCurrentCloseMap(DbConnectionEnum.H2_CONNECT);
+		Map<String,BigDecimal> closeMap = MarketDAO.getCurrentCloseMap(DbConnectionEnum.H2_CONNECT);
 		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloAuthenticated.getAccountService();
 		try {
 			for(Balance b : accountService.getWallets()) {
