@@ -2,13 +2,16 @@ package com.speculation1000.specdb.start;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.dao.AccountDAO;
-import com.speculation1000.specdb.dao.MarketSummaryDAO;
+import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -35,9 +38,7 @@ public class StandardMode implements Runnable {
     	period = config.getRunPeriod() * 60;    	
     }
     
-    public StandardMode(){
-    	
-    }
+    public StandardMode(){}
 
     public void startRun() {
         specLogger.logp(Level.INFO,StandardMode.class.getName(),"startApp","* Next update in " + initialDelay + " seconds");
@@ -51,40 +52,24 @@ public class StandardMode implements Runnable {
         getStartRunMessage();
                 
         try{
-        	MarketSummaryDAO.updateTickerList(DbConnectionEnum.H2_MAIN);
-        	specLogger.logp(Level.INFO, StandardMode.class.getName(),"run","update successful");
+        	new MarketDAO(DbConnectionEnum.H2_MAIN);
         }catch(SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run",e.getMessage());
-        }
-        
-        //restore
-        try{
-        	MarketSummaryDAO.restoreMarkets();
-        	specLogger.logp(Level.INFO, StandardMode.class.getName(),"run","Restore successful");
-        }catch(SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error during restore");
-        }
-        
-        try{
-        	MarketStatus.updateMarketStatusList(DbConnectionEnum.H2_MAIN);
-        	MarketStatus.updateBalance(DbConnectionEnum.H2_MAIN);
-        }catch(Exception e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating market status list!");
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating markets!");
         }
         
         //update account balance
         try{
-        	AccountDAO.updateAccountBalance(DbConnectionEnum.H2_MAIN);
+        	new AccountDAO(DbConnectionEnum.H2_MAIN);
         }catch(SpecDbException e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating account balance!");
         }
         
         try{
-            specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StatusString.getTickerString());
-            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getLongEntriesString());
-            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getShortEntriesString());
-            specLogger.logp(Level.INFO, StandardMode.class.getName(),"run",StatusString.getSystemStatus());
-            specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", StatusString.getBalanceStr());
+            getTickerString(DbConnectionEnum.H2_MAIN);
+            getLongEntriesString(DbConnectionEnum.H2_MAIN);
+            getShortEntriesString(DbConnectionEnum.H2_MAIN);
+            getBalanceString(DbConnectionEnum.H2_MAIN);
+            getSystemStatus();
         }catch(Exception e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error getting status messages");
         }
@@ -104,6 +89,19 @@ public class StandardMode implements Runnable {
 		startRunTS = Instant.now();
 	}
 
+	public static void getStartRunMessage(){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("\n");
+	    sb.append("********************************\n");
+	    sb.append("          [ STANDARDMODE ] \n");
+	    sb.append("********************************\n");
+	    sb.append("            [START]\n");
+	    sb.append("* At: ");
+	    sb.append(SpecDbDate.instantToLogStringFormat(getStartRunTS()) + "\n");
+	    sb.append("********************************\n");
+	    specLogger.logp(Level.INFO, StartApp.class.getName(), "getStartRunMessage", sb.toString());
+	}
+
 	public static void getEndRunMessage(){
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("\n");
@@ -120,19 +118,82 @@ public class StandardMode implements Runnable {
 	    long i = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
 	    sb.append("* Next Update in " + i + " seconds\n");
 	    sb.append("********************************\n");
-	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"run", sb.toString());
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getEndRunMessage", sb.toString());
 	}
-
-	public static void getStartRunMessage(){
+	
+	public static void getSystemStatus(){
+        StringBuilder sb = new StringBuilder();
+        Instant now = Instant.now();
+        sb.append("\n");
+        sb.append("********************************\n");
+        sb.append("          [SYSTEMSTATUS] \n");
+        sb.append("* At: ");
+        sb.append(SpecDbDate.instantToLogStringFormat(now) + "\n");
+        sb.append("* App Running since: ");
+        sb.append(SpecDbDate.instantToLogStringFormat(StartApp.getStartUpTs()));
+        sb.append(" (Uptime: " + SpecDbTime.uptimePrettyStr(StartApp.getSystemUptime()) + ")\n");
+        sb.append("* H2 DB Running since: ");
+        sb.append(SpecDbDate.instantToLogStringFormat(DbServer.DB_START_UP_TS));
+        sb.append(" (Uptime: " + SpecDbTime.uptimePrettyStr(DbServer.getSystemUptime()) + ")\n");
+        sb.append("* H2 DB Status: ");
+        sb.append(DbServer.getH2ServerStatus() + "\n");
+        sb.append("********************************\n");
+        specLogger.logp(Level.INFO, StandardMode.class.getName(),"getSystemStatus", sb.toString());
+	}
+	
+	public static void getTickerString(DbConnectionEnum dbce){
+		TreeMap<String, BigDecimal> marketStatusMap = MarketDAO.getCurrentCloseMap(dbce);
 	    StringBuilder sb = new StringBuilder();
+	    sb.append("********************************\n");
+	    sb.append("          [ TICKERTAPE ]\n");
+	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+		for(Map.Entry<String, BigDecimal> e : marketStatusMap.entrySet()){
+			sb.append(e.getKey() + " @" + e.getValue()+"\n");
+		}
+	    sb.append("********************************\n");
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getTickerString", sb.toString());		
+	}
+	
+	public static void getLongEntriesString(DbConnectionEnum dbce){
+		StringBuilder sb = new StringBuilder();
+		Map<String, Boolean> marketStatusMap = MarketDAO.isHighMap(dbce,25);
 	    sb.append("\n");
+		sb.append("********************************\n");
+	    sb.append("          [ HIGHS ]\n");
+	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+		for(Map.Entry<String, Boolean> e : marketStatusMap.entrySet()){
+			if(e.getValue()){
+				sb.append(e.getKey() + " " + e.getValue() +"\n");
+			}
+		}
 	    sb.append("********************************\n");
-	    sb.append("          [ STANDARDMODE ] \n");
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getLongEntriesString", sb.toString());	
+	}
+	
+	public static void getShortEntriesString(DbConnectionEnum dbce){
+		StringBuilder sb = new StringBuilder();
+		Map<String, Boolean> marketStatusMap = MarketDAO.isLowMap(dbce,25);
+	    sb.append("\n");
+		sb.append("********************************\n");
+	    sb.append("          [ LOWS ]\n");
+	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+		for(Map.Entry<String, Boolean> e : marketStatusMap.entrySet()){
+			if(e.getValue()){
+				sb.append(e.getKey() + " " + e.getValue() +"\n");
+			}
+		}
 	    sb.append("********************************\n");
-	    sb.append("            [START]\n");
-	    sb.append("* At: ");
-	    sb.append(SpecDbDate.instantToLogStringFormat(getStartRunTS()) + "\n");
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getShortEntriesString", sb.toString());	
+	}
+	
+	public static void getBalanceString(DbConnectionEnum dbce) throws SpecDbException{
+		StringBuilder sb = new StringBuilder();
+	    sb.append("\n");
+		sb.append("********************************\n");
+	    sb.append("          [ BALANCE ]\n");
+	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+		sb.append(AccountDAO.getCurrentAccountBalance(dbce)+"\n");
 	    sb.append("********************************\n");
-	    specLogger.logp(Level.INFO, StartApp.class.getName(), "getStartRunMessage", sb.toString());
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getBalanceString", sb.toString());
 	}
 }
