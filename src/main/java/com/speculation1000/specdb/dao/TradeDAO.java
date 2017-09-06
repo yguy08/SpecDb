@@ -1,13 +1,10 @@
 package com.speculation1000.specdb.dao;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DeleteRecord;
 import com.speculation1000.specdb.db.InsertRecord;
@@ -28,7 +25,7 @@ public class TradeDAO {
 		DeleteRecord.deleteTradeRecords(dbce);
 		
 		//update trades
-		Map<String,BigDecimal> closeMap = MarketSummaryDAO.getCurrentCloseMap(dbce);
+		Map<String,BigDecimal> closeMap = MarketDAO.getCurrentCloseMap(dbce);
 		for(SpecDbTrade sbt : openTrades) {
 			String symbol = sbt.getBase()+sbt.getCounter()+":"+sbt.getExchange();
 			BigDecimal currentPrice = closeMap.get(symbol);
@@ -45,18 +42,9 @@ public class TradeDAO {
 	
 	public static List<SpecDbTrade> getOpenTrades(DbConnectionEnum dbce) throws SpecDbException {
 		String sqlCommand = "SELECT * FROM Trade WHERE isOpen = true";
-		Connection conn = DbConnection.connect(dbce);
-		List<SpecDbTrade> openTrades = QueryTable.genericTradeQuery(conn, sqlCommand);
+		List<SpecDbTrade> openTrades = QueryTable.genericTradeQuery(dbce, sqlCommand);
         specLogger.logp(Level.INFO, AccountDAO.class.getName(), "getOpenTrades", "Got open trades!");
         //get bittrex balance
-		try{
-			conn.close();
-		}catch(SQLException e){
-			while (e != null) {
-            	specLogger.logp(Level.SEVERE, MarketSummaryDAO.class.getName(), "getCurrentCloseList", e.getMessage());
-	            e = e.getNextException();
-	        }
-		}
 		return openTrades;		
 	}
 
