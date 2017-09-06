@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.dto.BittrexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 
-public class BittrexDAO implements MarketDAO {
+public class BittrexDAO implements ExchangeDAO {
 
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 	
@@ -25,13 +26,14 @@ public class BittrexDAO implements MarketDAO {
 	}
 
 	@Override
-	public void restoreMarkets() {
-				
-	}
-
-	@Override
 	public BigDecimal getAccountBalance() throws SpecDbException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException {
+		// TODO Auto-generated method stub
+		
 	}
 }
