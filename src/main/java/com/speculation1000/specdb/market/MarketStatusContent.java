@@ -173,6 +173,10 @@ public class MarketStatusContent implements Comparable<MarketStatusContent> {
 	public String toString(){
 		return toStr;
 	}
+	
+	public int getCurrentHighOrLow(){
+		return dayHighLowMap.firstEntry().getValue();
+	}
 
 	@Override
 	public int compareTo(MarketStatusContent o) {
