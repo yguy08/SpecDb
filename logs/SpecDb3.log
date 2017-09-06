@@ -1,0 +1,70 @@
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: 
+********** SpecDb ************** 
+[ Digital Asset Price Database ]
+********************************
+* Start Up: 
+* At: 2017-09-06T01:34:41.972Z[Etc/UTC]
+********************************
+
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+SEVERE: Unable to start H2 server: Exception opening port "8082" (port may be in use), cause: "java.net.BindException: Address already in use: JVM_Bind" [90061-196]
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.db.DbConnection static
+INFO: Db directory created/exits
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Able to connect to db
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Market table created (if it didn't already exist)
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Account table created (if it didn't already exist)
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Trade table created (if it didn't already exist)
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StandardMode startApp
+INFO: * Next update in 0 seconds
+Sep 05, 2017 9:34:42 PM com.speculation1000.specdb.start.StartApp getStartRunMessage
+INFO: 
+********************************
+          [ STANDARDMODE ] 
+********************************
+            [START]
+* At: 2017-09-06T01:34:42.145Z[Etc/UTC]
+********************************
+
+Sep 05, 2017 9:34:43 PM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
+INFO: Loading Polo markets from Polo API...
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
+INFO: Fetched latest Polo markets for: 2017-09-06T00:00:00Z[Etc/UTC]
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dao.MarketSummaryDAO updateTickerList
+INFO: Updated polo successful
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
+INFO: Got Bittrex Chart Data
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dao.BittrexDAO getLatestMarkets
+INFO: Got latest bittrex markets
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dao.MarketSummaryDAO updateTickerList
+INFO: Updated trex successful
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dao.MarketSummaryDAO updateTickerList
+INFO: deleted clean up list
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.db.InsertRecord insertBatchMarkets
+INFO: Adding batch: 94
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.db.InsertRecord insertBatchMarkets
+INFO: total time taken to insert the batch = 20 ms
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.dao.MarketSummaryDAO updateTickerList
+INFO: inserted polo list
+Sep 05, 2017 9:34:50 PM com.speculation1000.specdb.db.InsertRecord insertBatchMarkets
+INFO: Adding batch: 258
+Sep 05, 2017 9:34:51 PM com.speculation1000.specdb.db.InsertRecord insertBatchMarkets
+INFO: total time taken to insert the batch = 41 ms
+Sep 05, 2017 9:34:51 PM com.speculation1000.specdb.dao.MarketSummaryDAO updateTickerList
+INFO: inserted trex list
+Sep 05, 2017 9:34:51 PM com.speculation1000.specdb.start.StandardMode run
+INFO: update successful
+Sep 05, 2017 9:34:51 PM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Polo Restore: Nothing to restore!
+Sep 05, 2017 9:34:51 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Restore successful
+Sep 05, 2017 9:34:52 PM com.speculation1000.specdb.start.MarketStatus updateMarketStatusList
+INFO: Retrieved market status list!
+Sep 05, 2017 9:34:52 PM com.speculation1000.specdb.dao.AccountDAO getAccountBalance
+INFO: Got account balance!
+Sep 05, 2017 9:34:52 PM com.speculation1000.specdb.start.MarketStatus updateMarketStatusList
+INFO: Retrieved market status list!

@@ -19,3 +19,4 @@ config.properties
 .project
 .settings
 /target/
+/target/

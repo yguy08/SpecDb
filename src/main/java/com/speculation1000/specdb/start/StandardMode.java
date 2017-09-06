@@ -67,6 +67,7 @@ public class StandardMode implements Runnable {
         
         try{
         	MarketStatus.updateMarketStatusList(DbConnectionEnum.H2_MAIN);
+        	MarketStatus.updateBalance(DbConnectionEnum.H2_MAIN);
         }catch(Exception e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating market status list!");
         }

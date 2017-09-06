@@ -3,8 +3,6 @@ package com.speculation1000.specdb.start;
 import java.time.Instant;
 import java.util.List;
 
-import com.speculation1000.specdb.dao.AccountDAO;
-import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.market.MarketStatusContent;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
@@ -82,7 +80,7 @@ public class StatusString {
 		sb.append("********************************\n");
 	    sb.append("          [ BALANCE ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-		sb.append(AccountDAO.getCurrentAccountBalance(DbConnectionEnum.H2_MAIN)+"\n");
+		sb.append(MarketStatus.getBalance()+"\n");
 	    sb.append("********************************\n");
 	    return sb.toString();
 	}
