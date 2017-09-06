@@ -1,14 +1,12 @@
 package com.speculation1000.specdb.dao;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.time.Instant;
 import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
-import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.InsertRecord;
 import com.speculation1000.specdb.dto.PoloniexDTO;
@@ -16,7 +14,7 @@ import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 
-public class PoloniexDAO implements MarketDAO {
+public class PoloniexDAO implements ExchangeDAO {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 
@@ -31,11 +29,10 @@ public class PoloniexDAO implements MarketDAO {
 	}
 
 	@Override
-	public void restoreMarkets() throws SpecDbException {
-        Connection connection = DbConnection.connect(DbConnectionEnum.H2_MAIN);
+	public void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException {
 		
 		//Get oldest market date for poloniex
-		long oldestDateInDb = MarketSummaryDAO.getOldestRecordByExchange(connection, ExchangeEnum.POLONIEX.getExchangeSymbol());
+		long oldestDateInDb = MarketDAO.getOldestRecordByExchange(dbce, ExchangeEnum.POLONIEX.getExchangeSymbol());
 		
 		if(oldestDateInDb > 1390003200){
 			
@@ -47,9 +44,8 @@ public class PoloniexDAO implements MarketDAO {
 				
 				//Get poloniex chart data up to oldest date - 86400
 				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
-				InsertRecord.insertBatchMarkets(connection, marketList);
+				InsertRecord.insertBatchMarkets(dbce, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
-				connection.close();
 				
 			}catch(Exception e){
 				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
@@ -64,9 +60,8 @@ public class PoloniexDAO implements MarketDAO {
 				
 				//Get poloniex chart data up to oldest date - 86400
 				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(currentDay);
-				InsertRecord.insertBatchMarkets(connection, marketList);
+				InsertRecord.insertBatchMarkets(dbce, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
-				connection.close();
 				
 			}catch(Exception e){
 				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
