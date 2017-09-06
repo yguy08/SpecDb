@@ -1,12 +1,10 @@
 package com.speculation1000.specdb.start;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.CreateTable;
-import com.speculation1000.specdb.db.DbConnection;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -30,20 +28,12 @@ public class StartApp {
 		
 		try{
 			//check db connection
-			Connection conn = DbConnection.connect(DbConnectionEnum.H2_MAIN);
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db");
-			//create market table (if it doesn't exist)
-			CreateTable.createTable(conn);
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Market table created (if it didn't already exist)");
-			//create account table (if it doesn't exist)			
-			CreateTable.createAccountTable(conn);
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Account table created (if it didn't already exist)");
-			//create trade table (if it doesn't exist)
-			CreateTable.createTradeTable(conn);
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Trade table created (if it didn't already exist)");
-			conn.close();
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server" + e.getMessage());
+			DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
+			//create market, account and trade table (if the don't already exist
+			new CreateTable(dbce);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db and create tables.");
+		}catch(SpecDbException e){
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server. Creating tables failed\n" + e.getMessage());
 		}
 	}
 
