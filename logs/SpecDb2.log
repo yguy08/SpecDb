@@ -1,4 +1,0 @@
-Sep 03, 2017 9:50:23 AM com.speculation1000.specdb.db.DbConnection static
-INFO: Db directory created/exits
-Sep 03, 2017 9:51:25 AM com.speculation1000.specdb.start.MarketStatus updateMarketStatusList
-INFO: Retrieved market status list!

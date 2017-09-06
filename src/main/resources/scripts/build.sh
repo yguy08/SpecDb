@@ -12,7 +12,7 @@ rm -r $APP_DIR/target
 cd $APP_DIR
 
 echo mvn install...
-mvn install
+mvn clean install
 echo mvn install complete
 
 echo build complete!

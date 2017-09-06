@@ -29,6 +29,7 @@ ssh pi@192.168.1.151 <<zzz23EndOfStatuszzz23
   echo Cleaning up scripts folder
   rm -r /home/pi/SpecDb/scripts
   mkdir /home/pi/SpecDb/scripts
+  rm -r /home/pi/SpecDb/config.properties
   exit
 zzz23EndOfStatuszzz23
 
@@ -40,6 +41,7 @@ cd $TARGET
 
 sftp pi@192.168.1.151 <<zzz23EndOfSftpzzz23
   cd /home/pi/SpecDb/target
+  put -r $APP_DIR=~/SpecDb/config.properties
   put -r $TARGET/specdb-1.0.jar
   cd /home/pi/SpecDb/scripts
   put -r $SCRIPTS/cleanlogs.sh      

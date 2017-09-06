@@ -80,6 +80,7 @@ public class PoloniexDAO implements MarketDAO {
 	@Override
 	public BigDecimal getAccountBalance() throws SpecDbException {
 		BigDecimal accountBalance = new PoloniexDTO().getAccountBalance();
+		specLogger.logp(Level.INFO, PoloniexDAO.class.getName(),"getAccountBalance","AccountBalance");
 		return accountBalance;
 	}
 

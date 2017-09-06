@@ -24,6 +24,7 @@ public class AccountDAO {
 	public static void updateAccountBalance(DbConnectionEnum dbce) throws SpecDbException{
 		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
 		BigDecimal poloBalance = new PoloniexDAO().getAccountBalance();
+		specLogger.logp(Level.INFO, AccountDAO.class.getName(),"updateAccountBalance","AccountBalance");
 		
 		//get trex balance
 		//BigDecimal trexBalance = new BittrexDAO().getAccountBalance();
