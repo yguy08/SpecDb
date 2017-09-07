@@ -13,7 +13,6 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.trade.SpecDbTrade;
 
 public class QueryTable {
 	
@@ -98,65 +97,8 @@ public class QueryTable {
         }		
 	}
 	
-	public static List<SpecDbTrade> genericTradeQuery(DbConnectionEnum dbce, String sqlCommand){
-        try {
-        	Connection conn = DbConnection.connect(dbce);
-            Statement tmpStatement = conn.createStatement();
-            ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
-            ResultSetMetaData rsmd = resultSet.getMetaData();
-            int i = rsmd.getColumnCount();
-            List<SpecDbTrade> tradeList = new ArrayList<>();
-            while(resultSet.next()){
-            	SpecDbTrade sbt = new SpecDbTrade();
-            	for(int z = 1; z <= i;z++){
-            		String col_name = rsmd.getColumnName(z).toUpperCase();
-            		switch(col_name){
-            		case "BASE":
-            			sbt.setBase(resultSet.getString(z));
-            			break;
-            		case "COUNTER":
-            			sbt.setCounter(resultSet.getString(z));
-            			break;	
-            		case "EXCHANGE":
-            			sbt.setExchange(resultSet.getString(z));
-            			break;
-            		case "DATE":
-            			sbt.setDate(resultSet.getLong(z));
-            			break;
-            		case "PRICE":
-            			sbt.setPrice(resultSet.getBigDecimal(z));
-            			break;
-            		case "AMOUNT":
-            			sbt.setAmount(resultSet.getBigDecimal(z));
-            			break;
-            		case "TOTAL":
-            			sbt.setTotal(resultSet.getBigDecimal(z));
-            			break;
-            		case "STOP":
-            			sbt.setStop(resultSet.getBigDecimal(z));
-            			break;
-            		case "CURRENTPRICE":
-            			sbt.setCurrentPrice(resultSet.getBigDecimal(z));
-            			break;
-            		case "ISOPEN":
-            			sbt.setIsOpen(resultSet.getBoolean(z));
-            			break;
-            		default:
-            			break;
-            		}
-            	}
-            	tradeList.add(sbt);
-            }
-            tmpStatement.close();
-            conn.close();
-            return tradeList;
-        } catch (SQLException ex) {
-        	while (ex != null) {
-            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "genericMarketQuery", ex.getMessage());
-	            ex = ex.getNextException();
-	        }
-	        throw new RuntimeException("Error");
-        }
+	public static void genericTradeQuery(){
+ 
 	}
 
 }
