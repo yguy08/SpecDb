@@ -64,6 +64,9 @@ public class StandardMode implements Runnable {
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating account balance!");
         }
         
+        //update trades
+        
+        
         try{
             getTickerString(DbConnectionEnum.H2_MAIN);
             getLongEntriesString(DbConnectionEnum.H2_MAIN);
