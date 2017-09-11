@@ -105,28 +105,15 @@ public class MarketDAO {
 		return marketList;		
 	}
 	
-	public static List<MarketStatusContent> getMarketStatusList(DbConnectionEnum dbce){
-		List<Market> distinctList = getDistinctMarkets(dbce);
-		List<Market> marketList = getLastXDayList(dbce,150);
-		Map<String,List<Market>> marketMap = new HashMap<>();
-		for(Market m : distinctList){
-			List<Market> tmpList = new ArrayList<>();
-			marketMap.put(m.getSymbol(), tmpList);
-			for(Market m2 : marketList){
-				if(m.getSymbol().equalsIgnoreCase(m2.getSymbol())){
-					tmpList.add(m2);
-				}else if(tmpList.size()>0){
-					break;
-				}
-			}
-		}
-		List<MarketStatusContent> marketStatusList = new ArrayList<>();
-		for(Map.Entry<String, List<Market>> e : marketMap.entrySet()){
-			MarketStatusContent ms = new MarketStatusContent(e.getKey(),e.getValue());
-			marketStatusList.add(ms);
-		}
-		return marketStatusList;		
-	}
+	protected static Map<String, List<Market>> getLastXDayMap(DbConnectionEnum dbce, int days){
+		Instant instant = Instant.now().minusSeconds(86400 * days);
+		String sqlCommand = "SELECT * FROM Markets WHERE Date >= " + SpecDbDate.getTodayMidnightEpochSeconds(instant)
+				+ " GROUP BY Base, Counter, Exchange, Date"
+				+ " ORDER BY Counter, Base ASC, Date DESC";
+		List<Market> marketList = QueryTable.genericMarketQuery(dbce, sqlCommand);
+		Map<String, List<Market>> marketsBySymbol = marketList.stream().collect(Collectors.groupingBy(Market::getSymbol));
+		return marketsBySymbol;
+	}	
 	
 	public static TreeMap<String,BigDecimal> getCurrentCloseMap(DbConnectionEnum dbce){
 		TreeMap<String,BigDecimal> closeMap = new TreeMap<>();
