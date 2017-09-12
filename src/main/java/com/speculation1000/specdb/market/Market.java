@@ -22,8 +22,8 @@ public class Market implements Comparable<Market> {
 	
 	private int volume;
 	
-	public String getSymbol(){
-		return base+counter+":"+exchange;
+	public Symbol getSymbol(){
+		return new Symbol(base,counter,exchange);
 	}
 	
 	public String getBase(){
