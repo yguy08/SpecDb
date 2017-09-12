@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
@@ -12,8 +13,11 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.dao.AccountDAO;
 import com.speculation1000.specdb.dao.MarketDAO;
+import com.speculation1000.specdb.dao.TradeDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.MarketEntry;
+import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
 
@@ -65,12 +69,16 @@ public class StandardMode implements Runnable {
         }
         
         //update trades
+        try{
+        	new TradeDAO(DbConnectionEnum.H2_MAIN, 25);
+        }catch(SpecDbException e){
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating trades!");
+        }
         
         
         try{
             getTickerString(DbConnectionEnum.H2_MAIN);
-            getLongEntriesString(DbConnectionEnum.H2_MAIN);
-            getShortEntriesString(DbConnectionEnum.H2_MAIN);
+            getEntriesString(DbConnectionEnum.H2_MAIN);
             getBalanceString(DbConnectionEnum.H2_MAIN);
             getSystemStatus();
         }catch(Exception e){
@@ -145,48 +153,30 @@ public class StandardMode implements Runnable {
 	}
 	
 	public static void getTickerString(DbConnectionEnum dbce){
-		TreeMap<String, BigDecimal> marketStatusMap = MarketDAO.getCurrentCloseMap(dbce);
+		TreeMap<Symbol, BigDecimal> marketStatusMap = MarketDAO.getCurrentCloseMap(dbce);
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("********************************\n");
 	    sb.append("          [ TICKERTAPE ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-		for(Map.Entry<String, BigDecimal> e : marketStatusMap.entrySet()){
+		for(Map.Entry<Symbol, BigDecimal> e : marketStatusMap.entrySet()){
 			sb.append(e.getKey() + " @" + e.getValue()+"\n");
 		}
 	    sb.append("********************************\n");
 	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getTickerString", sb.toString());		
 	}
 	
-	public static void getLongEntriesString(DbConnectionEnum dbce){
+	public static void getEntriesString(DbConnectionEnum dbce){
 		StringBuilder sb = new StringBuilder();
-		Map<String, Boolean> marketStatusMap = MarketDAO.isHighMap(dbce,25);
+		List<MarketEntry> marketEntryList = TradeDAO.getMarketEntryList(dbce, 0);
 	    sb.append("\n");
 		sb.append("********************************\n");
-	    sb.append("          [ HIGHS ]\n");
+	    sb.append("          [ ENTRIES ]\n");
 	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-		for(Map.Entry<String, Boolean> e : marketStatusMap.entrySet()){
-			if(e.getValue()){
-				sb.append(e.getKey() + " " + e.getValue() +"\n");
-			}
+		for(MarketEntry me : marketEntryList){
+			sb.append(me.toString()+"\n");
 		}
 	    sb.append("********************************\n");
-	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getLongEntriesString", sb.toString());	
-	}
-	
-	public static void getShortEntriesString(DbConnectionEnum dbce){
-		StringBuilder sb = new StringBuilder();
-		Map<String, Boolean> marketStatusMap = MarketDAO.isLowMap(dbce,25);
-	    sb.append("\n");
-		sb.append("********************************\n");
-	    sb.append("          [ LOWS ]\n");
-	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
-		for(Map.Entry<String, Boolean> e : marketStatusMap.entrySet()){
-			if(e.getValue()){
-				sb.append(e.getKey() + " " + e.getValue() +"\n");
-			}
-		}
-	    sb.append("********************************\n");
-	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getShortEntriesString", sb.toString());	
+	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getEntriesString", sb.toString());	
 	}
 	
 	public static void getBalanceString(DbConnectionEnum dbce) throws SpecDbException{
