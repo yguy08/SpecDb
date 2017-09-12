@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.MarketEntry;
 
 public class InsertRecord {
 	
@@ -75,6 +76,42 @@ public class InsertRecord {
 	
 	public static void insertUpdatedTrades(DbConnectionEnum dbce){
 		
+	}
+
+	public static void insertBatchEntries(DbConnectionEnum dbce, List<MarketEntry> poloMarketEntries) {
+		String sqlCommand = "INSERT INTO entry(Symbol,Date,Price,Atr,Amount,Total,DayHighLow,Direction,Stop) VALUES(?,?,?,?,?,?,?,?,?)";
+        try {
+        	Connection connection = DbConnection.connect(dbce);
+            PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
+	        for(int i = 0; i < poloMarketEntries.size();i++){
+        		MarketEntry m = poloMarketEntries.get(i);
+        		tmpStatement.setString(1, m.getSymbol().toString());
+        		tmpStatement.setLong(2,m.getDate());
+        		tmpStatement.setBigDecimal(3, m.getPrice());
+        		tmpStatement.setBigDecimal(4, m.getAtr());
+        		tmpStatement.setBigDecimal(5, m.getAmount());
+        		tmpStatement.setBigDecimal(6, m.getTotal());
+        		tmpStatement.setInt(7,m.getDayHighLow());
+        		tmpStatement.setString(8, m.getDirection());
+        		tmpStatement.setBigDecimal(9, m.getStop());        		
+        		tmpStatement.addBatch();
+	        }
+    		long start = System.currentTimeMillis();
+    		tmpStatement.executeBatch();
+	        long end = System.currentTimeMillis();
+	        specLogger.logp(Level.INFO, InsertRecord.class.getName(),"insertBatchEntries", "total time taken to insert the batch = " + (end - start) + " ms");
+    	
+            tmpStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+        	StringBuffer sb = new StringBuffer();
+	        sb.append("SQLException information\n");
+	        while (ex != null) {
+	            sb.append("Error msg: " + ex.getMessage() + "\n");
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+        }		
 	}
 
 }
