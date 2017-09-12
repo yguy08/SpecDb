@@ -30,6 +30,7 @@ import org.knowm.xchange.service.trade.TradeService;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
@@ -134,7 +135,7 @@ public class PoloniexDTO implements ExchangeDTO {
 	}
 
 	@Override
-	public BigDecimal getAccountBalance(TreeMap<String,BigDecimal> currentCloseMap) throws SpecDbException {
+	public BigDecimal getAccountBalance(TreeMap<Symbol, BigDecimal> currentCloseMap) throws SpecDbException {
 		if(poloAuthenticated == null){
 			throw new SpecDbException("Polo exchange is not initialized");
 		}
@@ -144,7 +145,7 @@ public class PoloniexDTO implements ExchangeDTO {
 			for(Balance b : accountService.getWallets()) {
 				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
 					if(!b.getCurrency().equals(Currency.BTC)) {
-						BigDecimal currentPrice = currentCloseMap.get(b.getCurrency()+"BTC"+":"+"POLO");
+						BigDecimal currentPrice = currentCloseMap.get(new Symbol(b.getCurrency().toString(),"BTC","POLO"));
 						BigDecimal btcTotal = currentPrice.multiply(b.getTotal());
 						balance = balance.add(btcTotal);
 					}else {
