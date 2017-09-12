@@ -16,11 +16,6 @@ public class TradeDAO {
 		
 		
 	}
-
-	public static void main(String[] args) {
-
-		
-	}
 	
 	
 
