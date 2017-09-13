@@ -17,6 +17,10 @@ public class Config {
 	
 	private String runperiod;
 	
+	private String entryFlag;
+	
+	private String exitFlag;
+	
 	public Config(){
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -33,6 +37,8 @@ public class Config {
 			polosecret = prop.getProperty("api-secret");
 			initialdelay = prop.getProperty("initial-delay");
 			runperiod = prop.getProperty("run-period");
+			entryFlag = prop.getProperty("entry-flag");
+			exitFlag = prop.getProperty("exit-flag");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -69,6 +75,14 @@ public class Config {
 	
 	public int getRunPeriod(){
 		return Integer.parseInt(runperiod);
+	}
+	
+	public int getEntryFlag(){
+		return Integer.parseInt(entryFlag);
+	}
+	
+	public int getExitFlag(){
+		return Integer.parseInt(exitFlag);
 	}
 
 }
