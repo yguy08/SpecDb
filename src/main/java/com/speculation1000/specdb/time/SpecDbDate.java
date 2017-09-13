@@ -57,12 +57,38 @@ public class SpecDbDate {
 		return midnight - 86400;
 	}
 	
-	public static int nextHourInitialDelay(Instant instant){
-		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC"));
-		ZonedDateTime nextHour = zdt.withHour(zdt.getHour()).withMinute(0).withSecond(0).withNano(0).plusHours(1);
-		Duration duration = Duration.between(zdt, nextHour);
-        int initalDelay = (int) duration.toMinutes();
-		return initalDelay;
+	/**
+	 * @param long
+	 * @returns String formatted date M/dd/yy K:mm a (9/13/2017 9:12 AM)
+	 */
+	public static String longToShortDateTimeStr(long epochSeconds){
+		return instantToShortDateTimeStr(Instant.ofEpochSecond(epochSeconds));
 	}
+	
+	/**
+	 * @param Instant
+	 * @returns String formatted date M/dd/yy K:mm a (9/13/2017 9:12 AM)
+	 */
+	public static String instantToShortDateTimeStr(Instant instant){
+		return ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC")).format(DateTimeFormatter.ofPattern("M/dd/yy K:mm a (z)"));
+	}
+	
+	/**
+	 * @param long
+	 * @returns String formatted date M/dd/yy (9/13/2017)
+	 */
+	public static String longToShortDateStr(long epochSeconds){
+		return instantToShortDateStr(Instant.ofEpochSecond(epochSeconds));
+	}
+	
+	/**
+	 * @param Instant
+	 * @returns String formatted date M/dd/yy (9/13/2017)
+	 */
+	public static String instantToShortDateStr(Instant instant){
+		return ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC")).format(DateTimeFormatter.ofPattern("M/dd/yy"));
+	}
+	
+	
 
 }
