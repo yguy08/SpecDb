@@ -171,9 +171,18 @@ public class StandardMode implements Runnable {
 	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ ENTRIES ]\n");
-	    sb.append(SpecDbDate.instantToLogStringFormat(Instant.now())+"\n");
+	    sb.append(SpecDbDate.instantToShortDateTimeStr(Instant.now())+"\n");
+	    sb.append("          [ LONG ] \n");
 		for(MarketEntry me : marketEntryList){
-			sb.append(me.toString()+"\n");
+			if(me.getDirection().equalsIgnoreCase("Long")){
+				sb.append(me.toString()+"\n");
+			}
+		}
+		sb.append("          [ SHORT ] \n");
+		for(MarketEntry me : marketEntryList){
+			if(me.getDirection().equalsIgnoreCase("Short")){
+				sb.append(me.toString()+"\n");
+			}
 		}
 	    sb.append("********************************\n");
 	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getEntriesString", sb.toString());	
