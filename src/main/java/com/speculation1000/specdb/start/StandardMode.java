@@ -16,7 +16,7 @@ import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.dao.TradeDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.market.MarketEntry;
+import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.time.SpecDbTime;
@@ -73,8 +73,7 @@ public class StandardMode implements Runnable {
         	new TradeDAO(DbConnectionEnum.H2_MAIN, 25);
         }catch(SpecDbException e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating trades!");
-        }
-        
+        }        
         
         try{
             getTickerString(DbConnectionEnum.H2_MAIN);
@@ -167,23 +166,12 @@ public class StandardMode implements Runnable {
 	
 	public static void getEntriesString(DbConnectionEnum dbce){
 		StringBuilder sb = new StringBuilder();
-		List<MarketEntry> marketEntryList = TradeDAO.getMarketEntryList(dbce, 0);
+		List<Market> marketEntryList = TradeDAO.getMarketEntryList(dbce);
 	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ ENTRIES ]\n");
 	    sb.append(SpecDbDate.instantToShortDateTimeStr(Instant.now())+"\n");
-	    sb.append("          [ LONG ] \n");
-		for(MarketEntry me : marketEntryList){
-			if(me.getDirection().equalsIgnoreCase("Long")){
-				sb.append(me.toString()+"\n");
-			}
-		}
-		sb.append("          [ SHORT ] \n");
-		for(MarketEntry me : marketEntryList){
-			if(me.getDirection().equalsIgnoreCase("Short")){
-				sb.append(me.toString()+"\n");
-			}
-		}
+	    marketEntryList.forEach(item->sb.append((item+"\n")));
 	    sb.append("********************************\n");
 	    specLogger.logp(Level.INFO, StandardMode.class.getName(),"getEntriesString", sb.toString());	
 	}
