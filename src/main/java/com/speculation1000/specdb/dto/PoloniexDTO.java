@@ -74,16 +74,8 @@ public class PoloniexDTO implements ExchangeDTO {
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<CurrencyPair, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
 			for(PoloniexChartData dayData : e.getValue()){
-				Market market = new Market();
-				market.setBase(e.getKey().base.toString());
-				market.setCounter(e.getKey().counter.toString());
-				market.setExchange(ExchangeEnum.POLONIEX.getExchangeSymbol());
-				market.setDate(todayMidnight);
-				market.setHigh(dayData.getHigh());
-				market.setLow(dayData.getLow());
-				market.setOpen(dayData.getOpen());
-				market.setClose(dayData.getClose());
-				market.setVolume(dayData.getVolume().intValue());
+				Market market = new Market(e.getKey().base.toString(),e.getKey().counter.toString(),ExchangeEnum.POLONIEX.getExchangeSymbol(),
+						todayMidnight,dayData.getClose(),dayData.getHigh(),dayData.getLow(),dayData.getVolume().intValue());
 				marketList.add(market);
 			}
 		}
@@ -101,16 +93,9 @@ public class PoloniexDTO implements ExchangeDTO {
 		List<Market> marketList = new ArrayList<>();
 		for(Map.Entry<CurrencyPair, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
 			for(PoloniexChartData dayData : e.getValue()){
-				Market market = new Market();
-				market.setBase(e.getKey().base.toString());
-				market.setCounter(e.getKey().counter.toString());
-				market.setExchange(ExchangeEnum.POLONIEX.getExchangeSymbol());
-				market.setDate(SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())));
-				market.setHigh(dayData.getHigh());
-				market.setLow(dayData.getLow());
-				market.setOpen(dayData.getOpen());
-				market.setClose(dayData.getClose());
-				market.setVolume(dayData.getVolume().intValue());
+				Market market = new Market(e.getKey().base.toString(),e.getKey().counter.toString(),ExchangeEnum.POLONIEX.getExchangeSymbol(),
+										   SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())),
+						                   dayData.getClose(),dayData.getHigh(),dayData.getLow(),dayData.getVolume().intValue());
 				marketList.add(market);
 			}
 		}
