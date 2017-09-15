@@ -17,12 +17,12 @@ public class DbServer {
 	protected static final Instant DB_START_UP_TS = Instant.now();
 
     public static void startDB() throws SQLException {
-    	server = Server.createTcpServer("-tcpPort", "8082", "-tcpAllowOthers").start();
+    	server = Server.createTcpServer("-tcpPort", "8089", "-tcpAllowOthers").start();
     	specLogger.logp(Level.INFO, DbServer.class.getName(), "startDb", "H2 DbServer started");
     }
 
     public static void stopDB() throws SQLException {
-        Server.shutdownTcpServer("tcp://localhost:8082", "", true, true);
+        Server.shutdownTcpServer("tcp://localhost:8089", "", true, true);
         specLogger.logp(Level.INFO, DbServer.class.getName(), "startDb", "H2 DbServer stopped");
     }
     
