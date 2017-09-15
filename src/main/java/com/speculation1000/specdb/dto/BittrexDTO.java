@@ -48,7 +48,7 @@ public class BittrexDTO implements ExchangeDTO {
 				market.setHigh(t.getHigh());
 				market.setLow(t.getLow());
 				market.setClose(t.getLast());
-				market.setVolume(t.getVolume().intValue());
+				market.setVolume(t.getBaseVolume().intValue());
 				marketList.add(market);
 			}
 		return marketList;
