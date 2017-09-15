@@ -4,16 +4,52 @@ public class Symbol implements Comparable<Symbol> {
 	
 	private final String symbol;
 	
+	private String base;
+	
+	private String counter;
+	
+	private String exchange;
+	
 	public Symbol(Market market){
+		base = market.getBase();
+		counter = market.getCounter();
+		exchange = market.getExchange();
 		symbol = market.getBase()+market.getCounter()+":"+market.getExchange();
 	}
 	
 	public Symbol(String base, String counter, String exchange){
+		this.base = base;
+		this.counter = counter;
+		this.exchange = exchange;
 		symbol = base+counter+":"+exchange;
 	}
 	
 	public Symbol(String symbol){
 		this.symbol = symbol;
+	}
+	
+	public String getBase(){
+		return base;
+	}
+	
+	public void setBase(String base){
+		this.base = base;
+	}
+	
+	public String getCounter(){
+		return counter;
+	}
+	
+	public void setCounter(String counter){
+		this.counter = counter;
+	}
+
+	public String getExchange() {
+		return exchange;
+	}
+	
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
 	}
 
 	@Override
