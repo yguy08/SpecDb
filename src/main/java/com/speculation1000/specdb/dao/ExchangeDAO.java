@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.MarketEntry;
 import com.speculation1000.specdb.start.SpecDbException;
 
 public interface ExchangeDAO {
@@ -15,7 +14,5 @@ public interface ExchangeDAO {
 	void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException;
 	
 	BigDecimal getAccountBalance(DbConnectionEnum dbce) throws SpecDbException;
-	
-	List<MarketEntry> getEntries(DbConnectionEnum dbce, int days) throws SpecDbException;
 
 }
