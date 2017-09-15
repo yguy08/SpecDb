@@ -54,7 +54,7 @@ public class DeleteRecord {
 	public static int[] deleteTradeRecords(DbConnectionEnum dbce){
 		Connection conn = DbConnection.connect(dbce);
 		try{
-			String deleteSql = "DELETE FROM trade WHERE isOpen = true";              
+			String deleteSql = "DELETE FROM trade WHERE STATUS = 'NEW'";              
 			PreparedStatement st = conn.prepareStatement(deleteSql);
 			st.addBatch();
 			int[] results = st.executeBatch();
