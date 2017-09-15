@@ -13,7 +13,6 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.MarketEntry;
 
 public class QueryTable {
 	
@@ -49,9 +48,6 @@ public class QueryTable {
             			break;
             		case "LOW":
             			market.setLow(resultSet.getBigDecimal(z));
-            			break;
-            		case "OPEN":
-            			market.setOpen(resultSet.getBigDecimal(z));
             			break;
             		case "CLOSE":
             			market.setClose(resultSet.getBigDecimal(z));
@@ -89,68 +85,6 @@ public class QueryTable {
             tmpStatement.close();
             conn.close();
             return accountMap;
-        } catch (SQLException ex) {
-        	while (ex != null) {
-            	specLogger.logp(Level.INFO, QueryTable.class.getName(), "genericMarketQuery", ex.getMessage());
-	            ex = ex.getNextException();
-	        }
-	        throw new RuntimeException("Error");
-        }		
-	}
-	
-	public static void genericTradeQuery(){
- 
-	}
-
-	public static List<MarketEntry> genericEntryQuery(DbConnectionEnum dbce, String sqlCommand) {
-        try {
-        	Connection conn = DbConnection.connect(dbce);
-            Statement tmpStatement = conn.createStatement();
-            ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
-            ResultSetMetaData rsmd = resultSet.getMetaData();
-            int i = rsmd.getColumnCount();
-            List<MarketEntry> marketEntryList = new ArrayList<>();
-            while(resultSet.next()){
-            	MarketEntry marketentry = new MarketEntry();
-            	for(int z = 1; z <= i;z++){
-            		String col_name = rsmd.getColumnName(z).toUpperCase();
-            		switch(col_name){
-            		case "SYMBOL":
-            			marketentry.setSymbol(resultSet.getString(z));
-            			break;
-            		case "DATE":
-            			marketentry.setDate(resultSet.getLong(z));
-            			break;	
-            		case "PRICE":
-            			marketentry.setPrice(resultSet.getBigDecimal(z));
-            			break;
-            		case "ATR":
-            			marketentry.setAtr(resultSet.getBigDecimal(z));
-            			break;
-            		case "AMOUNT":
-            			marketentry.setAmount(resultSet.getBigDecimal(z));
-            			break;
-            		case "TOTAL":
-            			marketentry.setTotal(resultSet.getBigDecimal(z));
-            			break;
-            		case "DAYHIGHLOW":
-            			marketentry.setDayHighLow(resultSet.getInt(z));
-            			break;
-            		case "DIRECTION":
-            			marketentry.setDirection(resultSet.getString(z));
-            			break;
-            		case "STOP":
-            			marketentry.setStop(resultSet.getBigDecimal(z));
-            			break;
-            		default:
-            			break;
-            		}
-            	}
-            	marketEntryList.add(marketentry);
-            }
-            tmpStatement.close();
-            conn.close();
-            return marketEntryList;
         } catch (SQLException ex) {
         	while (ex != null) {
             	specLogger.logp(Level.INFO, QueryTable.class.getName(), "genericMarketQuery", ex.getMessage());
