@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.CreateTable;
 import com.speculation1000.specdb.db.DbConnectionEnum;
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -29,9 +30,12 @@ public class StartApp {
 		try{
 			//check db connection
 			DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
-			//create market, account and trade table (if the don't already exist
+			//create market, account and trade table (if the don't already exist)
 			new CreateTable(dbce);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db and create tables.");
+			//create close index
+			DbUtils.createCloseIndex(dbce);
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Close index created");
 		}catch(SpecDbException e){
 			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server. Creating tables failed\n" + e.getMessage());
 		}
