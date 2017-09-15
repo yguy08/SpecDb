@@ -2,9 +2,7 @@ package com.speculation1000.specdb.dao;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import com.speculation1000.specdb.start.SpecDbException;
@@ -16,8 +14,6 @@ import com.speculation1000.specdb.dto.PoloniexDTO;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.MarketEntry;
-import com.speculation1000.specdb.market.MarketUtils;
 import com.speculation1000.specdb.market.Symbol;
 
 public class PoloniexDAO implements ExchangeDAO {
@@ -76,22 +72,6 @@ public class PoloniexDAO implements ExchangeDAO {
 		BigDecimal accountBalance = new PoloniexDTO().getAccountBalance(closeMap);
 		specLogger.logp(Level.INFO, PoloniexDAO.class.getName(),"getAccountBalance","AccountBalance");
 		return accountBalance;
-	}
-
-	@Override
-	public List<MarketEntry> getEntries(DbConnectionEnum dbce, int days) throws SpecDbException {
-		Map<Symbol, List<BigDecimal>> marketCloseMap = MarketDAO.getCloseMap(dbce, days);
-		BigDecimal accountBal = AccountDAO.getCurrentAccountBalance(dbce);
-		List<MarketEntry> marketEntryList = new ArrayList<>();
-		for(Map.Entry<Symbol, List<BigDecimal>> e : marketCloseMap.entrySet()){
-			int dayHighLow = MarketUtils.xDayHighLow(e.getValue(), days);
-			if(dayHighLow != 0){
-				List<Market> marketList = MarketDAO.getMarketList(dbce, 100, e.getKey());
-				MarketEntry me = new MarketEntry(marketList, dbce, dayHighLow, accountBal);
-				marketEntryList.add(me);
-			}
-		}
-		return marketEntryList;
 	}
 
 	private static long getOldestRecordByExchange(DbConnectionEnum dbce){
