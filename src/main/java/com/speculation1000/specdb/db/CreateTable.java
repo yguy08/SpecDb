@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.db;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
@@ -16,7 +17,6 @@ public class CreateTable {
 			createMarketTable(dbce);
 			createAccountTable(dbce);
 			createTradeTable(dbce);
-			createEntryTable(dbce);
 		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());
 		}
@@ -30,7 +30,6 @@ public class CreateTable {
                 + "Date long NOT NULL,\n"
                 + " High decimal,\n"
                 + " Low decimal,\n"
-                + " Open decimal,\n"
                 + " Close decimal,\n"
                 + " Volume int\n"
                 + ");";
@@ -40,7 +39,7 @@ public class CreateTable {
             tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
             connection.close();
-        } catch (java.sql.SQLException ex) {
+        } catch (SQLException ex) {
         	while (ex != null) {
             	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
 	            ex = ex.getNextException();
@@ -75,39 +74,14 @@ public class CreateTable {
                 + "Counter character NOT NULL,\n"
                 + "Exchange character NOT NULL,\n"
                 + "Date long NOT NULL,\n"
-                + "Price decimal NOT NULL,\n"
+                + "Close decimal NOT NULL,\n"
+                + "Volume decimal NOT NULL,\n"
+                + "ATR decimal NOT NULL,\n"
                 + "Amount decimal NOT NULL,\n"
                 + "Total decimal NOT NULL,\n"
-                + "Stop decimal NOT NULL,\n"
-                + "CurrentPrice decimal NOT NULL,\n"
-                + "isOpen boolean NOT NULL\n"
-                + ");";
-        try {
-        	Connection connection = DbConnection.connect(dbce);
-            Statement tmpStatement = connection.createStatement();
-            tmpStatement.executeUpdate(strSql);
-            tmpStatement.close();
-            connection.close();
-        } catch (java.sql.SQLException ex) {
-        	while (ex != null) {
-            	specLogger.logp(Level.INFO, CreateTable.class.getName(), "createTable", ex.getMessage());
-	            ex = ex.getNextException();
-	        }
-	        throw new RuntimeException("Error");
-        }
-	}
-	
-	public static void createEntryTable(DbConnectionEnum dbce){
-		String strSql = "CREATE TABLE IF NOT EXISTS entry (\n"
-                + "Symbol character NOT NULL,\n"
-                + "Date long NOT NULL,\n"
-                + "Price decimal NOT NULL,\n"
-                + "Atr decimal NOT NULL,\n"
-                + "Amount decimal NOT NULL,\n"
-                + "Total decimal NOT NULL,\n"
-                + "DayHighLow int NOT NULL,\n"
                 + "Direction character NOT NULL,\n"
-                + "Stop decimal NOT NULL\n"
+                + "Stop decimal NOT NULL,\n"
+                + "Status character NOT NULL\n"
                 + ");";
         try {
         	Connection connection = DbConnection.connect(dbce);
