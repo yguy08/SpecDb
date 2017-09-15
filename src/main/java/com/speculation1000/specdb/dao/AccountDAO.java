@@ -29,7 +29,7 @@ public class AccountDAO {
 		}		
 	}
 	
-	public static void updateAccountBalance(DbConnectionEnum dbce) throws SpecDbException{
+	public void updateAccountBalance(DbConnectionEnum dbce) throws SpecDbException{
 		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
 		BigDecimal poloBalance;
 		try{
@@ -41,7 +41,6 @@ public class AccountDAO {
 		}		
 		
 		//add trex
-		
 		BigDecimal balance = SpecDbNumFormat.bdToEightDecimal(poloBalance); //plus trexBalance when implemented
 		DeleteRecord.deleteAccountRecords(dbce, todayMidnight);
 		InsertRecord.insertAccountBalance(dbce, balance, todayMidnight);
