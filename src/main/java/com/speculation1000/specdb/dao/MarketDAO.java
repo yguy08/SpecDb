@@ -129,5 +129,16 @@ public class MarketDAO {
 		}
 		return closeMap;
 	}
+	
+	public static TreeMap<Symbol,List<Market>> getSelectMarketMap(DbConnectionEnum dbce, int days,List<Symbol> symbolList){
+		Map<Symbol, List<Market>> marketsBySymbol = getMarketMap(dbce, days);
+		TreeMap<Symbol,List<Market>> marketMap = new TreeMap<>();
+		for(Map.Entry<Symbol, List<Market>> e : marketsBySymbol.entrySet()){
+			if(symbolList.contains(e.getKey())){
+				marketMap.put(e.getKey(), e.getValue());				
+			}
+		}
+		return marketMap;
+	}
 
 }
