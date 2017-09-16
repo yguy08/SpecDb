@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -242,34 +243,32 @@ public class DbUtils {
         }		
 	}
 	
-	public static List<Market> getNewTrades(DbConnectionEnum dbce){
-		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,Status"
-						  + " FROM trade WHERE STATUS = 'NEW' GROUP BY Base,Counter,Exchange";
+	public static List<Entry> getNewEntries(DbConnectionEnum dbce){
+		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop"
+						  + " FROM entry WHERE DATE = (SELECT Max(DATE) AS Date FROM ENTRY) GROUP BY Base,Counter,Exchange";
         try {
         	Connection conn = DbConnection.connect(dbce);
             Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
-            List<Market> marketList = new ArrayList<>();
+            List<Entry> entryList = new ArrayList<>();
             while(resultSet.next()){
-            	Market m = new Market();
-            	m.setBase(resultSet.getString(1));
-            	m.setCounter(resultSet.getString(2));
-            	m.setExchange(resultSet.getString(3));
-            	m.setDate(resultSet.getLong(4));
-            	m.setClose(resultSet.getBigDecimal(5));
-            	m.setVolume(resultSet.getInt(6));
-            	m.setATR(resultSet.getBigDecimal(7));
-            	m.setAmount(resultSet.getBigDecimal(8));
-            	m.setTotal(resultSet.getBigDecimal(9));
-            	m.setDirection(resultSet.getString(10));
-            	m.setStop(resultSet.getBigDecimal(11));
-            	m.setStatus(resultSet.getString(12));
-            	m.setToStr(m.getSymbol()+" @"+m.getClose()+" "+m.getDirection());
-            	marketList.add(m);
+            	Entry e = new Entry();
+            	e.setBase(resultSet.getString(1));
+            	e.setCounter(resultSet.getString(2));
+            	e.setExchange(resultSet.getString(3));
+            	e.setDate(resultSet.getLong(4));
+            	e.setClose(resultSet.getBigDecimal(5));
+            	e.setVolume(resultSet.getInt(6));
+            	e.setATR(resultSet.getBigDecimal(7));
+            	e.setAmount(resultSet.getBigDecimal(8));
+            	e.setTotal(resultSet.getBigDecimal(9));
+            	e.setDirection(resultSet.getString(10));
+            	e.setStop(resultSet.getBigDecimal(11));
+            	entryList.add(e);
             }
             tmpStatement.close();
             conn.close();
-            return marketList;
+            return entryList;
         }catch(SQLException ex){
         	while (ex != null) {
             	specLogger.logp(Level.INFO, DbUtils.class.getName(), "getMarketHighs", ex.getMessage());
@@ -283,10 +282,10 @@ public class DbUtils {
 	
 	/* ---------- START DELETES ------------- */
 	
-	public static int[] deleteNewTrades(DbConnectionEnum dbce, long date){
+	public static int[] deleteNewEntries(DbConnectionEnum dbce, long date){
 		Connection conn = DbConnection.connect(dbce);
 		try{
-			String deleteSql = "DELETE FROM trade WHERE Date = ?";              
+			String deleteSql = "DELETE FROM entry WHERE Date = ?";              
 			PreparedStatement st = conn.prepareStatement(deleteSql);
 			st.setLong(1, date);
 			st.addBatch();
@@ -307,26 +306,25 @@ public class DbUtils {
 	
 	/* ---------- START INSERTS ------------- */
 	
-	public static void insertNewTrades(DbConnectionEnum dbce, List<Market> newMarketEntriesList) {
-		String sqlCommand = "INSERT INTO trade(Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,Status) "
-							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+	public static void insertNewEntries(DbConnectionEnum dbce, List<Entry> entriesList) {
+		String sqlCommand = "INSERT INTO entry(Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop) "
+							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
         	Connection connection = DbConnection.connect(dbce);
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
-	        for(int i = 0; i < newMarketEntriesList.size();i++){
-        		Market m = newMarketEntriesList.get(i);
-        		tmpStatement.setString(1, m.getBase());
-        		tmpStatement.setString(2,m.getCounter());
-        		tmpStatement.setString(3, m.getExchange());
-        		tmpStatement.setLong(4, m.getDate());
-        		tmpStatement.setBigDecimal(5, m.getClose());
-        		tmpStatement.setInt(6, m.getVolume());
-        		tmpStatement.setBigDecimal(7, m.getATR());
-        		tmpStatement.setBigDecimal(8, m.getAmount());
-        		tmpStatement.setBigDecimal(9, m.getTotal());
-        		tmpStatement.setString(10, m.getDirection());
-        		tmpStatement.setBigDecimal(11, m.getStop());
-        		tmpStatement.setString(12, m.getStatus());
+	        for(int i = 0; i < entriesList.size();i++){
+        		Entry e = entriesList.get(i);
+        		tmpStatement.setString(1, e.getBase());
+        		tmpStatement.setString(2,e.getCounter());
+        		tmpStatement.setString(3, e.getExchange());
+        		tmpStatement.setLong(4, Instant.now().getEpochSecond());
+        		tmpStatement.setBigDecimal(5, e.getClose());
+        		tmpStatement.setInt(6, e.getVolume());
+        		tmpStatement.setBigDecimal(7, e.getATR());
+        		tmpStatement.setBigDecimal(8, e.getAmount());
+        		tmpStatement.setBigDecimal(9, e.getTotal());
+        		tmpStatement.setString(10, e.getDirection());
+        		tmpStatement.setBigDecimal(11, e.getStop());
         		tmpStatement.addBatch();
 	        }
     		long start = System.currentTimeMillis();

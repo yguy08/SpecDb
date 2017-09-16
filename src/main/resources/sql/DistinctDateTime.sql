@@ -1,1 +1,0 @@
-select DISTINCT (datetime(date,'unixepoch')) from markets

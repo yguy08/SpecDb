@@ -16,7 +16,7 @@ public class CreateTable {
 		try{
 			createMarketTable(dbce);
 			createAccountTable(dbce);
-			createTradeTable(dbce);
+			createEntryTable(dbce);
 		}catch(Exception e){
 			throw new SpecDbException(e.getMessage());
 		}
@@ -68,8 +68,8 @@ public class CreateTable {
         }
 	}
 	
-	public static void createTradeTable(DbConnectionEnum dbce){
-		String strSql = "CREATE TABLE IF NOT EXISTS trade (\n"
+	public static void createEntryTable(DbConnectionEnum dbce){
+		String strSql = "CREATE TABLE IF NOT EXISTS entry (\n"
                 + "Base character NOT NULL,\n"
                 + "Counter character NOT NULL,\n"
                 + "Exchange character NOT NULL,\n"
@@ -81,7 +81,6 @@ public class CreateTable {
                 + "Total decimal NOT NULL,\n"
                 + "Direction character NOT NULL,\n"
                 + "Stop decimal NOT NULL,\n"
-                + "Status character NOT NULL\n"
                 + ");";
         try {
         	Connection connection = DbConnection.connect(dbce);

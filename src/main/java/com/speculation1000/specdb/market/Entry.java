@@ -9,19 +9,7 @@ import java.util.List;
 
 import com.speculation1000.specdb.trade.TradeStatusEnum;
 
-public class Entry {
-	
-	private String base;
-	
-	private String counter;
-	
-	private String exchange;
-	
-	private long date;
-	
-	private BigDecimal close;
-	
-	private int volume;
+public class Entry extends Market {
 	
 	private BigDecimal atr;
 	
@@ -33,50 +21,20 @@ public class Entry {
 	
 	private BigDecimal stop;
 	
-	public Symbol getSymbol(){
-		return new Symbol(base,counter,exchange);
+	public Entry(Symbol symbol,List<Market> marketList, BigDecimal accountBalance,TradeStatusEnum tse) {
+		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose());
+		setVolume(marketList.get(0).getVolume());
+		setATR(marketList);
+		setAmount(accountBalance);
+		setTotal();
+		setDirection(tse);
+		setStop();
 	}
 	
-	public String getBase(){
-		return base;
-	}
-	
-	public void setBase(String base){
-		this.base = base;
-	}
-	
-	public String getCounter(){
-		return counter;
-	}
-	
-	public void setCounter(String counter){
-		this.counter = counter;
+	public Entry() {
+		
 	}
 
-	public String getExchange() {
-		return exchange;
-	}
-	
-	public void setExchange(String exchange) {
-		this.exchange = exchange;
-	}
-
-	public long getDate() {
-		return date;
-	}
-	
-	public void setDate(long date){
-		this.date = date;
-	}
-
-	public int getVolume() {
-		return volume;
-	}
-	
-	public void setVolume(int volume){
-		this.volume = volume;
-	}
-	
 	public BigDecimal getATR(){
 		return atr.setScale(8,RoundingMode.UP);
 	}
@@ -118,7 +76,7 @@ public class Entry {
 	
 	public void setAmount(BigDecimal accountBalance) {
 		BigDecimal risk = new BigDecimal(1.00).divide(new BigDecimal(100));
-		BigDecimal max = accountBalance.divide(close, MathContext.DECIMAL32).setScale(9, RoundingMode.DOWN);
+		BigDecimal max = accountBalance.divide(super.getClose(), MathContext.DECIMAL32).setScale(9, RoundingMode.DOWN);
 		BigDecimal size = accountBalance.multiply(risk, MathContext.DECIMAL32).divide(atr, MathContext.DECIMAL32).setScale(9, RoundingMode.UP);
 		amount = (size.compareTo(max) > 0) ? max : size; 
 	}
@@ -132,7 +90,7 @@ public class Entry {
 	}
 	
 	private void setTotal() {
-		this.total = close.multiply(amount);
+		this.total = super.getClose().multiply(amount);
 	}
 	
 	public void setTotal(BigDecimal total){
@@ -153,9 +111,9 @@ public class Entry {
 	
 	private void setStop() {		
 		if(direction.equalsIgnoreCase(TradeStatusEnum.LONG.getTradeStatus())){
-			stop = close.subtract(new BigDecimal(2.00).multiply(atr, MathContext.DECIMAL32));
+			stop = super.getClose().subtract(new BigDecimal(2.00).multiply(atr, MathContext.DECIMAL32));
 		}else{
-			stop = close.add(new BigDecimal(2.00).multiply(atr, MathContext.DECIMAL32));
+			stop = super.getClose().add(new BigDecimal(2.00).multiply(atr, MathContext.DECIMAL32));
 		}
 	}
 	
@@ -169,7 +127,8 @@ public class Entry {
 	
 	@Override
 	public String toString(){
-		return base + counter + ":" + exchange + " " + "@" + close;
+		String directionArrow = (direction.equalsIgnoreCase("LONG") ? "\u25B2" : "\u25BC");
+		return super.getBase() + super.getCounter() + ":" + super.getExchange() + " " + "@" + super.getClose()+directionArrow;
 	}	
 
 }

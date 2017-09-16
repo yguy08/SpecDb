@@ -12,10 +12,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.dao.AccountDAO;
+import com.speculation1000.specdb.dao.EntryDAO;
 import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.dao.TradeDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -70,7 +72,7 @@ public class StandardMode implements Runnable {
         
         //update trades
         try{
-        	new TradeDAO(DbConnectionEnum.H2_MAIN, 25);
+        	new EntryDAO(DbConnectionEnum.H2_MAIN, 25);
         }catch(SpecDbException e){
         	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating trades!");
         }        
@@ -166,7 +168,7 @@ public class StandardMode implements Runnable {
 	
 	public static void getEntriesString(DbConnectionEnum dbce){
 		StringBuilder sb = new StringBuilder();
-		List<Market> marketEntryList = TradeDAO.getMarketEntryList(dbce);
+		List<Entry> marketEntryList = EntryDAO.getMarketEntryList(dbce);
 	    sb.append("\n");
 		sb.append("********************************\n");
 	    sb.append("          [ ENTRIES ]\n");
