@@ -245,7 +245,7 @@ public class DbUtils {
 	
 	public static List<Entry> getNewEntries(DbConnectionEnum dbce){
 		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop"
-						  + " FROM entry WHERE DATE = (SELECT Max(DATE) AS Date FROM ENTRY) GROUP BY Base,Counter,Exchange";
+						  + " FROM entry WHERE DATE = (SELECT Max(DATE) AS Date FROM ENTRY) GROUP BY Base,Counter,Exchange,Direction";
         try {
         	Connection conn = DbConnection.connect(dbce);
             Statement tmpStatement = conn.createStatement();

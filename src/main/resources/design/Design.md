@@ -42,7 +42,11 @@ Display message to close app and try again or contact administrator
 
 **Alternative:** *Position needs to be close*  
 At step 4, system calculates that a position needs to be closed  
-Continue to step 5 and display close button along side the position that needs to be closed  
+Continue to step 5 and display close button along side the position that needs to be closed
+
+**Alternative:** *Auto trade*  
+At step 4, system calculates that a position needs to be closed  
+Send user email and let them know they have until the end of the day to check and close or the trade will be closed  
 
 ###View New Entries  
 
@@ -53,3 +57,4 @@ Continue to step 5 and display close button along side the position that needs t
 5. System adds entries to the database
 6. System retrieves the latest entries from the database
 7. System displays the latest entries to the trader
+
