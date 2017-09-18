@@ -21,9 +21,10 @@ public class Entry extends Market {
 	
 	private BigDecimal stop;
 	
+	private boolean isEntry;
+	
 	public Entry(Symbol symbol,List<Market> marketList, BigDecimal accountBalance,TradeStatusEnum tse) {
-		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose());
-		setVolume(marketList.get(0).getVolume());
+		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose(),marketList.get(0).getVolume());
 		setATR(marketList);
 		setAmount(accountBalance);
 		setTotal();
