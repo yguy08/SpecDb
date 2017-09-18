@@ -26,7 +26,7 @@ Display message to close app and try again or contact administrator
 At step 5, system calculates that trader is up on the 1 day  
 Display up on 1 day special status message  
 
-###View Open Positions
+### View Open Positions
 
 1. Trader launches app
 2. System retrieves the latest open positions from the db
@@ -46,7 +46,7 @@ Continue to step 5 and display close button along side the position that needs t
 At step 4, system calculates that a position needs to be closed  
 Send user email and let them know they have until the end of the day to check and close or the trade will be closed  
 
-###View New Entries  
+### View New Entries  
 
 1. Trader launches app
 2. System retrieves latest prices from exchange api
