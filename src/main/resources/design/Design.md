@@ -1,7 +1,5 @@
 # Design
----
-##Use Cases
----
+## Use Cases
 ###View Latest Trading Account Balance
 
 1. Trader launches app
