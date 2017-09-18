@@ -21,19 +21,38 @@ public class Entry extends Market {
 	
 	private BigDecimal stop;
 	
-	private boolean isEntry;
+	//filter for markets at high/low that are actually bad (i.e. high equals low, 1 day history, etc.)
+	private boolean passFilter;
+	
+	public Entry() {}
 	
 	public Entry(Symbol symbol,List<Market> marketList, BigDecimal accountBalance,TradeStatusEnum tse) {
 		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose(),marketList.get(0).getVolume());
-		setATR(marketList);
-		setAmount(accountBalance);
-		setTotal();
-		setDirection(tse);
-		setStop();
+		
+		//some markets at a high are not actually entries like a new market w/ only 1 day history so filter first
+		filter(marketList);
+		
+		if(passFilter){
+			setATR(marketList);
+			setAmount(accountBalance);
+			setTotal();
+			setDirection(tse);
+			setStop();
+		}
 	}
 	
-	public Entry() {
-		
+	private void filter(List<Market> marketList){
+		if(marketList.size()<20){
+			passFilter = false;
+		}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
+			passFilter = false;
+		}else{
+			passFilter = true;
+		}
+	}
+	
+	public boolean passFilter(){
+		return passFilter;
 	}
 
 	public BigDecimal getATR(){
