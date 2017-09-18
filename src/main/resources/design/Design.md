@@ -51,7 +51,7 @@ Send user email and let them know they have until the end of the day to check an
 1. Trader launches app
 2. System retrieves latest prices from exchange api
 3. System performs the neccessary entry filtering
-4. System calculates entry parameters
+4. System calculates entry position sizing
 5. System adds entries to the database
 6. System retrieves the latest entries from the database
 7. System displays the latest entries to the trader
