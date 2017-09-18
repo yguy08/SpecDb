@@ -1,6 +1,6 @@
 # Design
 ## Use Cases
-###View Latest Trading Account Balance
+### View Latest Trading Account Balance
 
 1. Trader launches app
 2. System collects exchange balances using exchange api and updates balances in the database
