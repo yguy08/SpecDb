@@ -1,15 +1,6 @@
 package com.speculation1000.specdb.market;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import com.speculation1000.specdb.time.SpecDbDate;
-import com.speculation1000.specdb.trade.TradeStatusEnum;
 
 public class Market implements Comparable<Market> {
 	
@@ -48,12 +39,13 @@ public class Market implements Comparable<Market> {
 		this.exchange = exchange;
 	}
 	
-	public Market(Symbol symbol,long date,BigDecimal close) {
+	public Market(Symbol symbol,long date,BigDecimal close,int volume) {
 		this.base = symbol.getBase();
 		this.counter = symbol.getCounter();
 		this.exchange = symbol.getExchange();
 		this.date = date;
 		this.close = close;
+		this.volume = volume;
 	}
 	
 	public Symbol getSymbol(){
