@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -8,6 +7,7 @@ import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.dto.BittrexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
 
 public class BittrexDAO implements ExchangeDAO {
@@ -32,7 +32,7 @@ public class BittrexDAO implements ExchangeDAO {
 	}
 
 	@Override
-	public BigDecimal getAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
+	public List<AccountBalance> getAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
