@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.logging.Level;
 
-import com.speculation1000.specdb.db.CreateTable;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.log.SpecDbLogger;
@@ -31,7 +30,7 @@ public class StartApp {
 			//check db connection
 			DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
 			//create market, account and trade table (if the don't already exist)
-			new CreateTable(dbce);
+			DbUtils.createTables(dbce);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db and create tables.");
 			//create close index
 			DbUtils.createCloseIndex(dbce);
