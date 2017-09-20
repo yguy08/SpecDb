@@ -1,12 +1,10 @@
 package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
@@ -17,8 +15,8 @@ import org.knowm.xchange.bittrex.v1.service.BittrexMarketDataService;
 import org.knowm.xchange.currency.CurrencyPair;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
 import com.speculation1000.specdb.time.SpecDbDate;
@@ -77,7 +75,7 @@ public class BittrexDTO implements ExchangeDTO {
 	}
 
 	@Override
-	public BigDecimal getAccountBalance(TreeMap<Symbol, BigDecimal> currentCloseMap) throws SpecDbException {
+	public List<AccountBalance> getAccountBalances() throws SpecDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
