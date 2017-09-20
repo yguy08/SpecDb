@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 import org.knowm.xchange.Exchange;
@@ -29,8 +28,8 @@ import org.knowm.xchange.service.trade.TradeService;
 
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
@@ -120,28 +119,27 @@ public class PoloniexDTO implements ExchangeDTO {
 	}
 
 	@Override
-	public BigDecimal getAccountBalance(TreeMap<Symbol, BigDecimal> currentCloseMap) throws SpecDbException {
+	public List<AccountBalance> getAccountBalances() throws SpecDbException {
 		if(poloAuthenticated == null){
 			throw new SpecDbException("Polo exchange is not initialized");
 		}
-		BigDecimal balance = new BigDecimal(0.00);
+		
 		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloAuthenticated.getAccountService();
+		List<AccountBalance> balanceList = new ArrayList<>();
 		try {
+			com.speculation1000.specdb.market.AccountBalance balance;
 			for(Balance b : accountService.getWallets()) {
 				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
-					if(!b.getCurrency().equals(Currency.BTC)) {
-						BigDecimal currentPrice = currentCloseMap.get(new Symbol(b.getCurrency().toString(),"BTC","POLO"));
-						BigDecimal btcTotal = currentPrice.multiply(b.getTotal());
-						balance = balance.add(btcTotal);
-					}else {
-						balance = balance.add(b.getTotal());
-					}
+					balance = new AccountBalance(SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS()),
+												"POLO",b.getCurrency().toString(),b.getTotal());
+					balanceList.add(balance);
 				}
-			}
+			}			
 		} catch (IOException e) {
+			specLogger.logp(Level.SEVERE, PoloniexDTO.class.getName(), "getAccountBalances", "Failed to load Polo markets balances from POLO API...");
 			throw new SpecDbException(e.getMessage());
 		}
-		return balance;
+		return null;
 	}
 	
 	private static Exchange initAuthenticatedExchange() {
