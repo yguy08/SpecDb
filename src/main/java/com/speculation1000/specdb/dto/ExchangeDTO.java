@@ -1,11 +1,9 @@
 package com.speculation1000.specdb.dto;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.TreeMap;
 
+import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 
 public interface ExchangeDTO {
@@ -14,7 +12,7 @@ public interface ExchangeDTO {
 	
 	List<Market> fetchExchangeHistory(long endDate);
 
-	BigDecimal getAccountBalance(TreeMap<Symbol, BigDecimal> currentCloseMap) throws SpecDbException;
+	List<AccountBalance> getAccountBalances() throws SpecDbException;
 	
 
 }
