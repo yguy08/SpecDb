@@ -1,20 +1,18 @@
 package com.speculation1000.specdb.dao;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.db.DbConnectionEnum;
-import com.speculation1000.specdb.db.InsertRecord;
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.dto.PoloniexDTO;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.Symbol;
 
 public class PoloniexDAO implements ExchangeDAO {
 	
@@ -42,7 +40,7 @@ public class PoloniexDAO implements ExchangeDAO {
 			try{
 				//Get poloniex chart data up to oldest date - 86400
 				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(missingUpToDate);
-				InsertRecord.insertBatchMarkets(dbce, marketList);
+				DbUtils.insertMarkets(dbce, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
 			}catch(Exception e){
 				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
@@ -55,7 +53,7 @@ public class PoloniexDAO implements ExchangeDAO {
 			try{
 				//Get poloniex chart data up to oldest date - 86400
 				List<Market> marketList = new PoloniexDTO().fetchExchangeHistory(currentDay);
-				InsertRecord.insertBatchMarkets(dbce, marketList);
+				DbUtils.insertMarkets(dbce, marketList);
 				specLogger.logp(Level.INFO, PoloniexDAO.class.getName(), "restoreMarkets", "Polo markets restored!");
 			}catch(Exception e){
 				specLogger.logp(Level.SEVERE, PoloniexDAO.class.getName(), "restoreMarkets", "Polo restore failed inserting markets!");
@@ -67,11 +65,10 @@ public class PoloniexDAO implements ExchangeDAO {
 	}
 
 	@Override
-	public BigDecimal getAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
-		TreeMap<Symbol, BigDecimal> closeMap = MarketDAO.getCurrentCloseMap(dbce);
-		BigDecimal accountBalance = new PoloniexDTO().getAccountBalance(closeMap);
+	public List<AccountBalance> getAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
+		List<AccountBalance> balanceList = new PoloniexDTO().getAccountBalances();
 		specLogger.logp(Level.INFO, PoloniexDAO.class.getName(),"getAccountBalance","AccountBalance");
-		return accountBalance;
+		return balanceList;
 	}
 
 	private static long getOldestRecordByExchange(DbConnectionEnum dbce){
