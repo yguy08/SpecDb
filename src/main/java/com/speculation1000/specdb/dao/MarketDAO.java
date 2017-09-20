@@ -11,8 +11,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
-import com.speculation1000.specdb.db.DeleteRecord;
-import com.speculation1000.specdb.db.InsertRecord;
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.db.QueryTable;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
@@ -62,21 +61,21 @@ public class MarketDAO {
 		}
 		
 		try{
-			DeleteRecord.deleteBulkMarkets(dbce, todayMidnight);			
+			DbUtils.marketCleanUp(dbce, todayMidnight);			
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error cleaning up today's market prices");
 			throw new SpecDbException(e.getMessage());
 		}
 		
 		try{
-			InsertRecord.insertBatchMarkets(dbce, poloMarket);
+			DbUtils.insertMarkets(dbce, poloMarket);
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error inserting new polo markets");
 			throw new SpecDbException(e.getMessage());
 		}
 		
 		try{
-			InsertRecord.insertBatchMarkets(dbce, bittrexMarkets);
+			DbUtils.insertMarkets(dbce, bittrexMarkets);
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error inserting new trex markets");
 			throw new SpecDbException(e.getMessage());
