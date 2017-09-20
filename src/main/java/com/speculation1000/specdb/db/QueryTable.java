@@ -20,7 +20,7 @@ public class QueryTable {
 	
 	public static List<Market> genericMarketQuery(DbConnectionEnum dbce, String sqlCommand){
         try {
-        	Connection conn = DbConnection.connect(dbce);
+        	Connection conn = DbUtils.connect(dbce);
             Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             ResultSetMetaData rsmd = resultSet.getMetaData();
@@ -75,7 +75,7 @@ public class QueryTable {
 	
 	public static TreeMap<Long,BigDecimal> genericAccountQuery(DbConnectionEnum dbce, String sqlCommand){
         try {
-        	Connection conn = DbConnection.connect(dbce);
+        	Connection conn = DbUtils.connect(dbce);
         	TreeMap<Long,BigDecimal> accountMap = new TreeMap<>();
             Statement tmpStatement = conn.createStatement();
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
