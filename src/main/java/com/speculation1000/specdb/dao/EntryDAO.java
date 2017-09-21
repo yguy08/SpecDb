@@ -78,7 +78,5 @@ public class EntryDAO {
 		Collections.sort(entryList);
 		return entryList;
 	}
-	
-	//COMPARATOR VOLUME?
 
 }
