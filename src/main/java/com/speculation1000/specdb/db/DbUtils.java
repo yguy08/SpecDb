@@ -1,5 +1,6 @@
 package com.speculation1000.specdb.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,12 +10,14 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -315,6 +318,30 @@ public class DbUtils {
 	        }
         	throw new SpecDbException("Error getting latest account balances");       	
         }		
+	}
+	
+	public static TreeMap<Symbol,BigDecimal> getCurrentMarketClose(DbConnectionEnum dbce, List<Symbol> symbolList) throws SpecDbException {
+		String sqlCommand = " ";
+		try {
+			Connection conn = DbUtils.connect(dbce);
+			Statement tmpStatement = conn.createStatement();
+			ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
+			TreeMap<Symbol,BigDecimal> closeMap = new TreeMap<>();
+			while(resultSet.next()){
+				Symbol symbol = new Symbol(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
+				closeMap.put(symbol, resultSet.getBigDecimal(4));
+			}
+			tmpStatement.close();
+			conn.close();
+			return closeMap;
+		}catch(SQLException ex){
+			while (ex != null) {
+		  	specLogger.logp(Level.INFO, DbUtils.class.getName(), "getLatestAccountBalances", ex.getMessage());
+		      ex = ex.getNextException();
+		  }
+			throw new SpecDbException("Error getting latest account balances");       	
+		}		
+		
 	}
 	
 	/* ---------- END SELECT QUERIES ------------- */
