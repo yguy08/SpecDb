@@ -467,7 +467,7 @@ public class DbUtils {
         		tmpStatement.setString(1, e.getBase());
         		tmpStatement.setString(2,e.getCounter());
         		tmpStatement.setString(3, e.getExchange());
-        		tmpStatement.setLong(4, Instant.now().getEpochSecond());
+        		tmpStatement.setLong(4, e.getClose());
         		tmpStatement.setBigDecimal(5, e.getClose());
         		tmpStatement.setInt(6, e.getVolume());
         		tmpStatement.setBigDecimal(7, e.getATR());
