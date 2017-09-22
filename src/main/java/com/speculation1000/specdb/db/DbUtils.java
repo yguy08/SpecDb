@@ -151,7 +151,7 @@ public class DbUtils {
                 + "Status character NOT NULL\n"
                 + ");";
         try {
-        	Connection connection = DbUtils.connect(dbce);
+            Connection connection = DbUtils.connect(dbce);
             Statement tmpStatement = connection.createStatement();
             tmpStatement.executeUpdate(strSql);
             tmpStatement.close();
@@ -318,32 +318,7 @@ public class DbUtils {
 	        }
         	throw new SpecDbException("Error getting latest account balances");       	
         }		
-	}
-	
-	public static TreeMap<Symbol,BigDecimal> getCurrentMarketClose(DbConnectionEnum dbce, List<Symbol> symbolList) throws SpecDbException {
-		String sqlCommand = " ";
-		try {
-			Connection conn = DbUtils.connect(dbce);
-			Statement tmpStatement = conn.createStatement();
-			ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
-			TreeMap<Symbol,BigDecimal> closeMap = new TreeMap<>();
-			while(resultSet.next()){
-				Symbol symbol = new Symbol(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
-				closeMap.put(symbol, resultSet.getBigDecimal(4));
-			}
-			tmpStatement.close();
-			conn.close();
-			return closeMap;
-		}catch(SQLException ex){
-			while (ex != null) {
-		  	specLogger.logp(Level.INFO, DbUtils.class.getName(), "getLatestAccountBalances", ex.getMessage());
-		      ex = ex.getNextException();
-		  }
-			throw new SpecDbException("Error getting latest account balances");       	
-		}		
-		
-	}
-	
+	}	
 	/* ---------- END SELECT QUERIES ------------- */
 	
 	/* ---------- START CLEAN UPS (DELETES) ------------- */
