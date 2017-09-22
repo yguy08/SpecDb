@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.speculation1000.specdb.trade.TradeStatusEnum;
+import com.speculation1000.specdb.utils.SpecDbNumFormat;
 
 public class Entry extends Market {
 	
@@ -148,7 +149,15 @@ public class Entry extends Market {
 	@Override
 	public String toString(){
 		String directionArrow = (direction.equalsIgnoreCase("LONG") ? "\u25B2" : "\u25BC");
-		return super.getBase() + super.getCounter() + ":" + super.getExchange() + " " + "@" + super.getClose()+directionArrow;
+		StringBuilder sb = new StringBuilder();
+		sb.append("---------------------------\n");
+		sb.append(super.getSymbol()+directionArrow+SpecDbNumFormat.bdToEightDecimal(super.getClose()));
+		sb.append(" [ATR: "+getATR()+",");
+		sb.append(" Units: "+getAmount()+",");
+		sb.append(" Total: "+getTotal()+",");
+		sb.append(" Stop: "+getStop()+"]\n");
+		sb.append("---------------------------");
+		return sb.toString();
 	}	
 
 }
