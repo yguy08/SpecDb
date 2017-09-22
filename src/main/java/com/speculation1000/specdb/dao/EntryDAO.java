@@ -15,6 +15,8 @@ import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
+import com.speculation1000.specdb.start.StandardMode;
+import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.trade.TradeStatusEnum;
 
 public class EntryDAO {
@@ -26,7 +28,7 @@ public class EntryDAO {
 		try{
 			updateEntries(dbce, days);
 		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, TradeDAO.class.getName(),"TradeDAO","Error updating entries");
+			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"EntryDAO","Error updating entries");
 			throw new SpecDbException(e.getMessage());
 		}
 	}
@@ -45,9 +47,9 @@ public class EntryDAO {
 					entryList.add(entry);
 				}
 			}
-			specLogger.logp(Level.INFO, TradeDAO.class.getName(),"TradeDAO","Found new trades (long)");
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (long)");
 		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, TradeDAO.class.getName(),"updateTrades","Error getting market highs");
+			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market highs");
 		}
 		
 		try{
@@ -59,9 +61,17 @@ public class EntryDAO {
 					entryList.add(entry);
 				}
 			}
-			specLogger.logp(Level.INFO, TradeDAO.class.getName(),"TradeDAO","Found new trades (short)");
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (short)");
 		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, TradeDAO.class.getName(),"updateTrades","Error getting market lows");
+			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market lows");
+		}
+		
+		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
+		try{
+			DbUtils.newEntriesCleanUp(dbce,todayMidnight);
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (short)");
+		}catch(Exception e){
+			
 		}
 		
 		try{
