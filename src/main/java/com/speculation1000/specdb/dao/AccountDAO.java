@@ -10,6 +10,7 @@ import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
+import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
@@ -52,10 +53,10 @@ public class AccountDAO {
 		List<AccountBalance> accountBalList = DbUtils.getLatestAccountBalances(dbce);
 		BigDecimal bal = new BigDecimal(0.00);
 		List<Symbol> symbolList = AccountBalance.getSymbolsListAccBalList(accountBalList);
-		TreeMap<Symbol,BigDecimal> closeMap = DbUtils.getCurrentMarketClose(dbce, symbolList);
+		TreeMap<Symbol, List<Market>> closeMap = MarketDAO.getSelectMarketMap(dbce, 0, symbolList);
 		for(AccountBalance ab : accountBalList){
 			if(!ab.getCounter().equalsIgnoreCase("BTC")){
-				BigDecimal btc_price = closeMap.get(new Symbol(ab.getCounter(),"BTC",ab.getExchange()));
+				BigDecimal btc_price = closeMap.get(new Symbol(ab.getCounter(),"BTC",ab.getExchange())).get(0).getClose();
 				BigDecimal btc_value = btc_price.multiply(ab.getAmount());
 				bal = bal.add(btc_value);
 			}else{
