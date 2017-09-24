@@ -151,7 +151,7 @@ public class Entry extends Market {
 		String directionArrow = (direction.equalsIgnoreCase("LONG") ? "\u25B2" : "\u25BC");
 		StringBuilder sb = new StringBuilder();
 		sb.append("---------------------------\n");
-		sb.append(super.getSymbol()+directionArrow+SpecDbNumFormat.bdToEightDecimal(super.getClose()));
+		sb.append(super.getSymbol()+directionArrow+SpecDbNumFormat.bdToEightDecimal(super.getClose())+"\n");
 		sb.append(" [ATR: "+getATR()+",");
 		sb.append(" Units: "+getAmount()+",");
 		sb.append(" Total: "+getTotal()+",");

@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.db;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,14 +9,12 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.time.SpecDbDate;
 
@@ -467,7 +464,7 @@ public class DbUtils {
         		tmpStatement.setString(1, e.getBase());
         		tmpStatement.setString(2,e.getCounter());
         		tmpStatement.setString(3, e.getExchange());
-        		tmpStatement.setLong(4, e.getClose());
+        		tmpStatement.setLong(4, e.getDate());
         		tmpStatement.setBigDecimal(5, e.getClose());
         		tmpStatement.setInt(6, e.getVolume());
         		tmpStatement.setBigDecimal(7, e.getATR());

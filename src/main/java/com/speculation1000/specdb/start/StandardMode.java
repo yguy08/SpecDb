@@ -72,7 +72,7 @@ public class StandardMode implements Runnable {
         try{
         	new EntryDAO(DbConnectionEnum.H2_MAIN, 25);
         }catch(SpecDbException e){
-        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating trades!");
+        	specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"run","Error updating entries!");
         }        
         
         try{

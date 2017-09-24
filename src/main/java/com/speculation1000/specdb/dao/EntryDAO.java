@@ -47,7 +47,7 @@ public class EntryDAO {
 					entryList.add(entry);
 				}
 			}
-			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (long)");
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (long)");
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market highs");
 		}
@@ -61,7 +61,7 @@ public class EntryDAO {
 					entryList.add(entry);
 				}
 			}
-			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (short)");
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (short)");
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market lows");
 		}
@@ -69,7 +69,7 @@ public class EntryDAO {
 		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
 		try{
 			DbUtils.newEntriesCleanUp(dbce,todayMidnight);
-			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new trades (short)");
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (short)");
 		}catch(Exception e){
 			
 		}

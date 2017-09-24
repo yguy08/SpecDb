@@ -127,11 +127,11 @@ public class PoloniexDTO implements ExchangeDTO {
 		PoloniexAccountServiceRaw accountService = (PoloniexAccountServiceRaw) poloAuthenticated.getAccountService();
 		List<AccountBalance> balanceList = new ArrayList<>();
 		try {
-			com.speculation1000.specdb.market.AccountBalance balance;
+			AccountBalance balance;
 			for(Balance b : accountService.getWallets()) {
 				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
 					balance = new AccountBalance(SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS()),
-												"POLO",b.getCurrency().toString(),b.getTotal());
+												b.getCurrency().toString(),"POLO",b.getTotal());
 					balanceList.add(balance);
 				}
 			}			
@@ -139,7 +139,7 @@ public class PoloniexDTO implements ExchangeDTO {
 			specLogger.logp(Level.SEVERE, PoloniexDTO.class.getName(), "getAccountBalances", "Failed to load Polo markets balances from POLO API...");
 			throw new SpecDbException(e.getMessage());
 		}
-		return null;
+		return balanceList;
 	}
 	
 	private static Exchange initAuthenticatedExchange() {
