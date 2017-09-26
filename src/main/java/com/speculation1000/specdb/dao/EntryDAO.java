@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,16 +32,14 @@ public class EntryDAO {
 		}
 	}
 	
-	private void updateEntries(DbConnectionEnum dbce, int days) throws SpecDbException {
-		BigDecimal accountBalance = AccountDAO.getCurrentAccountBalance(dbce);
-		
+	private void updateEntries(DbConnectionEnum dbce, int days) throws SpecDbException {		
 		List<Entry> entryList = new ArrayList<>();
 		Entry entry;
 		try{
 			List<Symbol> symbolList = DbUtils.getMarketHighs(dbce, days).stream().map(Market::getSymbol).collect(Collectors.toList());
 			TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 150, symbolList);
 			for(Map.Entry<Symbol, List<Market>> e : marketMap.entrySet()){
-				entry = new Entry(e.getKey(), e.getValue(),accountBalance,TradeStatusEnum.LONG);
+				entry = new Entry(e.getKey(), e.getValue(),TradeStatusEnum.LONG);
 				if(entry.passFilter()){
 					entryList.add(entry);
 				}
@@ -56,7 +53,7 @@ public class EntryDAO {
 			List<Symbol> symbolList = DbUtils.getMarketLows(dbce, days).stream().map(Market::getSymbol).collect(Collectors.toList());
 			TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 150, symbolList);
 			for(Map.Entry<Symbol, List<Market>> e : marketMap.entrySet()){
-				entry = new Entry(e.getKey(), e.getValue(),accountBalance,TradeStatusEnum.SHORT);
+				entry = new Entry(e.getKey(), e.getValue(),TradeStatusEnum.SHORT);
 				if(entry.passFilter()){
 					entryList.add(entry);
 				}
