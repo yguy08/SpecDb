@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.speculation1000.specdb.dao.AccountDAO;
 import com.speculation1000.specdb.trade.TradeStatusEnum;
 import com.speculation1000.specdb.utils.SpecDbNumFormat;
 
@@ -27,7 +28,7 @@ public class Entry extends Market {
 	
 	public Entry() {}
 	
-	public Entry(Symbol symbol,List<Market> marketList, BigDecimal accountBalance,TradeStatusEnum tse) {
+	public Entry(Symbol symbol,List<Market> marketList,TradeStatusEnum tse) {
 		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose(),marketList.get(0).getVolume());
 		
 		//some markets at a high are not actually entries like a new market w/ only 1 day history so filter first
@@ -35,7 +36,7 @@ public class Entry extends Market {
 		
 		if(passFilter){
 			setATR(marketList);
-			setAmount(accountBalance);
+			setAmount();
 			setTotal();
 			setDirection(tse);
 			setStop();
@@ -57,7 +58,7 @@ public class Entry extends Market {
 	}
 
 	public BigDecimal getATR(){
-		return atr.setScale(8,RoundingMode.UP);
+		return atr;
 	}
 	
 	private void setATR(List<Market> marketList) {
@@ -95,19 +96,27 @@ public class Entry extends Market {
 		this.atr = atr;
 	}
 	
-	public void setAmount(BigDecimal accountBalance) {
-		BigDecimal risk = new BigDecimal(1.00).divide(new BigDecimal(100));
-		BigDecimal max = accountBalance.divide(super.getClose(), MathContext.DECIMAL32).setScale(9, RoundingMode.DOWN);
-		BigDecimal size = accountBalance.multiply(risk, MathContext.DECIMAL32).divide(atr, MathContext.DECIMAL32).setScale(9, RoundingMode.UP);
-		amount = (size.compareTo(max) > 0) ? max : size; 
+	public void setAmount() {
+		try{
+			BigDecimal risk = new BigDecimal(1.00).divide(new BigDecimal(100));
+			BigDecimal max = AccountDAO.getCurrentAccountBalance().divide(super.getClose(), MathContext.DECIMAL32).setScale(9, RoundingMode.DOWN);
+			BigDecimal size = AccountDAO.getCurrentAccountBalance().multiply(risk, MathContext.DECIMAL32).divide(atr, MathContext.DECIMAL32).setScale(9, RoundingMode.UP);
+			amount = (size.compareTo(max) > 0) ? max : size;
+		}catch(Exception e){
+			
+		} 
+	}
+	
+	public void setAmount(BigDecimal amount){
+		this.amount = amount;
 	}
 	
 	public BigDecimal getAmount(){
-		return amount.setScale(2,RoundingMode.UP);
+		return amount;
 	}
 	
 	public BigDecimal getTotal() {
-		return total.setScale(2,RoundingMode.UP);
+		return total;
 	}
 	
 	private void setTotal() {
@@ -143,7 +152,7 @@ public class Entry extends Market {
 	}
 	
 	public BigDecimal getStop(){
-		return stop.setScale(8,RoundingMode.UP);
+		return stop;
 	}
 	
 	@Override
