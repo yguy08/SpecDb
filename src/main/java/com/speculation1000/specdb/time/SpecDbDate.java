@@ -88,6 +88,55 @@ public class SpecDbDate {
 		return ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC")).format(DateTimeFormatter.ofPattern("M/dd/yy"));
 	}
 	
+	/**
+	 * @param instant
+	 * @return instant rolled back to last 6 hour block (00:00, 06:00, 12:00, 18:00)  
+	 */
+	public static long getLastSixHourSeconds(Instant instant){
+		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC"));		
+		int currentHour = zdt.getHour();
+		
+		int displayHour;		
+		switch(currentHour){
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				displayHour = 8;
+				break;
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+			case 15:
+				displayHour = 16;
+				break;
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+			case 20:
+			case 21:
+			case 22:
+			case 23:
+				displayHour = 23;
+				break;
+			default:
+				displayHour = 23;
+				break;
+		}
+		
+		ZonedDateTime today = ZonedDateTime.of(zdt.getYear(), zdt.getMonthValue(), zdt.getDayOfMonth(), displayHour, 0, 0, 0, ZoneId.of("Etc/UTC"));
+		return today.toEpochSecond();
+	}
+	
 	
 
 }
