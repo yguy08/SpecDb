@@ -33,7 +33,8 @@ public class BittrexDAO implements ExchangeDAO {
 
 	@Override
 	public List<AccountBalance> getAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
-		// TODO Auto-generated method stub
-		return null;
+		List<AccountBalance> balanceList = new BittrexDTO().getAccountBalances();
+		specLogger.logp(Level.INFO, BittrexDAO.class.getName(),"getAccountBalance","Got Trex Account Balance");
+		return balanceList;
 	}
 }
