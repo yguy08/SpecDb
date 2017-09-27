@@ -1,6 +1,7 @@
 package com.speculation1000.specdb.dao;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -46,7 +47,12 @@ public class AccountDAO {
 		}
 		
 		//Bittrex
-		
+		try{
+			balanceList.addAll(new BittrexDAO().getAccountBalance(dbce));
+		}catch(Exception e){
+			specLogger.logp(Level.SEVERE, AccountDAO.class.getName(),"AccountDAO","Error updating polo account balance");
+			throw new SpecDbException(e.getMessage());			
+		}
 		
 		//Clean up old ones from today
 		DbUtils.accountBalCleanUp(dbce,todayMidnight);
@@ -87,7 +93,7 @@ public class AccountDAO {
 			}			
 		}		
         specLogger.logp(Level.INFO, AccountDAO.class.getName(), "getAccountBalance", "Got account balance!");        
-		return bal;
+		return bal.setScale(8,RoundingMode.DOWN);
 	}
 	
 	public static BigDecimal getCurrentAccountBalance(){
