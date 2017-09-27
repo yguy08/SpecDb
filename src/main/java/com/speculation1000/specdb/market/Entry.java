@@ -161,11 +161,11 @@ public class Entry extends Market {
 		StringBuilder sb = new StringBuilder();
 		sb.append("---------------------------\n");
 		sb.append(super.getSymbol()+directionArrow+SpecDbNumFormat.bdToEightDecimal(super.getClose())+"\n");
-		sb.append(" [ATR: "+getATR()+",");
-		sb.append(" Units: "+getAmount()+",");
-		sb.append(" Total: "+getTotal()+",");
-		sb.append(" Stop: "+getStop()+"]\n");
-		sb.append("---------------------------");
+		sb.append(" [ATR: "+getATR().toPlainString()+",");
+		sb.append(" Units: "+getAmount().toPlainString()+",");
+		sb.append(" Total: "+getTotal().toPlainString()+",");
+		sb.append(" Stop: "+getStop().toPlainString()+"]");
+		sb.append(" Volume: "+getVolume()+"]\n");
 		return sb.toString();
 	}	
 
