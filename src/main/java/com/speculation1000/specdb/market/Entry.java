@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.speculation1000.specdb.dao.AccountDAO;
+import com.speculation1000.specdb.start.StandardMode;
+import com.speculation1000.specdb.time.SpecDbDate;
 import com.speculation1000.specdb.trade.TradeStatusEnum;
 import com.speculation1000.specdb.utils.SpecDbNumFormat;
 
@@ -29,7 +31,7 @@ public class Entry extends Market {
 	public Entry() {}
 	
 	public Entry(Symbol symbol,List<Market> marketList,TradeStatusEnum tse) {
-		super(symbol,marketList.get(0).getDate(),marketList.get(0).getClose(),marketList.get(0).getVolume());
+		super(symbol,SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()),marketList.get(0).getClose(),marketList.get(0).getVolume());
 		
 		//some markets at a high are not actually entries like a new market w/ only 1 day history so filter first
 		filter(marketList);
@@ -58,7 +60,7 @@ public class Entry extends Market {
 	}
 
 	public BigDecimal getATR(){
-		return atr;
+		return atr.setScale(8, RoundingMode.UP);
 	}
 	
 	private void setATR(List<Market> marketList) {
@@ -112,11 +114,11 @@ public class Entry extends Market {
 	}
 	
 	public BigDecimal getAmount(){
-		return amount;
+		return amount.setScale(8, RoundingMode.UP);
 	}
 	
 	public BigDecimal getTotal() {
-		return total;
+		return total.setScale(8, RoundingMode.UP);
 	}
 	
 	private void setTotal() {
@@ -152,7 +154,7 @@ public class Entry extends Market {
 	}
 	
 	public BigDecimal getStop(){
-		return stop;
+		return stop.setScale(8, RoundingMode.UP);
 	}
 	
 	@Override
