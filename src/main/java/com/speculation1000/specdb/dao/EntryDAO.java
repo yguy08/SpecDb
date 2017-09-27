@@ -35,6 +35,7 @@ public class EntryDAO {
 	private void updateEntries(DbConnectionEnum dbce, int days) throws SpecDbException {		
 		List<Entry> entryList = new ArrayList<>();
 		Entry entry;
+		
 		try{
 			List<Symbol> symbolList = DbUtils.getMarketHighs(dbce, days).stream().map(Market::getSymbol).collect(Collectors.toList());
 			TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 150, symbolList);
@@ -47,13 +48,14 @@ public class EntryDAO {
 			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (long)");
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market highs");
+			throw new SpecDbException(e.getMessage());
 		}
 		
 		try{
 			List<Symbol> symbolList = DbUtils.getMarketLows(dbce, days).stream().map(Market::getSymbol).collect(Collectors.toList());
 			TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 150, symbolList);
 			for(Map.Entry<Symbol, List<Market>> e : marketMap.entrySet()){
-				entry = new Entry(e.getKey(), e.getValue(),TradeStatusEnum.SHORT);
+				entry = new Entry(e.getKey(),e.getValue(),TradeStatusEnum.SHORT);
 				if(entry.passFilter()){
 					entryList.add(entry);
 				}
@@ -61,14 +63,17 @@ public class EntryDAO {
 			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (short)");
 		}catch(Exception e){
 			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error getting market lows");
+			throw new SpecDbException(e.getMessage());
 		}
 		
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
+		long cleanUpTime = SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS());
+		
 		try{
-			DbUtils.newEntriesCleanUp(dbce,todayMidnight);
-			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Found new Entries (short)");
+			DbUtils.newEntriesCleanUp(dbce,cleanUpTime);
+			specLogger.logp(Level.INFO, EntryDAO.class.getName(),"updateEntries","Cleaned up new entries");
 		}catch(Exception e){
-			
+			specLogger.logp(Level.SEVERE, EntryDAO.class.getName(),"updateEntries","Error cleaning up new entries");
+			throw new SpecDbException(e.getMessage());
 		}
 		
 		try{
