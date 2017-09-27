@@ -17,17 +17,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<dependency>
   		<groupId>org.knowm.xchange</groupId>
   		<artifactId>xchange-core</artifactId>
-  		<version>4.2.1</version>
+  		<version>4.2.2</version>
 	</dependency>
 	<dependency>
   			<groupId>org.knowm.xchange</groupId>
   			<artifactId>xchange-poloniex</artifactId>
-  			<version>4.2.1</version>
+  			<version>4.2.2</version>
 	</dependency>
 		<dependency>
   			<groupId>org.knowm.xchange</groupId>
   			<artifactId>xchange-bittrex</artifactId>
-  			<version>4.2.1</version>
+  			<version>4.2.2</version>
 	</dependency>
 	<dependency>
       <groupId>org.jasypt</groupId>
