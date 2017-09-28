@@ -13,6 +13,10 @@ public class Config {
 	
 	private String polosecret;
 	
+	private String trexkey;
+	
+	private String trexsecret;
+	
 	private String initialdelay;
 	
 	private String runperiod;
@@ -33,12 +37,14 @@ public class Config {
 			prop.load(input);
 			
 			database = prop.getProperty("database");
-			polokey = prop.getProperty("api-key");
-			polosecret = prop.getProperty("api-secret");
+			polokey = prop.getProperty("polo-api-key");
+			polosecret = prop.getProperty("polo-api-secret");
 			initialdelay = prop.getProperty("initial-delay");
 			runperiod = prop.getProperty("run-period");
 			entryFlag = prop.getProperty("entry-flag");
 			exitFlag = prop.getProperty("exit-flag");
+			trexkey = prop.getProperty("trex-api-key");
+			trexsecret = prop.getProperty("trex-api-secret");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -63,6 +69,14 @@ public class Config {
 	
 	public String getPoloSecret() {
 		return polosecret;
+	}
+	
+	public String getTrexKey() {
+		return trexkey;
+	}
+	
+	public String getTrexSecret() {
+		return trexsecret;
 	}
 	
 	public boolean getInitialDelay(){

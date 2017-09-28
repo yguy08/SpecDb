@@ -21,7 +21,6 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
-import org.knowm.xchange.poloniex.PoloniexExchange;
 import org.knowm.xchange.service.account.AccountService;
 
 import com.speculation1000.specdb.exchange.ExchangeEnum;
@@ -43,7 +42,7 @@ public class BittrexDTO implements ExchangeDTO {
 	
 	static{
 		try{
-			trexDefault	= ExchangeFactory.INSTANCE.createExchange(PoloniexExchange.class.getName());
+			trexDefault	= ExchangeFactory.INSTANCE.createExchange(BittrexExchange.class.getName());
 			trexAuthenticated	= initAuthenticatedExchange();
 		}catch(Exception e){
 			try {
@@ -57,8 +56,8 @@ public class BittrexDTO implements ExchangeDTO {
 	private static Exchange initAuthenticatedExchange() {
 		  ExchangeSpecification spec = new ExchangeSpecification(BittrexExchange.class);
 	      Config config = new Config();
-		  spec.setApiKey(config.getPoloKey());
-		  spec.setSecretKey(config.getPoloSecret());
+		  spec.setApiKey(config.getTrexKey());
+		  spec.setSecretKey(config.getTrexSecret());
 		  return ExchangeFactory.INSTANCE.createExchange(spec);
 	}
 
