@@ -2,6 +2,7 @@ package com.speculation1000.specdb.dto;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,11 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.bittrex.BittrexExchange;
+import org.knowm.xchange.bittrex.dto.marketdata.BittrexChartData;
 import org.knowm.xchange.bittrex.dto.marketdata.BittrexTicker;
+import org.knowm.xchange.bittrex.service.BittrexChartDataPeriodType;
 import org.knowm.xchange.bittrex.service.BittrexMarketDataService;
+import org.knowm.xchange.bittrex.service.BittrexMarketDataServiceRaw;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.account.Balance;
@@ -147,6 +151,48 @@ public class BittrexDTO implements ExchangeDTO {
 			}
 		}
 		return balanceList;
+	}
+
+	@Override
+	public List<Market> fetchExchangeHistory(long startDate, long endDate) throws SpecDbException {
+		return null;
+	}
+	
+	public List<Market> getMissingHistory(List<Long> dateList){
+		List<CurrencyPair> pairList = trexDefault.getExchangeSymbols();
+		Map<CurrencyPair,List<BittrexChartData>> trexData = new TreeMap<>();
+		BittrexMarketDataServiceRaw dataService = (BittrexMarketDataServiceRaw) trexDefault.getMarketDataService();
+		for(CurrencyPair cp : pairList){
+			try {
+				List<BittrexChartData> tmpList = new ArrayList<>(); 
+				for(BittrexChartData bcd : dataService.getBittrexChartData(cp, BittrexChartDataPeriodType.ONE_DAY)){
+					long d = SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(bcd.getTimeStamp().getTime()));
+					if(dateList.indexOf(d) > 0){
+						tmpList.add(bcd);
+						trexData.put(cp,tmpList);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		List<Market> marketList = new ArrayList<>();
+		for(Map.Entry<CurrencyPair, List<BittrexChartData>> e : trexData.entrySet()){
+			for(BittrexChartData bcd : e.getValue()){
+				Market market = new Market();
+				market.setBase(e.getKey().base.toString());
+				market.setCounter(e.getKey().counter.toString());
+				market.setExchange(ExchangeEnum.BITTREX.getExchangeSymbol());
+				market.setDate(SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(bcd.getTimeStamp().getTime())));
+				market.setHigh(bcd.getHigh());
+				market.setLow(bcd.getLow());
+				market.setClose(bcd.getClose());
+				market.setVolume(bcd.getBaseVolume().intValue());
+				marketList.add(market);
+			}
+		}		
+		return null;		
 	}
 
 }
