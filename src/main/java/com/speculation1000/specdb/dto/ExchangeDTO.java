@@ -11,6 +11,8 @@ public interface ExchangeDTO {
 	List<Market> getLatestMarketList() throws SpecDbException;
 	
 	List<Market> fetchExchangeHistory(long endDate);
+	
+	List<Market> fetchExchangeHistory(long startDate, long endDate) throws SpecDbException;
 
 	List<AccountBalance> getAccountBalances() throws SpecDbException;
 	
