@@ -187,4 +187,23 @@ public class PoloniexDTO implements ExchangeDTO {
 		}
 	}
 
+	@Override
+	public List<Market> fetchExchangeHistory(long startDate, long endDate) throws SpecDbException {
+		Map<CurrencyPair,List<PoloniexChartData>> poloniexChartData = getPoloniexChartData(startDate, endDate);
+		
+		specLogger.logp(Level.INFO, PoloniexDTO.class.getName(), "fetchExchangeHistory", "Fetched Polo history from " 
+				+ SpecDbDate.longToLogStringFormat(startDate) + " " + "to " + SpecDbDate.longToLogStringFormat(endDate));
+		
+		List<Market> marketList = new ArrayList<>();
+		for(Map.Entry<CurrencyPair, List<PoloniexChartData>> e : poloniexChartData.entrySet()){
+			for(PoloniexChartData dayData : e.getValue()){
+				Market market = new Market(e.getKey().base.toString(),e.getKey().counter.toString(),ExchangeEnum.POLONIEX.getExchangeSymbol(),
+										   SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(dayData.getDate().getTime())),
+						                   dayData.getClose(),dayData.getHigh(),dayData.getLow(),dayData.getVolume().intValue());
+				marketList.add(market);
+			}
+		}
+		return marketList;
+	}
+
 }
