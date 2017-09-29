@@ -1,10 +1,12 @@
 package com.speculation1000.specdb.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.db.DbConnectionEnum;
+import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.dto.BittrexDTO;
 import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
@@ -27,8 +29,21 @@ public class BittrexDAO implements ExchangeDAO {
 
 	@Override
 	public void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException {
-		// TODO Auto-generated method stub
-		
+		specLogger.logp(Level.INFO, BittrexDAO.class.getName(),"restoreMarkets","Starting trex market restore");
+		//select distinct dates
+		List<Long> dateList = DbUtils.getDistinctDates(dbce, 25, "TREX");
+		List<Market> marketList = new ArrayList<>();
+		for(long i = dateList.get(1);i < dateList.get(dateList.size()-1);i+=86400){
+			if(dateList.indexOf(i) < 0){
+				//trex needs to get ALL
+			}
+		}		
+		if(marketList.size()>0){
+			specLogger.logp(Level.INFO, BittrexDAO.class.getName(),"restoreMarkets","Had some missing markets! Inserting missing markets.");
+			DbUtils.insertMarkets(dbce, marketList);
+		}else{
+			specLogger.logp(Level.INFO, BittrexDAO.class.getName(),"restoreMarkets","No markets missing");
+		}				
 	}
 
 	@Override
