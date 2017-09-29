@@ -315,7 +315,35 @@ public class DbUtils {
 	        }
         	throw new SpecDbException("Error getting latest account balances");       	
         }		
-	}	
+	}
+	
+	public static List<Long> getDistinctDates(DbConnectionEnum dbce, int days, String exchange) throws SpecDbException {
+		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
+		String sqlCommand = "SELECT DISTINCT(DATE) FROM MARKETS WHERE DATE >= " + fromDateMidnight
+						  + " AND EXCHANGE = '"+exchange+"'"
+						  + " ORDER BY DATE ASC";
+        try {
+        	Connection conn = DbUtils.connect(dbce);
+            Statement tmpStatement = conn.createStatement();
+            ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
+            List<Long> dateList = new ArrayList<>();
+            while(resultSet.next()){
+            	dateList.add(resultSet.getLong(1));
+            }
+            tmpStatement.close();
+            conn.close();
+            return dateList;
+        }catch(SQLException ex){
+        	while (ex != null) {
+            	specLogger.logp(Level.INFO, DbUtils.class.getName(), "getDistinctDates", ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+        	throw new SpecDbException("Error getting distinct dates");       	
+        }		
+	}
+	
+	
+	
 	/* ---------- END SELECT QUERIES ------------- */
 	
 	/* ---------- START CLEAN UPS (DELETES) ------------- */
