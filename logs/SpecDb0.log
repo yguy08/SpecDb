@@ -1,699 +1,102 @@
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: 
 ********** SpecDb ************** 
 [ Digital Asset Price Database ]
 ********************************
 * Start Up: 
-* At: 2017-09-29T12:04:36.896Z[Etc/UTC]
+* At: 2017-10-01T20:08:58.237Z[Etc/UTC]
 ********************************
 
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.DbServer startDb
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.DbServer startDb
 INFO: H2 DbServer started
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: H2 server start up successful
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: Able to connect to db and create tables.
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.db.DbUtils createCloseIndex
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.db.DbUtils createCloseIndex
 INFO: Close index created (if it didn't already exist)
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: Close index created
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StandardMode startApp
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StandardMode startApp
 INFO: * Next update in 0 seconds
-Sep 29, 2017 8:04:37 AM com.speculation1000.specdb.start.StartApp getStartRunMessage
-INFO: 
-********************************
-          [ STANDARDMODE ] 
-********************************
-            [START]
-* At: 2017-09-29T12:04:37.387Z[Etc/UTC]
-********************************
-
-Sep 29, 2017 8:04:38 AM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
+Oct 01, 2017 4:08:58 PM com.speculation1000.specdb.start.StartApp getStartRunMessage
+INFO: [STANDARDMODE] - @2017-10-01T20:08:58.537Z[Etc/UTC]
+Oct 01, 2017 4:08:59 PM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
 INFO: Loading Polo markets from Polo API...
-Sep 29, 2017 8:04:44 AM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
-INFO: Fetched latest Polo markets for: 2017-09-29T00:00:00Z[Etc/UTC]
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
+Oct 01, 2017 4:09:08 PM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
+INFO: Fetched latest Polo markets for: 2017-10-01T00:00:00Z[Etc/UTC]
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
 INFO: Got Bittrex Chart Data
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.dao.BittrexDAO getLatestMarkets
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.dao.BittrexDAO getLatestMarkets
 INFO: Got latest bittrex markets
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.db.DbUtils insertMarkets
 INFO: Adding batch: 100
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.db.DbUtils insertMarkets
 INFO: total time taken to insert the batch = 29 ms
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.db.DbUtils insertMarkets
 INFO: Adding batch: 258
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.db.DbUtils insertMarkets
-INFO: total time taken to insert the batch = 63 ms
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.dao.MarketDAO updateTickerList
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: total time taken to insert the batch = 48 ms
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.dao.MarketDAO updateTickerList
 INFO: Ticker updated successfully
-Sep 29, 2017 8:04:45 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
-INFO: Polo Restore: Nothing to restore!
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.dao.PoloniexDAO getAccountBalance
+Oct 01, 2017 4:09:09 PM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Starting polo market restore
+Oct 01, 2017 4:09:10 PM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: No markets missing
+Oct 01, 2017 4:09:10 PM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+INFO: Starting trex market restore
+Oct 01, 2017 4:09:10 PM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+INFO: No markets missing
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.dao.PoloniexDAO getAccountBalance
 INFO: AccountBalance
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.dao.AccountDAO updateAccountBalance
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.dao.AccountDAO updateAccountBalance
 INFO: Got polo balances
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.dao.BittrexDAO getAccountBalance
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.dao.BittrexDAO getAccountBalance
 INFO: Got Trex Account Balance
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.db.DbUtils insertUpdatedAccountBalances
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.db.DbUtils insertUpdatedAccountBalances
 INFO: total time taken to insert the batch = 1 ms
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.dao.AccountDAO getAccountBalance
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.dao.AccountDAO getAccountBalance
 INFO: Updated account balance!
-Sep 29, 2017 8:04:46 AM com.speculation1000.specdb.dao.AccountDAO AccountDAO
+Oct 01, 2017 4:09:11 PM com.speculation1000.specdb.dao.AccountDAO AccountDAO
 INFO: Acocunt balance update successfully!
-Sep 29, 2017 8:04:47 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
-INFO: Found new Entries (long)
-Sep 29, 2017 8:04:48 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
-INFO: Found new Entries (short)
-Sep 29, 2017 8:04:48 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+Oct 01, 2017 4:09:12 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 25
+Oct 01, 2017 4:09:13 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 11
+Oct 01, 2017 4:09:14 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 55
+Oct 01, 2017 4:09:15 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: 25
+Oct 01, 2017 4:09:16 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: 11
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: 55
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
 INFO: Cleaned up new entries
-Sep 29, 2017 8:04:48 AM com.speculation1000.specdb.db.DbUtils insertNewEntries
-INFO: total time taken to insert the batch = 7 ms
-Sep 29, 2017 8:04:49 AM com.speculation1000.specdb.start.StandardMode getTickerString
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.db.DbUtils insertNewEntries
+INFO: total time taken to insert the batch = 6 ms
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Inserted market h/l
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
 INFO: ********************************
-          [ TICKERTAPE ]
-2017-09-29T12:04:49.124Z[Etc/UTC]
-1STBTC:TREX @0.00008993
-1STETH:TREX @0.00126126
-2GIVEBTC:TREX @0.00000148
-ABYBTC:TREX @0.00000194
-ADABTC:TREX @0E-8
-ADTBTC:TREX @0.00000990
-ADTETH:TREX @0.00014231
-ADXBTC:TREX @0.00023334
-ADXETH:TREX @0.00334956
-AEONBTC:TREX @0.00036500
-AGRSBTC:TREX @0.00009433
-AMPBTC:POLO @0.00003749
-AMPBTC:TREX @0.00003780
-ANTBTC:TREX @0.00044835
-ANTETH:TREX @0.00639818
-APXBTC:TREX @0.00209974
-ARDRBTC:POLO @0.00004277
-ARDRBTC:TREX @0.00004334
-ARKBTC:TREX @0.00066300
-AURBTC:TREX @0.00015442
-BATBTC:TREX @0.00005750
-BATETH:TREX @0.00080136
-BAYBTC:TREX @0.00000808
-BCCBTC:TREX @0.10579882
-BCCETH:TREX @1.51106917
-BCCUSDT:TREX @449.62795619
-BCHBTC:POLO @0.10611
-BCHETH:POLO @1.51856312
-BCHUSDT:POLO @444.5008788
-BCNBTC:POLO @3.2E-7
-BCNXMR:POLO @0.00001423
-BCYBTC:POLO @0.00008409
-BCYBTC:TREX @0.00008392
-BELABTC:POLO @0.0000345
-BITBBTC:TREX @7.7E-7
-BLITZBTC:TREX @0.00036189
-BLKBTC:POLO @0.000046
-BLKBTC:TREX @0.00004564
-BLKXMR:POLO @0.00204422
-BLOCKBTC:TREX @0.00471507
-BNTBTC:TREX @0.00054051
-BNTETH:TREX @0.00778292
-BRKBTC:TREX @0.00003853
-BRXBTC:TREX @0.00012970
-BSDBTC:TREX @0.00009904
-BTABTC:TREX @0.00018397
-BTCDBTC:POLO @0.02193598
-BTCDBTC:TREX @0.02193199
-BTCDXMR:POLO @0.97285314
-BTCUSDT:POLO @4199.92999994
-BTCUSDT:TREX @4210.00000000
-BTMBTC:POLO @0.00013949
-BTSBTC:POLO @0.00002013
-BTSBTC:TREX @0.00002003
-BTSETH:TREX @0.00028687
-BURSTBTC:POLO @0.00000205
-BURSTBTC:TREX @0.00000208
-BYCBTC:TREX @0.00015356
-CANNBTC:TREX @0.00000802
-CFIBTC:TREX @0.00003382
-CFIETH:TREX @0.00048850
-CLAMBTC:POLO @0.00210839
-CLAMBTC:TREX @0.00211766
-CLOAKBTC:TREX @0.00171144
-CLUBBTC:TREX @0.00011000
-COVALBTC:TREX @0.00000132
-CPCBTC:TREX @0.00013867
-CRBBTC:TREX @0.00015000
-CRBETH:TREX @0.00217756
-CRWBTC:TREX @0.00034300
-CUREBTC:TREX @0.00005586
-CVCBTC:POLO @0.00009724
-CVCBTC:TREX @0.00009700
-CVCETH:POLO @0.00136464
-CVCETH:TREX @0.00138800
-DARBTC:TREX @0.00008348
-DASHBTC:POLO @0.07938701
-DASHBTC:TREX @0.07933115
-DASHETH:TREX @1.13443216
-DASHUSDT:POLO @330.74110003
-DASHUSDT:TREX @334.31900000
-DASHXMR:POLO @3.49541743
-DCRBTC:POLO @0.008057
-DCRBTC:TREX @0.00809900
-DCTBTC:TREX @0.00016928
-DGBBTC:POLO @0.00000355
-DGBBTC:TREX @0.00000354
-DGBETH:TREX @0.00005088
-DGDBTC:TREX @0.01844300
-DGDETH:TREX @0.26350000
-DMDBTC:TREX @0.00274010
-DOGEBTC:POLO @2.5E-7
-DOGEBTC:TREX @2.4E-7
-DOPEBTC:TREX @0.00000955
-DRACOBTC:TREX @0.00000314
-DTBBTC:TREX @0.00012673
-DYNBTC:TREX @0.00049240
-EBSTBTC:TREX @0.00004139
-EDGBTC:TREX @0.00020264
-EFLBTC:TREX @0.00002526
-EGCBTC:TREX @0.00005603
-EMC2BTC:POLO @0.0000316
-EMC2BTC:TREX @0.00003219
-EMCBTC:TREX @0.00015181
-ENRGBTC:TREX @0.00002880
-ERCBTC:TREX @0.00012658
-ETCBTC:POLO @0.00309688
-ETCBTC:TREX @0.00309955
-ETCETH:POLO @0.04385715
-ETCETH:TREX @0.04365723
-ETCUSDT:POLO @12.99999999
-ETCUSDT:TREX @12.97000000
-ETHBTC:POLO @0.07039997
-ETHBTC:TREX @0.07025007
-ETHUSDT:POLO @296
-ETHUSDT:TREX @295.74000000
-EXCLBTC:TREX @0.00031355
-EXPBTC:POLO @0.00055459
-EXPBTC:TREX @0.00055347
-FAIRBTC:TREX @0.00017942
-FCTBTC:POLO @0.00439376
-FCTBTC:TREX @0.00438099
-FCTETH:TREX @0.06200116
-FLDCBTC:POLO @0.00000306
-FLDCBTC:TREX @0.00000305
-FLOBTC:POLO @0.00002056
-FLOBTC:TREX @0.00002060
-FTCBTC:TREX @0.00001205
-FUNBTC:TREX @0.00000654
-FUNETH:TREX @0.00009234
-GAMBTC:TREX @0.00291313
-GAMEBTC:POLO @0.00059556
-GAMEBTC:TREX @0.00059519
-GASBTC:POLO @0.00536645
-GASETH:POLO @0.07500001
-GBGBTC:TREX @0.00002510
-GBYTEBTC:TREX @0.05608883
-GCRBTC:TREX @0.00001328
-GEOBTC:TREX @0.00029059
-GLDBTC:TREX @0.00003098
-GNOBTC:POLO @0.03096917
-GNOBTC:TREX @0.03090000
-GNOETH:POLO @0.44205358
-GNOETH:TREX @0.44249935
-GNTBTC:POLO @0.00006301
-GNTBTC:TREX @0.00006339
-GNTETH:POLO @0.00089921
-GNTETH:TREX @0.00090594
-GOLOSBTC:TREX @0.00002334
-GRCBTC:POLO @0.00000839
-GRCBTC:TREX @0.00000835
-GRSBTC:TREX @0.00003220
-GUPBTC:TREX @0.00004648
-GUPETH:TREX @0.00066000
-HMQBTC:TREX @0.00003406
-HMQETH:TREX @0.00048145
-HUCBTC:POLO @0.0000263
-INCNTBTC:TREX @0.00004359
-INFXBTC:TREX @0.00019157
-IOCBTC:TREX @0.00082100
-IONBTC:TREX @0.00035594
-IOPBTC:TREX @0.00111552
-KMDBTC:TREX @0.00048107
-KOREBTC:TREX @0.00132524
-LBCBTC:POLO @0.00005446
-LBCBTC:TREX @0.00005460
-LGDBTC:TREX @0.00028000
-LGDETH:TREX @0.00396469
-LMCBTC:TREX @0.00001290
-LSKBTC:POLO @0.00138088
-LSKBTC:TREX @0.00138378
-LSKETH:POLO @0.01978942
-LTCBTC:POLO @0.0127434
-LTCBTC:TREX @0.01275300
-LTCETH:TREX @0.18328994
-LTCUSDT:POLO @53.49415167
-LTCUSDT:TREX @53.77000000
-LTCXMR:POLO @0.570625
-LUNBTC:TREX @0.00216064
-LUNETH:TREX @0.03100222
-MAIDBTC:POLO @0.00011116
-MAIDBTC:TREX @0.00011190
-MAIDXMR:POLO @0.00497308
-MCOBTC:TREX @0.00217936
-MCOETH:TREX @0.03100000
-MEMEBTC:TREX @0.00008083
-MLNBTC:TREX @0.01561013
-MONABTC:TREX @0.00011281
-MTLBTC:TREX @0.00210459
-MTLETH:TREX @0.03000000
-MUEBTC:TREX @0.00003827
-MUSICBTC:TREX @0.00000599
-MYSTBTC:TREX @0.00020765
-MYSTETH:TREX @0.00296550
-NAUTBTC:POLO @0.00003253
-NAVBTC:POLO @0.00022349
-NAVBTC:TREX @0.00022520
-NBTBTC:TREX @0.00024410
-NEOBTC:TREX @0.00708899
-NEOETH:TREX @0.10040036
-NEOSBTC:POLO @0.00071174
-NEOSBTC:TREX @0.00072576
-NEOUSDT:TREX @29.78000000
-NLGBTC:TREX @0.00002815
-NMCBTC:POLO @0.00032022
-NMRBTC:TREX @0.00353256
-NMRETH:TREX @0.04963677
-NOTEBTC:POLO @0.00001238
-NXCBTC:POLO @0.00007866
-NXCBTC:TREX @0.00007995
-NXSBTC:TREX @0.00042001
-NXTBTC:POLO @0.000017
-NXTBTC:TREX @0.00001697
-NXTUSDT:POLO @0.071859
-NXTXMR:POLO @0.00076348
-OKBTC:TREX @0.00007209
-OMGBTC:POLO @0.00241096
-OMGBTC:TREX @0.00241680
-OMGETH:POLO @0.03449777
-OMGETH:TREX @0.03447000
-OMGUSDT:TREX @10.17000000
-OMNIBTC:POLO @0.00619332
-OMNIBTC:TREX @0.00618000
-PARTBTC:TREX @0.00185500
-PASCBTC:POLO @0.0000915
-PAYBTC:TREX @0.00061706
-PAYETH:TREX @0.00879000
-PDCBTC:TREX @0.00003451
-PINKBTC:POLO @0.00000561
-PINKBTC:TREX @0.00000567
-PIVXBTC:TREX @0.00074975
-PKBBTC:TREX @0.00009445
-POTBTC:POLO @0.00001876
-POTBTC:TREX @0.00001855
-PPCBTC:POLO @0.00030614
-PPCBTC:TREX @0.00030461
-PTCBTC:TREX @0.00000960
-PTOYBTC:TREX @0.00010800
-PTOYETH:TREX @0.00152000
-QRLBTC:TREX @0.00015473
-QRLETH:TREX @0.00219886
-QTUMBTC:TREX @0.00236888
-QTUMETH:TREX @0.03375000
-QWARKBTC:TREX @0.00004199
-RADSBTC:POLO @0.00115754
-RADSBTC:TREX @0.00116153
-RBYBTC:TREX @0.00015687
-RDDBTC:TREX @3.0E-7
-REPBTC:POLO @0.00499876
-REPBTC:TREX @0.00496403
-REPETH:POLO @0.07102233
-REPETH:TREX @0.07185000
-REPUSDT:POLO @20.94813654
-RICBTC:POLO @0.000014
-RISEBTC:TREX @0.00009770
-RLCBTC:TREX @0.00012874
-RLCETH:TREX @0.00184786
-SAFEXBTC:TREX @0.00000259
-SBDBTC:POLO @0.00024911
-SBDBTC:TREX @0.00025090
-SCBTC:POLO @0.00000117
-SCBTC:TREX @0.00000115
-SCETH:TREX @0.00001643
-SEQBTC:TREX @0.00003154
-SHIFTBTC:TREX @0.00032655
-SIBBTC:TREX @0.00028893
-SJCXBTC:POLO @0.00013416
-SLRBTC:TREX @0.00005633
-SLSBTC:TREX @0.00356998
-SNGLSBTC:TREX @0.00003958
-SNGLSETH:TREX @0.00056322
-SNRGBTC:TREX @0.00034327
-SNTBTC:TREX @0.00000655
-SNTETH:TREX @0.00009437
-SPHRBTC:TREX @0.00061188
-SPRBTC:TREX @0.00042634
-STARTBTC:TREX @0.00001480
-STEEMBTC:POLO @0.0003484
-STEEMBTC:TREX @0.00034933
-STEEMETH:POLO @0.0049098
-STORJBTC:TREX @0.00011720
-STORJETH:TREX @0.00174091
-STRATBTC:POLO @0.00108786
-STRATBTC:TREX @0.00109545
-STRATETH:TREX @0.01565920
-STRBTC:POLO @0.00000319
-STRUSDT:POLO @0.01343619
-SWIFTBTC:TREX @0.00030000
-SWTBTC:TREX @0.00041801
-SYNXBTC:TREX @0.00005130
-SYSBTC:POLO @0.0000383
-SYSBTC:TREX @0.00003832
-THCBTC:TREX @0.00000460
-TIMEBTC:TREX @0.00473500
-TIMEETH:TREX @0.06995063
-TKNBTC:TREX @0.00038805
-TKNETH:TREX @0.00556498
-TKSBTC:TREX @0.00056998
-TRIGBTC:TREX @0.00023870
-TRSTBTC:TREX @0.00009438
-TRSTETH:TREX @0.00136871
-TRUSTBTC:TREX @0.00003878
-TXBTC:TREX @0.00010819
-UBQBTC:TREX @0.00040900
-UNBBTC:TREX @0.00006920
-UNOBTC:TREX @0.02632197
-VIABTC:POLO @0.00029389
-VIABTC:TREX @0.00030000
-VOXBTC:TREX @0.00001278
-VRCBTC:POLO @0.00008341
-VRCBTC:TREX @0.00008235
-VRMBTC:TREX @0.00049570
-VTCBTC:POLO @0.00023839
-VTCBTC:TREX @0.00024000
-VTRBTC:TREX @0.00006142
-WAVESBTC:TREX @0.00113187
-WAVESETH:TREX @0.01630000
-WINGSBTC:TREX @0.00014050
-WINGSETH:TREX @0.00201313
-XAURBTC:TREX @0.00004372
-XBCBTC:POLO @0.016
-XCPBTC:POLO @0.00231394
-XCPBTC:TREX @0.00234554
-XDNBTC:TREX @5.4E-7
-XELBTC:TREX @0.00011136
-XEMBTC:POLO @0.00005493
-XEMBTC:TREX @0.00005500
-XEMETH:TREX @0.00078969
-XLMBTC:TREX @0.00000320
-XLMETH:TREX @0.00004557
-XMGBTC:TREX @0.00006033
-XMRBTC:POLO @0.02231405
-XMRBTC:TREX @0.02230280
-XMRETH:TREX @0.31500000
-XMRUSDT:POLO @93.86829716
-XMRUSDT:TREX @94.00000000
-XMYBTC:TREX @5.8E-7
-XPMBTC:POLO @0.00003643
-XRPBTC:POLO @0.00004699
-XRPBTC:TREX @0.00004719
-XRPETH:TREX @0.00067234
-XRPUSDT:POLO @0.19790401
-XRPUSDT:TREX @0.19800000
-XSTBTC:TREX @0.00005362
-XVCBTC:POLO @0.00007583
-XVCBTC:TREX @0.00011998
-XVGBTC:TREX @0.00000163
-XWCBTC:TREX @0.00000682
-XZCBTC:TREX @0.00316966
-ZCLBTC:TREX @0.00047118
-ZECBTC:POLO @0.07130683
-ZECBTC:TREX @0.07140000
-ZECETH:POLO @0.99933633
-ZECETH:TREX @1.00600000
-ZECUSDT:POLO @299.12000021
-ZECUSDT:TREX @301.00000000
-ZECXMR:POLO @3.20484723
-ZENBTC:TREX @0.00198888
-ZRXBTC:POLO @0.00005081
-ZRXETH:POLO @0.00072444
-********************************
-
-Sep 29, 2017 8:04:49 AM com.speculation1000.specdb.start.StandardMode getEntriesString
-INFO: 
-********************************
-          [ ENTRIES ]
-9/29/17 0:04 PM (UTC)
----------------------------
-AEONBTC:TREX▲0.00036500
- [ATR: 0.00004385, Units: 410.92230000, Total: 0.14998664, Stop: 0.00027731] Volume: 47]
-
----------------------------
-ARDRBTC:POLO▲0.00004277
- [ATR: 0.00000427, Units: 4227.79400000, Total: 0.18082275, Stop: 0.00003425] Volume: 79]
-
----------------------------
-ARDRBTC:TREX▲0.00004334
- [ATR: 0.00000423, Units: 4266.67900000, Total: 0.18491787, Stop: 0.00003490] Volume: 258]
-
----------------------------
-BAYBTC:TREX▲0.00000808
- [ATR: 0.00000097, Units: 18615.64000000, Total: 0.15041438, Stop: 0.00000615] Volume: 180]
-
----------------------------
-BCCBTC:TREX▼0.10579882
- [ATR: 0.01753310, Units: 1.02769400, Total: 0.10872882, Stop: 0.14086502] Volume: 3085]
-
----------------------------
-BCHBTC:POLO▼0.10611000
- [ATR: 0.01982131, Units: 0.90905550, Total: 0.09645988, Stop: 0.14575262] Volume: 307]
-
----------------------------
-BCNBTC:POLO▼3.2E-7
- [ATR: 0.00000006, Units: 350735.90000000, Total: 0.11223549, Stop: 0.00000043] Volume: 45]
-
----------------------------
-BCYBTC:POLO▼0.00008409
- [ATR: 0.00001195, Units: 1508.39800000, Total: 0.12684119, Stop: 0.00010799] Volume: 10]
-
----------------------------
-BCYBTC:TREX▼0.00008392
- [ATR: 0.00001489, Units: 1210.49800000, Total: 0.10158500, Stop: 0.00011370] Volume: 13]
-
----------------------------
-BURSTBTC:POLO▼0.00000205
- [ATR: 0.00000034, Units: 53626.36000000, Total: 0.10993404, Stop: 0.00000273] Volume: 24]
-
----------------------------
-BYCBTC:TREX▲0.00015356
- [ATR: 0.00001816, Units: 992.26120000, Total: 0.15237163, Stop: 0.00011725] Volume: 39]
-
----------------------------
-EMC2BTC:POLO▲0.00003160
- [ATR: 0.00000284, Units: 6364.12000000, Total: 0.20110620, Stop: 0.00002594] Volume: 329]
-
----------------------------
-EMC2BTC:TREX▲0.00003219
- [ATR: 0.00000328, Units: 5505.42400000, Total: 0.17721960, Stop: 0.00002565] Volume: 2890]
-
----------------------------
-EMCBTC:TREX▼0.00015181
- [ATR: 0.00004564, Units: 394.85080000, Total: 0.05994230, Stop: 0.00024308] Volume: 21]
-
----------------------------
-EXPBTC:POLO▼0.00055459
- [ATR: 0.00008436, Units: 213.60950000, Total: 0.11846570, Stop: 0.00072330] Volume: 8]
-
----------------------------
-EXPBTC:TREX▼0.00055347
- [ATR: 0.00010907, Units: 165.20830000, Total: 0.09143784, Stop: 0.00077161] Volume: 56]
-
----------------------------
-FCTBTC:TREX▼0.00438099
- [ATR: 0.00058871, Units: 30.60746000, Total: 0.13409098, Stop: 0.00555840] Volume: 86]
-
----------------------------
-FUNBTC:TREX▲0.00000654
- [ATR: 0.00000088, Units: 20593.68000000, Total: 0.13468267, Stop: 0.00000480] Volume: 242]
-
----------------------------
-FUNETH:TREX▲0.00009234
- [ATR: 0.00001242, Units: 1451.72100000, Total: 0.13405192, Stop: 0.00006752] Volume: 215]
-
----------------------------
-GBYTEBTC:TREX▼0.05608883
- [ATR: 0.00782070, Units: 2.30397200, Total: 0.12922710, Stop: 0.07173023] Volume: 48]
-
----------------------------
-GCRBTC:TREX▲0.00001328
- [ATR: 0.00000181, Units: 9988.42000000, Total: 0.13264622, Stop: 0.00000968] Volume: 50]
-
----------------------------
-GNTBTC:POLO▼0.00006301
- [ATR: 0.00000816, Units: 2210.51000000, Total: 0.13928424, Stop: 0.00007932] Volume: 40]
-
----------------------------
-GNTBTC:TREX▼0.00006339
- [ATR: 0.00000777, Units: 2319.17400000, Total: 0.14701244, Stop: 0.00007893] Volume: 138]
-
----------------------------
-GOLOSBTC:TREX▼0.00002334
- [ATR: 0.00000343, Units: 5255.17200000, Total: 0.12265572, Stop: 0.00003020] Volume: 6]
-
----------------------------
-IOPBTC:TREX▲0.00111552
- [ATR: 0.00018339, Units: 98.25393000, Total: 0.10960423, Stop: 0.00074875] Volume: 3134]
-
----------------------------
-LTCBTC:POLO▼0.01274340
- [ATR: 0.00115871, Units: 15.55066000, Total: 0.19816829, Stop: 0.01506082] Volume: 893]
-
----------------------------
-LTCBTC:TREX▼0.01275300
- [ATR: 0.00123073, Units: 14.64066000, Total: 0.18671234, Stop: 0.01521446] Volume: 948]
-
----------------------------
-MAIDBTC:POLO▼0.00011116
- [ATR: 0.00001416, Units: 1273.07600000, Total: 0.14151513, Stop: 0.00013947] Volume: 133]
-
----------------------------
-MAIDBTC:TREX▼0.00011190
- [ATR: 0.00001535, Units: 1174.50500000, Total: 0.13142711, Stop: 0.00014259] Volume: 138]
-
----------------------------
-MEMEBTC:TREX▲0.00008083
- [ATR: 0.00000793, Units: 2273.98300000, Total: 0.18380605, Stop: 0.00006499] Volume: 1088]
-
----------------------------
-MTLBTC:TREX▼0.00210459
- [ATR: 0.00031731, Units: 56.78645000, Total: 0.11951220, Stop: 0.00273921] Volume: 294]
-
----------------------------
-NAUTBTC:POLO▼0.00003253
- [ATR: 0.00000455, Units: 3965.24000000, Total: 0.12898926, Stop: 0.00004162] Volume: 1]
-
----------------------------
-NEOSBTC:POLO▼0.00071174
- [ATR: 0.00013101, Units: 137.54230000, Total: 0.09789436, Stop: 0.00097375] Volume: 8]
-
----------------------------
-NMRBTC:TREX▼0.00353256
- [ATR: 0.00091223, Units: 19.75244000, Total: 0.06977668, Stop: 0.00535701] Volume: 28]
-
----------------------------
-NMRETH:TREX▼0.04963677
- [ATR: 0.01129898, Units: 1.59471700, Total: 0.07915661, Stop: 0.07223473] Volume: 21]
-
----------------------------
-NXSBTC:TREX▼0.00042001
- [ATR: 0.00010149, Units: 177.54310000, Total: 0.07456988, Stop: 0.00062299] Volume: 263]
-
----------------------------
-OMNIBTC:POLO▼0.00619332
- [ATR: 0.00099220, Units: 18.16045000, Total: 0.11247348, Stop: 0.00817771] Volume: 3]
-
----------------------------
-OMNIBTC:TREX▼0.00618000
- [ATR: 0.00097260, Units: 18.52640000, Total: 0.11449316, Stop: 0.00812519] Volume: 4]
-
----------------------------
-POTBTC:POLO▼0.00001876
- [ATR: 0.00000238, Units: 7579.31500000, Total: 0.14218795, Stop: 0.00002352] Volume: 5]
-
----------------------------
-POTBTC:TREX▼0.00001855
- [ATR: 0.00000248, Units: 7268.48300000, Total: 0.13483036, Stop: 0.00002351] Volume: 14]
-
----------------------------
-PPCBTC:POLO▼0.00030614
- [ATR: 0.00004576, Units: 393.80680000, Total: 0.12056002, Stop: 0.00039766] Volume: 3]
-
----------------------------
-PPCBTC:TREX▼0.00030461
- [ATR: 0.00005010, Units: 359.65950000, Total: 0.10955589, Stop: 0.00040481] Volume: 10]
-
----------------------------
-SCBTC:TREX▼0.00000115
- [ATR: 0.00000018, Units: 101297.90000000, Total: 0.11649259, Stop: 0.00000151] Volume: 292]
-
----------------------------
-SEQBTC:TREX▼0.00003154
- [ATR: 0.00000494, Units: 3648.93100000, Total: 0.11508729, Stop: 0.00004142] Volume: 23]
-
----------------------------
-STEEMBTC:POLO▲0.00034840
- [ATR: 0.00003615, Units: 498.55060000, Total: 0.17369503, Stop: 0.00027612] Volume: 418]
-
----------------------------
-STEEMBTC:TREX▲0.00034933
- [ATR: 0.00004174, Units: 431.73050000, Total: 0.15081642, Stop: 0.00026586] Volume: 1063]
-
----------------------------
-STEEMETH:POLO▲0.00490980
- [ATR: 0.00046943, Units: 38.38474000, Total: 0.18846140, Stop: 0.00397096] Volume: 106]
-
----------------------------
-VTRBTC:TREX▲0.00006142
- [ATR: 0.00000864, Units: 2087.44500000, Total: 0.12821088, Stop: 0.00004416] Volume: 91]
-
----------------------------
-WINGSBTC:TREX▼0.00014050
- [ATR: 0.00001926, Units: 935.93220000, Total: 0.13149848, Stop: 0.00017901] Volume: 54]
-
----------------------------
-XCPBTC:POLO▼0.00231394
- [ATR: 0.00034257, Units: 52.59900000, Total: 0.12171094, Stop: 0.00299908] Volume: 12]
-
----------------------------
-XCPBTC:TREX▼0.00234554
- [ATR: 0.00041842, Units: 43.06384000, Total: 0.10100796, Stop: 0.00318238] Volume: 34]
-
----------------------------
-XMRBTC:POLO▼0.02231405
- [ATR: 0.00214866, Units: 8.38603100, Total: 0.18712632, Stop: 0.02661136] Volume: 455]
-
----------------------------
-XMRBTC:TREX▼0.02230280
- [ATR: 0.00294739, Units: 6.11344500, Total: 0.13634695, Stop: 0.02819757] Volume: 338]
-
----------------------------
-XMRETH:TREX▼0.31500000
- [ATR: 0.03943721, Units: 0.45689520, Total: 0.14392199, Stop: 0.39387442] Volume: 611]
-
----------------------------
-XRPBTC:POLO▼0.00004699
- [ATR: 0.00000442, Units: 4083.07000000, Total: 0.19186346, Stop: 0.00005582] Volume: 1109]
-
----------------------------
-XVCBTC:POLO▼0.00007583
- [ATR: 0.00001974, Units: 912.82300000, Total: 0.06921937, Stop: 0.00011531] Volume: 2]
-
----------------------------
-XWCBTC:TREX▲0.00000682
- [ATR: 0.00000104, Units: 17360.68000000, Total: 0.11839984, Stop: 0.00000475] Volume: 268]
-
----------------------------
-ZECETH:TREX▲1.00600000
- [ATR: 0.10052040, Units: 0.17925390, Total: 0.18032943, Stop: 0.80495920] Volume: 5373]
-
----------------------------
-ZECXMR:POLO▲3.20484723
- [ATR: 0.34513840, Units: 0.05220709, Total: 0.16731575, Stop: 2.51457043] Volume: 328]
-
-********************************
-
-Sep 29, 2017 8:04:49 AM com.speculation1000.specdb.dao.AccountDAO getAccountBalance
-INFO: Got account balance!
-Sep 29, 2017 8:04:49 AM com.speculation1000.specdb.start.StandardMode getBalanceString
-INFO: 
-********************************
-          [ BALANCE ]
-2017-09-29T12:04:49.143Z[Etc/UTC]
-1.80186746
-********************************
-
-Sep 29, 2017 8:04:49 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
-INFO: 
-********************************
-          [SYSTEMSTATUS] 
-* At: 2017-09-29T12:04:49.329Z[Etc/UTC]
-* App Running since: 2017-09-29T12:04:36.896Z[Etc/UTC] (Uptime: 13 secs)
-* H2 DB Running since: 2017-09-29T12:04:37.025Z[Etc/UTC] (Uptime: 12 secs)
-* H2 DB Status: TCP server running at tcp://192.168.1.159:8089 (others can connect)
-********************************
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: [SYSTEMSTATUS]
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * At: 2017-10-01T20:09:17.943Z[Etc/UTC]
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * App Running since: 2017-10-01T20:08:58.237Z[Etc/UTC]
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * App Uptime: 19 secs
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * H2 DB Status: TCP server running at tcp://192.168.1.159:8089 (others can connect)
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Total Memory (mB): 968
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Free Memory (mB): 438
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Used Memory (mB): 529
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Max (mB): 2711
+Oct 01, 2017 4:09:17 PM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Next Update in 282 seconds
 

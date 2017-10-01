@@ -12,16 +12,17 @@ import java.util.stream.Collectors;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
-import com.speculation1000.specdb.db.QueryTable;
-import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
-import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class MarketDAO {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
+	
+	public static Map<Symbol,BigDecimal> currentCloseMap = null;
 	
 	public MarketDAO(DbConnectionEnum dbce) throws SpecDbException {
 		//update ticker to latest
@@ -34,11 +35,17 @@ public class MarketDAO {
 		}		
 		//restore markets, if necessary
 		try{
-			restoreMarkets(dbce);
+			restoreMarkets(dbce, 25);
 		}catch(SpecDbException e){
 			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"MarketDAO","Error restoring markets");
 			throw new SpecDbException(e.getMessage());
-		}		
+		}
+		
+		try {
+			updateCurrentCloseMap(dbce);
+		}catch(Exception e) {
+			
+		}
 	}
 	
 	private void updateTickerList(DbConnectionEnum dbce) throws SpecDbException{
@@ -80,10 +87,18 @@ public class MarketDAO {
 			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error inserting new trex markets");
 			throw new SpecDbException(e.getMessage());
 		}
+		
 	}
 	
-	private void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException{
-        new PoloniexDAO().restoreMarkets(dbce);
+	private void restoreMarkets(DbConnectionEnum dbce, int days) throws SpecDbException{
+		//restore markets, if necessary
+		try{
+			new PoloniexDAO().restoreMarkets(dbce,days);
+			new BittrexDAO().restoreMarkets(dbce,days);
+		}catch(SpecDbException e){
+			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"restoreMarkets","Error restoring markets");
+			throw new SpecDbException(e.getMessage());
+		}
 	}
 	
 	public static List<Market> getMarketList(DbConnectionEnum dbce, int days){
@@ -91,17 +106,8 @@ public class MarketDAO {
 		String sqlCommand = "SELECT * FROM Markets WHERE Date >= " + SpecDbDate.getTodayMidnightEpochSeconds(instant)
 				+ " GROUP BY Base,Counter,Exchange,Date"
 				+ " ORDER BY Counter,Base ASC, Date DESC";
-		List<Market> marketList = QueryTable.genericMarketQuery(dbce, sqlCommand);
+		List<Market> marketList = DbUtils.genericMarketQuery(dbce, sqlCommand);
 		Collections.sort(marketList);
-		return marketList;
-	}
-	
-	public static List<Market> getMarketList(DbConnectionEnum dbce, int days, Symbol symbol){
-		Instant instant = SpecDbDate.getTodayMidnightInstant(Instant.now().minusSeconds(86400 * days));
-		String sqlCommand = "SELECT * FROM Markets WHERE Date >= "
-				+ SpecDbDate.getTodayMidnightEpochSeconds(instant)
-				+ " AND Concat(Base,Counter,':',Exchange) = '" + symbol + "' ORDER BY Date DESC";
-		List<Market> marketList = QueryTable.genericMarketQuery(dbce, sqlCommand);
 		return marketList;
 	}
 	
@@ -109,15 +115,6 @@ public class MarketDAO {
 		List<Market> marketList = getMarketList(dbce,days);
 		Map<Symbol, List<Market>> marketsBySymbol = marketList.stream().collect(Collectors.groupingBy(Market::getSymbol));
 		return marketsBySymbol;
-	}
-	
-	public static Map<Symbol, List<BigDecimal>> getCloseMap(DbConnectionEnum dbce, int days){
-		Map<Symbol, List<Market>> marketsBySymbol = getMarketMap(dbce, days);
-		Map<Symbol,List<BigDecimal>> marketMap = new HashMap<>();
-		for(Map.Entry<Symbol, List<Market>> e : marketsBySymbol.entrySet()){
-			marketMap.put(e.getKey(), e.getValue().stream().map(Market::getClose).collect(Collectors.toList()));
-		}
-		return marketMap;
 	}
 	
 	public static TreeMap<Symbol,BigDecimal> getCurrentCloseMap(DbConnectionEnum dbce){
@@ -138,6 +135,26 @@ public class MarketDAO {
 			}
 		}
 		return marketMap;
+	}
+	
+	private static void updateCurrentCloseMap(DbConnectionEnum dbce) {
+		String sqlCommand = "SELECT Base,Counter,Exchange,Close FROM Markets WHERE Date = (SELECT Max(DATE) AS DATE FROM MARKETS)";
+		List<Market> marketList = DbUtils.genericMarketQuery(dbce, sqlCommand);
+		Map<Symbol,BigDecimal> closeMap = new HashMap<>();
+		for(Market m : marketList) {
+			closeMap.put(m.getSymbol(), m.getClose());
+		}
+		currentCloseMap = closeMap;
+	}
+	
+	public static BigDecimal getCurrentPrice(Symbol symbol) {
+		if(currentCloseMap!=null) {
+			return currentCloseMap.get(symbol);
+		}else {
+			updateCurrentCloseMap(DbConnectionEnum.H2_MAIN);
+		}		
+		return currentCloseMap.get(symbol);
+		
 	}
 
 }

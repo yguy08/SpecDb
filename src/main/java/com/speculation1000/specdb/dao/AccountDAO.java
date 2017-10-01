@@ -9,13 +9,13 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
-import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
-import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class AccountDAO {
 	

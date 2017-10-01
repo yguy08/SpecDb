@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 import org.h2.tools.Server;
 
-import com.speculation1000.specdb.log.SpecDbLogger;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class DbServer {
 	

@@ -6,8 +6,8 @@ import java.util.logging.Level;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
-import com.speculation1000.specdb.log.SpecDbLogger;
-import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class StartApp {
 	
@@ -42,8 +42,8 @@ public class StartApp {
 
 	public static void main(String[] args) {
 		new StartApp();
-		Config config = new Config();
-		new StandardMode(config).startRun();
+		Config.configSetUp();
+		new StandardMode().startRun();
 	}
 
 	public static Instant getStartUpTs() {

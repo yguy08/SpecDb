@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.SpecDbException;
-import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.start.StandardMode;
+import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class DbUtils {
 	
@@ -116,6 +118,7 @@ public class DbUtils {
                 + "Total decimal NOT NULL,\n"
                 + "Direction character NOT NULL,\n"
                 + "Stop decimal NOT NULL,\n"
+                + "H_L int NOT NULL,\n"
                 + ");";
         try {
         	Connection connection = DbUtils.connect(dbce);
@@ -256,9 +259,11 @@ public class DbUtils {
         }		
 	}
 	
-	public static List<Entry> getNewEntries(DbConnectionEnum dbce){
-		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop"
-						  + " FROM entry WHERE DATE = (SELECT Max(DATE) AS Date FROM ENTRY) GROUP BY Base,Counter,Exchange,Direction";
+	public static List<Entry> getNewEntries(DbConnectionEnum dbce,int days){
+		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
+		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L" + 
+				" FROM entry WHERE DATE >= " + fromDateMidnight
+				+ " ORDER BY DATE DESC";
         try {
         	Connection conn = DbUtils.connect(dbce);
             Statement tmpStatement = conn.createStatement();
@@ -271,12 +276,13 @@ public class DbUtils {
             	e.setExchange(resultSet.getString(3));
             	e.setDate(resultSet.getLong(4));
             	e.setClose(resultSet.getBigDecimal(5));
-            	e.setVolume(resultSet.getInt(6));
+            	e.setVolumeFromDb(resultSet.getInt(6));
             	e.setATR(resultSet.getBigDecimal(7));
             	e.setAmount(resultSet.getBigDecimal(8));
             	e.setTotal(resultSet.getBigDecimal(9));
             	e.setDirection(resultSet.getString(10));
             	e.setStop(resultSet.getBigDecimal(11));
+            	e.setHighLow(resultSet.getInt(12));
             	entryList.add(e);
             }
             tmpStatement.close();
@@ -342,6 +348,60 @@ public class DbUtils {
         }		
 	}
 	
+	public static List<Market> genericMarketQuery(DbConnectionEnum dbce, String sqlCommand){
+	    try {
+	    	Connection conn = connect(dbce);
+	        Statement tmpStatement = conn.createStatement();
+	        ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
+	        ResultSetMetaData rsmd = resultSet.getMetaData();
+	        int i = rsmd.getColumnCount();
+	        List<Market> marketList = new ArrayList<>();
+	        while(resultSet.next()){
+	        	Market market = new Market();
+	        	for(int z = 1; z <= i;z++){
+	        		String col_name = rsmd.getColumnName(z).toUpperCase();
+	        		switch(col_name){
+	        		case "BASE":
+	        			market.setBase(resultSet.getString(z));
+	        			break;
+	        		case "COUNTER":
+	        			market.setCounter(resultSet.getString(z));
+	        			break;	
+	        		case "EXCHANGE":
+	        			market.setExchange(resultSet.getString(z));
+	        			break;
+	        		case "DATE":
+	        			market.setDate(resultSet.getLong(z));
+	        			break;
+	        		case "HIGH":
+	        			market.setHigh(resultSet.getBigDecimal(z));
+	        			break;
+	        		case "LOW":
+	        			market.setLow(resultSet.getBigDecimal(z));
+	        			break;
+	        		case "CLOSE":
+	        			market.setClose(resultSet.getBigDecimal(z));
+	        			break;
+	        		case "VOLUME":
+	        			market.setVolume(resultSet.getInt(z));
+	        			break;
+	        		default:
+	        			break;
+	        		}
+	        	}
+	        	marketList.add(market);
+	        }
+	        tmpStatement.close();
+	        conn.close();
+	        return marketList;
+	    } catch (SQLException ex) {
+	    	while (ex != null) {
+	        	specLogger.logp(Level.INFO, DbUtils.class.getName(), "genericMarketQuery", ex.getMessage());
+	            ex = ex.getNextException();
+	        }
+	        throw new RuntimeException("Error");
+	    }
+	}
 	
 	
 	/* ---------- END SELECT QUERIES ------------- */
@@ -482,8 +542,8 @@ public class DbUtils {
 	}
 	
 	public static void insertNewEntries(DbConnectionEnum dbce, List<Entry> entriesList) {
-		String sqlCommand = "INSERT INTO entry(Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop) "
-							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO entry(Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L) "
+							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
         	Connection connection = DbUtils.connect(dbce);
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
@@ -492,7 +552,7 @@ public class DbUtils {
         		tmpStatement.setString(1, e.getBase());
         		tmpStatement.setString(2,e.getCounter());
         		tmpStatement.setString(3, e.getExchange());
-        		tmpStatement.setLong(4, SpecDbDate.getLastSixHourSeconds(Instant.ofEpochSecond(e.getDate())));
+        		tmpStatement.setLong(4, SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()));
         		tmpStatement.setBigDecimal(5, e.getClose());
         		tmpStatement.setInt(6, e.getVolume());
         		tmpStatement.setBigDecimal(7, e.getATR());
@@ -500,6 +560,7 @@ public class DbUtils {
         		tmpStatement.setBigDecimal(9, e.getTotal());
         		tmpStatement.setString(10, e.getDirection());
         		tmpStatement.setBigDecimal(11, e.getStop());
+        		tmpStatement.setInt(12, e.getHighLow());
         		tmpStatement.addBatch();
 	        }
     		long start = System.currentTimeMillis();

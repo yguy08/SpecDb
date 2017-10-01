@@ -11,7 +11,7 @@ public interface ExchangeDAO {
 	
 	List<Market> getLatestMarkets() throws SpecDbException;
 		
-	void restoreMarkets(DbConnectionEnum dbce) throws SpecDbException;
+	void restoreMarkets(DbConnectionEnum dbce, int days) throws SpecDbException;
 	
 	List<AccountBalance> getAccountBalance(DbConnectionEnum dbce) throws SpecDbException;
 

@@ -26,14 +26,14 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexTradeService;
 import org.knowm.xchange.service.trade.TradeService;
 
-import com.speculation1000.specdb.exchange.ExchangeEnum;
-import com.speculation1000.specdb.log.SpecDbLogger;
 import com.speculation1000.specdb.market.AccountBalance;
+import com.speculation1000.specdb.market.ExchangeEnum;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
-import com.speculation1000.specdb.time.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbDate;
+import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class PoloniexDTO implements ExchangeDTO {
 
@@ -144,9 +144,8 @@ public class PoloniexDTO implements ExchangeDTO {
 	
 	private static Exchange initAuthenticatedExchange() {
 		  ExchangeSpecification spec = new ExchangeSpecification(PoloniexExchange.class);
-	      Config config = new Config();
-		  spec.setApiKey(config.getPoloKey());
-		  spec.setSecretKey(config.getPoloSecret());
+		  spec.setApiKey(Config.getPoloKey());
+		  spec.setSecretKey(Config.getPoloSecret());
 		  return ExchangeFactory.INSTANCE.createExchange(spec);
 	}
 

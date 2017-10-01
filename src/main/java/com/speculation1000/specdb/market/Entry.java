@@ -3,14 +3,15 @@ package com.speculation1000.specdb.market;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import com.speculation1000.specdb.dao.AccountDAO;
+import com.speculation1000.specdb.dao.MarketDAO;
+import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.StandardMode;
-import com.speculation1000.specdb.time.SpecDbDate;
-import com.speculation1000.specdb.trade.TradeStatusEnum;
+import com.speculation1000.specdb.utils.SpecDbDate;
 import com.speculation1000.specdb.utils.SpecDbNumFormat;
 
 public class Entry extends Market {
@@ -25,13 +26,20 @@ public class Entry extends Market {
 	
 	private BigDecimal stop;
 	
+	private int highLow;
+	
 	//filter for markets at high/low that are actually bad (i.e. high equals low, 1 day history, etc.)
 	private boolean passFilter;
 	
 	public Entry() {}
 	
-	public Entry(Symbol symbol,List<Market> marketList,TradeStatusEnum tse) {
-		super(symbol,SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()),marketList.get(0).getClose(),marketList.get(0).getVolume());
+	public Entry(Symbol symbol,List<Market> marketList,TradeStatusEnum tse,int highLow) {
+		super(symbol,SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()),marketList.get(0).getClose());
+		
+		setHighLow(highLow);
+		
+		//volume...
+		setVolume(marketList.get(0).getVolume());
 		
 		//some markets at a high are not actually entries like a new market w/ only 1 day history so filter first
 		filter(marketList);
@@ -45,13 +53,42 @@ public class Entry extends Market {
 		}
 	}
 	
+	public void setVolume(int volume) {
+		Symbol btc = new Symbol("BTC","USDT",super.getExchange());
+		Symbol eth = new Symbol("ETH","USDT",super.getExchange());
+		BigDecimal btc_price = MarketDAO.getCurrentPrice(btc);
+		BigDecimal eth_price = MarketDAO.getCurrentPrice(eth);
+		switch(super.getCounter()) {
+		case "BTC":
+			super.setVolume((new BigDecimal(volume).multiply(btc_price)).intValue());
+			break;
+		case "ETH":
+			super.setVolume((new BigDecimal(volume).multiply(eth_price)).intValue());
+			break;
+		default:
+			super.setVolume(volume);
+			break;
+		}
+	}
+	
+	public void setVolumeFromDb(int volume) {
+		super.setVolume(volume);
+	}
+
 	private void filter(List<Market> marketList){
-		if(marketList.size()<20){
+		String counter = super.getCounter();
+		if(SupportedCurrenciesEnum.getCounterList().indexOf(counter)!=-1) {			
+			if(getVolume() < Config.getVolLimit()) {
+				passFilter = false;
+			}else if(marketList.size()<5){
+				passFilter = false;
+			}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
+				passFilter = false;
+			}else{
+				passFilter = true;
+			}
+		}else {
 			passFilter = false;
-		}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
-			passFilter = false;
-		}else{
-			passFilter = true;
 		}
 	}
 	
@@ -65,7 +102,7 @@ public class Entry extends Market {
 	
 	private void setATR(List<Market> marketList) {
 		Collections.reverse(marketList);
-		int movingAvg = 20;
+		int movingAvg = 10;
 		BigDecimal tR = new BigDecimal(0.00);
 		if(marketList.size() > movingAvg){
 			//set first TR for 0 position (H-L)
@@ -161,14 +198,27 @@ public class Entry extends Market {
 	public String toString(){
 		String directionArrow = (direction.equalsIgnoreCase("LONG") ? "\u25B2" : "\u25BC");
 		StringBuilder sb = new StringBuilder();
-		sb.append("---------------------------\n");
-		sb.append(super.getSymbol()+directionArrow+SpecDbNumFormat.bdToEightDecimal(super.getClose())+"\n");
-		sb.append(" [ATR: "+getATR().toPlainString()+",");
-		sb.append(" Units: "+getAmount().toPlainString()+",");
-		sb.append(" Total: "+getTotal().toPlainString()+",");
-		sb.append(" Stop: "+getStop().toPlainString()+"]");
-		sb.append(" Volume: "+getVolume()+"]\n");
+		sb.append(SpecDbDate.instantToShortDateTimeStr(Instant.ofEpochSecond(super.getDate()))+"\n");
+		sb.append(super.getSymbol()+directionArrow+" ("+getHighLow()+") "+SpecDbNumFormat.bdToEightDecimal(super.getClose())+" ");
+		sb.append("Vol: $"+SpecDbNumFormat.prettyUSDPrice(new BigDecimal(getVolume()))+"\n");
+		sb.append("ATR: "+getATR().toPlainString()+",");
+		sb.append("Units: "+getAmount().toPlainString()+",");
+		sb.append("Total: "+getTotal().toPlainString()+",");
+		sb.append("Stop: "+getStop().toPlainString());
 		return sb.toString();
-	}	
+	}
+	
+	@Override
+	public int compareTo(Market e) {
+		return Integer.compare(e.getVolume(), getVolume());
+	}
+
+	public void setHighLow(int highLow) {
+		this.highLow = highLow;		
+	}
+	
+	public int getHighLow() {
+		return highLow;
+	}
 
 }

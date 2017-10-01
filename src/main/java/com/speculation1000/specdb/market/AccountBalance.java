@@ -34,5 +34,10 @@ public class AccountBalance extends Market {
 		}
 		return symbolList;			
 	}
+	
+	@Override
+	public String toString() {
+		return getCounter() + ":" + getExchange() + " " + SymbolsEnum.POUND.getSymbol() + getAmount(); 
+	}
 
 }

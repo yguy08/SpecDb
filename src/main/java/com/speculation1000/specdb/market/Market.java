@@ -39,13 +39,12 @@ public class Market implements Comparable<Market> {
 		this.exchange = exchange;
 	}
 	
-	public Market(Symbol symbol,long date,BigDecimal close,int volume) {
+	public Market(Symbol symbol,long date,BigDecimal close) {
 		this.base = symbol.getBase();
 		this.counter = symbol.getCounter();
 		this.exchange = symbol.getExchange();
 		this.date = date;
 		this.close = close;
-		this.volume = volume;
 	}
 	
 	//Account Balance constructor

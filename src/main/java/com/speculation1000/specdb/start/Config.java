@@ -7,35 +7,34 @@ import java.util.Properties;
 
 public class Config {
 	
-	private String database;
+	private static String database;
 	
-	private String polokey;
+	private static String polokey;
 	
-	private String polosecret;
+	private static String polosecret;
 	
-	private String trexkey;
+	private static String trexkey;
 	
-	private String trexsecret;
+	private static String trexsecret;
 	
-	private String initialdelay;
+	private static String initialdelay;
 	
-	private String runperiod;
+	private static String runperiod;
 	
-	private String entryFlag;
+	private static String entryFlag;
 	
-	private String exitFlag;
+	private static String exitFlag;
 	
-	public Config(){
+	private static String volLimit;
+	
+	public static void configSetUp() {
 		Properties prop = new Properties();
 		InputStream input = null;
 
 		try {
-
 			input = new FileInputStream("config.properties");
-
 			// load a properties file
-			prop.load(input);
-			
+			prop.load(input);			
 			database = prop.getProperty("database");
 			polokey = prop.getProperty("polo-api-key");
 			polosecret = prop.getProperty("polo-api-secret");
@@ -45,7 +44,7 @@ public class Config {
 			exitFlag = prop.getProperty("exit-flag");
 			trexkey = prop.getProperty("trex-api-key");
 			trexsecret = prop.getProperty("trex-api-secret");
-
+			volLimit = prop.getProperty("vol-limit");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -59,44 +58,44 @@ public class Config {
 		}
 	}
 	
-	public String getDatabase(){
+	public static String getDatabase(){
 		return database;
 	}
 	
-	public String getPoloKey() {
+	public static String getPoloKey() {
 		return polokey;
 	}
 	
-	public String getPoloSecret() {
+	public static String getPoloSecret() {
 		return polosecret;
 	}
 	
-	public String getTrexKey() {
+	public static String getTrexKey() {
 		return trexkey;
 	}
 	
-	public String getTrexSecret() {
+	public static String getTrexSecret() {
 		return trexsecret;
 	}
 	
-	public boolean getInitialDelay(){
-		if(initialdelay.equalsIgnoreCase("true")){
-			return true;
-		}else{
-			return false;
-		}
+	public static int getInitialDelay(){
+		return Integer.parseInt(initialdelay);
 	}
 	
-	public int getRunPeriod(){
+	public static int getRunPeriod(){
 		return Integer.parseInt(runperiod);
 	}
 	
-	public int getEntryFlag(){
+	public static int getEntryFlag(){
 		return Integer.parseInt(entryFlag);
 	}
 	
-	public int getExitFlag(){
+	public static int getExitFlag(){
 		return Integer.parseInt(exitFlag);
+	}
+	
+	public static int getVolLimit(){
+		return Integer.parseInt(volLimit);
 	}
 
 }
