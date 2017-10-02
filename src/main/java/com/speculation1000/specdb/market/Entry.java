@@ -36,15 +36,13 @@ public class Entry extends Market {
 	public Entry(Symbol symbol,List<Market> marketList,TradeStatusEnum tse,int highLow) {
 		super(symbol,SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()),marketList.get(0).getClose());
 		
-		setHighLow(highLow);
-		
 		//volume...
 		setVolume(marketList.get(0).getVolume());
-		
 		//some markets at a high are not actually entries like a new market w/ only 1 day history so filter first
 		filter(marketList);
 		
 		if(passFilter){
+			setHighLow(highLow);
 			setATR(marketList);
 			setAmount();
 			setTotal();
@@ -76,18 +74,16 @@ public class Entry extends Market {
 	}
 
 	private void filter(List<Market> marketList){
-		String counter = super.getCounter();
-		if(SupportedCurrenciesEnum.getCounterList().indexOf(counter)!=-1) {			
-			if(getVolume() < Config.getVolLimit()) {
-				passFilter = false;
-			}else if(marketList.size()<5){
-				passFilter = false;
-			}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
-				passFilter = false;
-			}else{
-				passFilter = true;
-			}
-		}else {
+		//quick one's, get 'em OUT!
+		if(marketList.size()<Config.getEntryFlag()){
+			passFilter = false;
+		}else if (getVolume() < Config.getVolLimit()){
+			passFilter = false;
+		}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
+			passFilter = false;
+		}else if(SupportedCurrenciesEnum.getCounterList().indexOf(super.getCounter())!=-1) {
+			passFilter = true;
+		}else{
 			passFilter = false;
 		}
 	}
@@ -102,7 +98,7 @@ public class Entry extends Market {
 	
 	private void setATR(List<Market> marketList) {
 		Collections.reverse(marketList);
-		int movingAvg = 10;
+		int movingAvg = 20;
 		BigDecimal tR = new BigDecimal(0.00);
 		if(marketList.size() > movingAvg){
 			//set first TR for 0 position (H-L)

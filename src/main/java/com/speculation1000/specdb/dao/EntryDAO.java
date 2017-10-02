@@ -1,7 +1,6 @@
 package com.speculation1000.specdb.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,14 +36,14 @@ public class EntryDAO {
 		Entry entry;
 		
 		List<Integer> highList = new ArrayList<>();
+		highList.add(55);
 		highList.add(days);
 		highList.add(11);
-		highList.add(55);
 		
 		for(Integer i : highList) {
 			try{
 				List<Symbol> symbolList = DbUtils.getMarketHighs(dbce, i).stream().map(Market::getSymbol).collect(Collectors.toList());
-				TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 150, symbolList);
+				TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 100, symbolList);
 				for(Map.Entry<Symbol, List<Market>> e : marketMap.entrySet()){
 					entry = new Entry(e.getKey(), e.getValue(),TradeStatusEnum.LONG,i);
 					if(entry.passFilter()){
@@ -59,9 +58,9 @@ public class EntryDAO {
 		}
 		
 		List<Integer> lowList = new ArrayList<>();
+		lowList.add(-55);
 		lowList.add(-days);
 		lowList.add(-11);
-		lowList.add(-55);
 		
 		for(Integer i : highList) {			
 			try{
