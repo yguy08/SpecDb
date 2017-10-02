@@ -62,7 +62,7 @@ public class EntryDAO {
 		lowList.add(-days);
 		lowList.add(-11);
 		
-		for(Integer i : highList) {			
+		for(Integer i : lowList) {			
 			try{
 				List<Symbol> symbolList = DbUtils.getMarketLows(dbce, i).stream().map(Market::getSymbol).collect(Collectors.toList());
 				TreeMap<Symbol,List<Market>> marketMap = MarketDAO.getSelectMarketMap(dbce, 100, symbolList);
@@ -103,6 +103,18 @@ public class EntryDAO {
 		List<Entry> entryList = DbUtils.getNewEntries(dbce,days);
 		//Collections.sort(entryList);
 		return entryList;
+	}
+	
+	public static List<Entry> getMarketEntryList(DbConnectionEnum dbce,Symbol s){
+		List<Entry> entryList = DbUtils.getNewEntries(dbce,100);
+		List<Entry> ret = new ArrayList<>();
+		for(Entry e : entryList) {
+			if(e.getSymbol().equals(s)) {
+				ret.add(e);
+			}
+		}
+		//Collections.sort(entryList);
+		return ret;
 	}
 
 }
