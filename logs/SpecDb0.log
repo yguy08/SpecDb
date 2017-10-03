@@ -1,0 +1,102 @@
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: 
+********** SpecDb ************** 
+[ Digital Asset Price Database ]
+********************************
+* Start Up: 
+* At: 2017-10-03T12:02:08.154Z[Etc/UTC]
+********************************
+
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.DbServer startDb
+INFO: H2 DbServer started
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: H2 server start up successful
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Able to connect to db and create tables.
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.db.DbUtils createCloseIndex
+INFO: Close index created (if it didn't already exist)
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Close index created
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StandardMode startApp
+INFO: * Next update in 0 seconds
+Oct 03, 2017 8:02:08 AM com.speculation1000.specdb.start.StartApp getStartRunMessage
+INFO: [STANDARDMODE] - @2017-10-03T12:02:08.454Z[Etc/UTC]
+Oct 03, 2017 8:02:09 AM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
+INFO: Loading Polo markets from Polo API...
+Oct 03, 2017 8:02:16 AM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
+INFO: Fetched latest Polo markets for: 2017-10-03T00:00:00Z[Etc/UTC]
+Oct 03, 2017 8:02:16 AM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
+INFO: Got Bittrex Chart Data
+Oct 03, 2017 8:02:16 AM com.speculation1000.specdb.dao.BittrexDAO getLatestMarkets
+INFO: Got latest bittrex markets
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: Adding batch: 100
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: total time taken to insert the batch = 27 ms
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: Adding batch: 258
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: total time taken to insert the batch = 63 ms
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.dao.MarketDAO updateTickerList
+INFO: Ticker updated successfully
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: Starting polo market restore
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+INFO: No markets missing
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+INFO: Starting trex market restore
+Oct 03, 2017 8:02:17 AM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+INFO: No markets missing
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.dao.PoloniexDAO getAccountBalance
+INFO: AccountBalance
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.dao.AccountDAO updateAccountBalance
+INFO: Got polo balances
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.dao.BittrexDAO getAccountBalance
+INFO: Got Trex Account Balance
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.db.DbUtils insertUpdatedAccountBalances
+INFO: total time taken to insert the batch = 2 ms
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.dao.AccountDAO getAccountBalance
+INFO: Updated account balance!
+Oct 03, 2017 8:02:18 AM com.speculation1000.specdb.dao.AccountDAO AccountDAO
+INFO: Acocunt balance update successfully!
+Oct 03, 2017 8:02:20 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 55
+Oct 03, 2017 8:02:20 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 25
+Oct 03, 2017 8:02:21 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market highs: 11
+Oct 03, 2017 8:02:22 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: -55
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: -25
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Market lows: -11
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Cleaned up new entries
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.db.DbUtils insertNewEntries
+INFO: total time taken to insert the batch = 1 ms
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.dao.EntryDAO updateEntries
+INFO: Inserted market h/l
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: ********************************
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: [SYSTEMSTATUS]
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * At: 2017-10-03T12:02:23.647Z[Etc/UTC]
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * App Running since: 2017-10-03T12:02:08.154Z[Etc/UTC]
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * App Uptime: 15 secs
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * H2 DB Status: TCP server running at tcp://192.168.1.159:8089 (others can connect)
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Total Memory (mB): 926
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Free Memory (mB): 905
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Used Memory (mB): 20
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Max (mB): 2711
+Oct 03, 2017 8:02:23 AM com.speculation1000.specdb.start.StandardMode getSystemStatus
+INFO: * Next Update in 696 seconds
+
