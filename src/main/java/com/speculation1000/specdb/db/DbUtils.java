@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.IntStream;
 
 import org.h2.tools.Csv;
 
@@ -18,6 +19,7 @@ import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
+import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
 import com.speculation1000.specdb.utils.SpecDbDate;
@@ -396,8 +398,8 @@ public class DbUtils {
 	
 	/* ---------- START CLEAN UPS (DELETES) ------------- */
 
-	public static int[] marketCleanUp(DbConnectionEnum dbce, long date){
-		Connection conn = DbUtils.connect(dbce);
+	public static int[] marketCleanUp(long date){
+		Connection conn = DbUtils.connect(Config.getDatabase());
 		try{
 			String deleteSql = "DELETE FROM markets WHERE Date = ?";              
 			PreparedStatement st = conn.prepareStatement(deleteSql);
@@ -460,7 +462,8 @@ public class DbUtils {
 	
 	/* ---------- START INSERTS ------------- */
 
-	public static void insertMarkets(DbConnectionEnum dbce, List<Market> marketList){
+	public static int insertMarkets(DbConnectionEnum dbce, List<Market> marketList){
+		int sum = 0;
 		String sqlCommand = "INSERT INTO markets(SYMBOL,Date,High,Low,Close,Volume) VALUES(?,?,?,?,?,?)";
 	    try {
 	    	Connection connection = DbUtils.connect(dbce);
@@ -474,16 +477,18 @@ public class DbUtils {
 	    		tmpStatement.setBigDecimal(5, m.getClose());
 	    		tmpStatement.setInt(6,m.getVolume());
 	    		tmpStatement.addBatch();
-	    	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
+	    	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){ 
 	    		specLogger.logp(Level.INFO, DbUtils.class.getName(),"insertMarkets", "Adding batch: " + i);
 	    		long start = System.currentTimeMillis();
-	    		tmpStatement.executeBatch();
+	    		int[] added = tmpStatement.executeBatch();
 		        long end = System.currentTimeMillis();
 		        specLogger.logp(Level.INFO, DbUtils.class.getName(),"insertMarkets", "total time taken to insert the batch = " + (end - start) + " ms");
+		        sum+=IntStream.of(added).sum();
 	    	}
 	    }
 	        tmpStatement.close();
 	        connection.close();
+	        return sum;
 	    } catch (SQLException ex) {
 	    	StringBuffer sb = new StringBuffer();
 	        sb.append("SQLException information\n");
