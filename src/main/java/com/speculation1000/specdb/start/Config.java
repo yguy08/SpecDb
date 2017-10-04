@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.speculation1000.specdb.db.DbConnectionEnum;
+
 public class Config {
 	
 	private static String database;
@@ -58,8 +60,13 @@ public class Config {
 		}
 	}
 	
-	public static String getDatabase(){
-		return database;
+	public static DbConnectionEnum getDatabase(){
+		switch(database){
+		case "localhost":
+			return DbConnectionEnum.H2_MAIN;
+		default:
+			return DbConnectionEnum.H2_MAIN;
+		}
 	}
 	
 	public static String getPoloKey() {
