@@ -81,7 +81,7 @@ public class Entry extends Market {
 			passFilter = false;
 		}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
 			passFilter = false;
-		}else if(SupportedCurrenciesEnum.getCounterList().indexOf(super.getSymbol().getCounter())!=-1) {
+		}else if(SupportedCurrencyEnum.getCounterList().indexOf(super.getSymbol().getCounter())!=-1) {
 			passFilter = true;
 		}else{
 			passFilter = false;
