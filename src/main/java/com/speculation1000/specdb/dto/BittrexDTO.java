@@ -27,8 +27,8 @@ import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.account.AccountService;
 
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.market.AccountBalance;
-import com.speculation1000.specdb.market.ExchangeEnum;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.Config;
@@ -146,8 +146,11 @@ public class BittrexDTO implements ExchangeDTO {
 		AccountBalance balance;
 		for(Map.Entry<Currency, Balance> b : balances.entrySet()){
 			if(b.getValue().getTotal().compareTo(new BigDecimal(0.00)) > 0) {
-				balance = new AccountBalance(SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS()),
-											b.getKey().toString(),"TREX",b.getValue().getTotal());
+				String base 		= b.getKey().toString();
+				String exchange 	= ExchangeEnum.BITTREX.getExchangeSymbol();
+				long date 			= SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
+				BigDecimal total	= b.getValue().getTotal();	
+				balance = new AccountBalance(base,exchange,date,total);
 				balanceList.add(balance);
 			}
 		}
