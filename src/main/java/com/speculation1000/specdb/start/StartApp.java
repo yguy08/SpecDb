@@ -1,6 +1,5 @@
 package com.speculation1000.specdb.start;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.logging.Level;
 
@@ -15,35 +14,34 @@ public class StartApp {
 	
 	private static final Instant APP_START_UP_TS = Instant.now();
 	
-	public StartApp(){
-		
-		startUpStatusMessage();
-		
-		try {
-			DbServer.startDB();
-			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "H2 server start up successful");
-		} catch (SQLException e) {
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to start H2 server: " + e.getMessage());
-		}
-		
+	public StartApp() throws Exception{		
 		try{
-			//check db connection
-			DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
-			//create market, account and trade table (if the don't already exist)
+			DbConnectionEnum dbce = Config.getDatabase();
+			startUpStatusMessage();
+			DbServer.startDB();
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Db start up successful: "+dbce);
 			DbUtils.createTables(dbce);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Able to connect to db and create tables.");
-			//create close index
 			DbUtils.createCloseIndex(dbce);
 			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Close index created");
-		}catch(SpecDbException e){
-			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "Unable to connect to H2 server. Creating tables failed\n" + e.getMessage());
+		}catch(Exception e){
+			specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Failed to start up. EXIT.");
+			throw e;
 		}
 	}
 
 	public static void main(String[] args) {
-		new StartApp();
-		Config.configSetUp();
-		new StandardMode().startRun();
+		try{
+			Config.configSetUp();
+			new StartApp();
+			new StandardMode();
+		}catch(Throwable t){
+			for(StackTraceElement ste : t.getStackTrace()){
+				specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", ste.toString());
+			}
+			specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", "ERROR\nShutting Down...");
+			System.exit(1);
+		}
 	}
 
 	public static Instant getStartUpTs() {
