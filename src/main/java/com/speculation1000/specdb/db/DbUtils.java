@@ -87,9 +87,8 @@ public class DbUtils {
 	
 	private static void createAccountBalTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS ACCOUNT_BAL (\n"
+                + "Symbol character NOT NULL,\n"
                 + "Date long NOT NULL,\n"
-                + "Counter character NOT NULL,\n"
-				+ "Exchange character NOT NULL,\n"
 				+ "Amount character NOT NULL\n"
                 + ");";
         try {
@@ -497,15 +496,15 @@ public class DbUtils {
 	}
 	
 	public static void insertUpdatedAccountBalances(DbConnectionEnum dbce, List<AccountBalance> balanceList) {
-		String sqlCommand = "INSERT INTO ACCOUNT_BAL(DATE,SYMBOL,AMOUNT) "
-							+ "VALUES(?,?,?,?)";
+		String sqlCommand = "INSERT INTO ACCOUNT_BAL(SYMBOL,DATE,AMOUNT) "
+							+ "VALUES(?,?,?)";
         try {
         	Connection connection = DbUtils.connect(dbce);
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
 	        for(int i = 0; i < balanceList.size();i++){
         		AccountBalance ab = balanceList.get(i);
-        		tmpStatement.setLong(1, ab.getDate());
-        		tmpStatement.setString(2, ab.getSymbol().toString());
+        		tmpStatement.setString(1, ab.getSymbol().toString());
+        		tmpStatement.setLong(2, ab.getDate());
         		tmpStatement.setBigDecimal(3, ab.getAmount());
         		tmpStatement.addBatch();
 	        }

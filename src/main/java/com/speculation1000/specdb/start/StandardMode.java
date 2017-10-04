@@ -82,7 +82,7 @@ public class StandardMode implements Runnable {
 		List<AccountBalance> accounts = new ArrayList<>();
 		for(ExchangeEnum exchange : ExchangeEnum.values()){
 			try{
-				ExchangeFcty.getExchangeDAO(exchange).getAccountBalance(DbConnectionEnum.H2_MAIN);
+				accounts.addAll(ExchangeFcty.getExchangeDAO(exchange).getAccountBalance(DbConnectionEnum.H2_MAIN));
 			}catch(Exception e){
 				e.printStackTrace();
 			}

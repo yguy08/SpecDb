@@ -1,20 +1,23 @@
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.start.StartApp StartApp
+Oct 04, 2017 8:02:57 AM com.speculation1000.specdb.start.StartApp StartApp
 INFO: 
 ********** SpecDb ************** 
 [ Digital Asset Price Database ]
 ********************************
 * Start Up: 
-* At: 2017-10-04T01:55:14.931Z[Etc/UTC]
+* At: 2017-10-04T12:02:57.928Z[Etc/UTC]
 ********************************
 
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.start.StartApp StartApp
-SEVERE: Unable to start H2 server: Exception opening port "8089" (port may be in use), cause: "java.net.BindException: Address already in use" [90061-196]
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.db.DbUtils connect
-SEVERE: Database may be already in use: null. Possible solutions: close all other connection(s); use the server mode [90020-196]
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.start.StartApp StartApp
-SEVERE: Unable to connect to H2 server. Creating tables failed
-Error
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.start.StandardMode startApp
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.start.StartApp StartApp
+SEVERE: Unable to start H2 server: Exception opening port "8089" (port may be in use), cause: "java.net.BindException: Address already in use: JVM_Bind" [90061-196]
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Able to connect to db and create tables.
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.db.DbUtils createCloseIndex
+INFO: Close index created (if it didn't already exist)
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Close index created
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.start.StandardMode startApp
 INFO: * Next update in 0 seconds
-Oct 03, 2017 9:55:15 PM com.speculation1000.specdb.start.StartApp getStartRunMessage
-INFO: [STANDARDMODE] - @2017-10-04T01:55:15.179Z[Etc/UTC]
+Oct 04, 2017 8:02:58 AM com.speculation1000.specdb.start.StartApp getStartRunMessage
+INFO: [STANDARDMODE] - @2017-10-04T12:02:58.128Z[Etc/UTC]
+Oct 04, 2017 8:02:59 AM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
+INFO: Loading Polo markets from Polo API...
