@@ -2,21 +2,23 @@ package com.speculation1000.specdb.start;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
+import java.util.stream.IntStream;
 
+import com.speculation1000.specdb.criteria.CriteriaSupportedCurrency;
 import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.exchange.ExchangeFcty;
 import com.speculation1000.specdb.market.AccountBalance;
-import com.speculation1000.specdb.market.ExchangeEnum;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.SupportedCurrencyEnum;
 import com.speculation1000.specdb.utils.SpecDbDate;
 import com.speculation1000.specdb.utils.SpecDbLogger;
 import com.speculation1000.specdb.utils.SpecDbTime;
@@ -28,72 +30,107 @@ public class StandardMode implements Runnable {
     private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
 
 	static Instant startRunTS = null;
+	
+	private static StandardMode standardMode;
     
-    public StandardMode(){}
-
-    public void startRun() {
-    	long initialDelay = 0;
-    	if(Config.getInitialDelay()>0) {
-    		initialDelay = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
+    public StandardMode(){
+    	try{
+        	standardMode = this;
+        	long initialDelay = 0;
+        	if(Config.getInitialDelay()>0) {
+        		initialDelay = SpecDbTime.getQuickModeDelaySeconds(Instant.now());
+        	}
+            specLogger.logp(Level.INFO,StandardMode.class.getName(),"startApp","* Next update in " + initialDelay + " seconds");
+            scheduler.scheduleAtFixedRate(standardMode, initialDelay, Config.getRunPeriod() * 60, SECONDS);
+    	}catch(Exception e){
+    		specLogger.logp(Level.SEVERE, StandardMode.class.getName(),"StandardMode","Standard Mode failed!");
+    		throw(e);
     	}
-        specLogger.logp(Level.INFO,StandardMode.class.getName(),"startApp","* Next update in " + initialDelay + " seconds");
-        scheduler.scheduleAtFixedRate(new StandardMode(), initialDelay, Config.getRunPeriod() * 60, SECONDS);		
     }
 
-    public void run() {
-        
-    	setStartRunTS();
-    	
-		specLogger.logp(Level.INFO, StartApp.class.getName(), "getStartRunMessage", "[STANDARDMODE] - @" + SpecDbDate.instantToLogStringFormat(getStartRunTS()));
-        
-		List<Market> markets = new ArrayList<>();
-		for(ExchangeEnum exchange : ExchangeEnum.values()){
-			try {
-				markets.addAll(ExchangeFcty.getExchangeDAO(exchange).getLatestMarkets());
-			} catch (SpecDbException e) {
-				e.printStackTrace();
+    public void run() {   	
+    	try{    		
+    		////////////////
+        	// START RUN
+    		///////////////
+    		
+        	setStartRunTS();    	
+    		specLogger.logp(Level.INFO, StandardMode.class.getName(), "run", "[STANDARDMODE] - @" + SpecDbDate.instantToLogStringFormat(getStartRunTS()));
+    		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(getStartRunTS());
+    		
+    		try{
+        		//Get latest markets from supported exchanges
+        		specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Getting latest markets from: "+ExchangeEnum.supportedExchangesStr());
+        		
+        		List<Market> markets = new ArrayList<>();
+        		for(ExchangeEnum exchange : ExchangeEnum.values()){
+        			try {
+        				markets.addAll(ExchangeFcty.getExchangeDAO(exchange).getLatestMarkets());
+        				specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Got latest markets from: "+exchange.getExchangeSymbol());
+        			} catch (SpecDbException e) {
+        				specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"Latest markets","Failed to load markets from: "+exchange.getExchangeSymbol()+" "+e.getMessage());
+        			}
+        		}
+        		
+        		//Do not do delete or add if we failed to load markets on a run
+        		if(markets.size()>0){
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Markets retrieved: " + markets.size());
+        			
+        			//Filter for supported currencies
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Filter markets for supported currencies: "+SupportedCurrencyEnum.supportedCurrencyStr());
+        			List<Market> supportedMarkets = new CriteriaSupportedCurrency().meetCriteria(markets);
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Markets not supported: "+(markets.size()-supportedMarkets.size()));
+        			
+        			int sum = 0;
+        			//Pulling markets every hour so clean up old ones from today
+    				specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Cleaning up markets for today: " + todayMidnight);
+        			int[] cleanedUp = DbUtils.marketCleanUp(todayMidnight);
+        			sum = IntStream.of(cleanedUp).sum();
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Cleaned up "+sum+" markets");
+        			
+        			//insert new markets
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Adding new markets..");
+        			sum = DbUtils.insertMarkets(Config.getDatabase(), markets);
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Added " +sum+" new markets");   			
+        		}else{
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","No new markets loaded! Something went wrong");
+        		}    			
+    		}catch(Exception e){
+    			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Something went wrong: "+e.getMessage());
+    		}
+    		
+    		
+    		//restore any missing days in last 100
+    		try{
+        		for(ExchangeEnum exchange : ExchangeEnum.values()){
+        			int sum = ExchangeFcty.getExchangeDAO(exchange).restoreMarkets(Config.getDatabase(),100);
+        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run",exchange.getExchangeSymbol()+": restored "+sum);
+        		}
+    		}catch(Exception e){
+    			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Restore failed: "+e.getMessage());
+    		}
+    		
+    		try{
+    			//update account balance
+        		List<AccountBalance> accounts = new ArrayList<>();
+        		for(ExchangeEnum exchange : ExchangeEnum.values()){
+        			accounts.addAll(ExchangeFcty.getExchangeDAO(exchange).getAccountBalance(Config.getDatabase()));
+        		}
+        		
+        		if(accounts.size()>0){
+        			DbUtils.accountBalCleanUp(Config.getDatabase(), todayMidnight);
+        			DbUtils.insertUpdatedAccountBalances(Config.getDatabase(), accounts);
+        		}
+    		}catch(Exception e){
+    			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Failed to get account balances: "+e.getMessage());
+    		}
+    		
+    	}catch(Exception e){
+			for(StackTraceElement ste : e.getStackTrace()){
+				specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", ste.toString());
 			}
-		}
-		
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-
-		try{
-			DbUtils.marketCleanUp(DbConnectionEnum.H2_MAIN, todayMidnight);			
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList",e.getMessage());
-		}
-		
-		try{
-			DbUtils.insertMarkets(DbConnectionEnum.H2_MAIN, markets);
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList",e.getMessage());
-		}
-		
-		//restore any missing days in last 100
-		for(ExchangeEnum exchange : ExchangeEnum.values()){
-			try {
-				ExchangeFcty.getExchangeDAO(exchange).restoreMarkets(DbConnectionEnum.H2_MAIN,100);
-			} catch (SpecDbException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		//update account balance
-		List<AccountBalance> accounts = new ArrayList<>();
-		for(ExchangeEnum exchange : ExchangeEnum.values()){
-			try{
-				accounts.addAll(ExchangeFcty.getExchangeDAO(exchange).getAccountBalance(DbConnectionEnum.H2_MAIN));
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-		
-		try{
-			DbUtils.accountBalCleanUp(DbConnectionEnum.H2_MAIN, todayMidnight);
-			DbUtils.insertUpdatedAccountBalances(DbConnectionEnum.H2_MAIN, accounts);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+			//next update in...
+    	}
 		
     }
 
