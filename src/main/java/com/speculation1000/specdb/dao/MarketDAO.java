@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import com.speculation1000.specdb.db.DbConnectionEnum;
@@ -25,80 +24,7 @@ public class MarketDAO {
 	public static Map<Symbol,BigDecimal> currentCloseMap = null;
 	
 	public MarketDAO(DbConnectionEnum dbce) throws SpecDbException {
-		//update ticker to latest
-		try{
-			updateTickerList(dbce);
-	    	specLogger.logp(Level.INFO, MarketDAO.class.getName(),"updateTickerList","Ticker updated successfully");
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"MarketDAO","Error updating ticker");
-			throw new SpecDbException(e.getMessage());
-		}		
-		//restore markets, if necessary
-		try{
-			restoreMarkets(dbce, 25);
-		}catch(SpecDbException e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"MarketDAO","Error restoring markets");
-			throw new SpecDbException(e.getMessage());
-		}
 		
-		try {
-			updateCurrentCloseMap(dbce);
-		}catch(Exception e) {
-			
-		}
-	}
-	
-	private void updateTickerList(DbConnectionEnum dbce) throws SpecDbException{
-		List<Market> poloMarket;
-		List<Market> bittrexMarkets;
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now());
-		
-		try{
-			poloMarket = new PoloniexDAO().getLatestMarkets();
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error getting latest Polo markets");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-		try{
-			bittrexMarkets = new BittrexDAO().getLatestMarkets();
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error getting latest Trex markets");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-		try{
-			DbUtils.marketCleanUp(dbce, todayMidnight);			
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error cleaning up today's market prices");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-		try{
-			DbUtils.insertMarkets(dbce, poloMarket);
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error inserting new polo markets");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-		try{
-			DbUtils.insertMarkets(dbce, bittrexMarkets);
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"updateTickerList","Error inserting new trex markets");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-	}
-	
-	private void restoreMarkets(DbConnectionEnum dbce, int days) throws SpecDbException{
-		//restore markets, if necessary
-		try{
-			new PoloniexDAO().restoreMarkets(dbce,days);
-			new BittrexDAO().restoreMarkets(dbce,days);
-		}catch(SpecDbException e){
-			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"restoreMarkets","Error restoring markets");
-			throw new SpecDbException(e.getMessage());
-		}
 	}
 	
 	public static List<Market> getMarketList(DbConnectionEnum dbce, int days){

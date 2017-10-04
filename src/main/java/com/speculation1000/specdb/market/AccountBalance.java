@@ -15,6 +15,12 @@ public class AccountBalance extends Market {
 		this.amount = amount;
 	}
 	
+	public AccountBalance(Symbol s,long date,BigDecimal amount){
+		super(s.getBase(),s.getCounter(),s.getExchange());
+		setDate(date);
+		this.amount = amount;
+	}
+	
 	public void setAmount(BigDecimal amount){
 		this.amount = amount;
 	}
@@ -26,10 +32,10 @@ public class AccountBalance extends Market {
 	public static List<Symbol> getSymbolsListAccBalList(List<AccountBalance> accBalList){
 		List<Symbol> symbolList = new ArrayList<>();
 		for(AccountBalance ab : accBalList){
-			if(!ab.getCounter().equalsIgnoreCase("BTC")){
-				symbolList.add(new Symbol(ab.getCounter(),"BTC",ab.getExchange()));
+			if(!ab.getSymbol().getCounter().equalsIgnoreCase("BTC")){
+				symbolList.add(new Symbol(ab.getSymbol().getCounter(),"BTC",ab.getSymbol().getExchange()));
 			}else{
-				symbolList.add(new Symbol(ab.getCounter(),"USDT",ab.getExchange()));
+				symbolList.add(new Symbol(ab.getSymbol().getCounter(),"USDT",ab.getSymbol().getExchange()));
 			}
 		}
 		return symbolList;			
@@ -37,7 +43,7 @@ public class AccountBalance extends Market {
 	
 	@Override
 	public String toString() {
-		return getCounter() + ":" + getExchange() + " " + SymbolsEnum.POUND.getSymbol() + getAmount(); 
+		return getSymbol().getCounter() + ":" + getSymbol().getExchange() + " " + SymbolsEnum.POUND.getSymbol() + getAmount(); 
 	}
 
 }

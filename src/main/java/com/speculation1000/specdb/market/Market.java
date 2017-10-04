@@ -1,15 +1,13 @@
 package com.speculation1000.specdb.market;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Market implements Comparable<Market> {
 	
-	private String base;
-	
-	private String counter;
-	
-	private String exchange;
-	
+	private Symbol symbol;
+		
 	private long date;
 	
 	private BigDecimal close;
@@ -20,29 +18,38 @@ public class Market implements Comparable<Market> {
 	
 	private int volume;
 	
-	public Market(){}
+	private List<Market> historical;
+	
+	public Market(){
+		
+	}
 	
 	public Market(String base, String counter, String exchange, long date, BigDecimal close, BigDecimal high, BigDecimal low, int volume){
-		this.base = base;
-		this.counter = counter;
-		this.exchange = exchange;
+		this.symbol = new Symbol(base,counter,exchange);
 		this.date = date;
 		this.close = close;
 		this.high = high;
 		this.low = low;
 		this.volume = volume;
+		historical = new ArrayList<>();
+	}
+	
+	public Market(Symbol s, long date, BigDecimal high,BigDecimal low, BigDecimal close, int volume){
+		this.symbol = s;
+		this.date = date;
+		this.close = close;
+		this.high = high;
+		this.low = low;
+		this.volume = volume;
+		historical = new ArrayList<>();
 	}
 	
 	public Market(String base,String counter, String exchange){
-		this.base = base;
-		this.counter = counter;
-		this.exchange = exchange;
+		this.symbol = new Symbol(base,counter,exchange);
 	}
 	
 	public Market(Symbol symbol,long date,BigDecimal close) {
-		this.base = symbol.getBase();
-		this.counter = symbol.getCounter();
-		this.exchange = symbol.getExchange();
+		this.symbol = symbol;
 		this.date = date;
 		this.close = close;
 	}
@@ -50,36 +57,19 @@ public class Market implements Comparable<Market> {
 	//Account Balance constructor
 	public Market(long date,String counter,String exchange){
 		this.date = date;
-		this.counter = counter;
-		this.exchange = exchange;
+		if(!counter.equalsIgnoreCase("BTC")){
+			this.symbol = new Symbol(counter,"BTC",exchange);
+		}else{
+			this.symbol = new Symbol(counter,"USDT",exchange);
+		}
 	}
 	
 	public Symbol getSymbol(){
-		return new Symbol(base,counter,exchange);
+		return symbol;
 	}
 	
-	public String getBase(){
-		return base;
-	}
-	
-	public void setBase(String base){
-		this.base = base;
-	}
-	
-	public String getCounter(){
-		return counter;
-	}
-	
-	public void setCounter(String counter){
-		this.counter = counter;
-	}
-
-	public String getExchange() {
-		return exchange;
-	}
-	
-	public void setExchange(String exchange) {
-		this.exchange = exchange;
+	public void setSymbol(Symbol s){
+		this.symbol = s;
 	}
 
 	public long getDate() {
@@ -122,9 +112,13 @@ public class Market implements Comparable<Market> {
 		this.volume = volume;
 	}
 	
+	public List<Market> getHistorical(){
+		return historical;
+	}
+	
 	@Override
 	public String toString(){
-			return base + counter + ":" + exchange + " " + "@" + close;		
+			return symbol + " " + "@" + close;		
 	}
 
 	@Override

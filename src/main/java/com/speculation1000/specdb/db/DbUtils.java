@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.h2.tools.Csv;
+
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Entry;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
 import com.speculation1000.specdb.utils.SpecDbDate;
@@ -59,14 +62,13 @@ public class DbUtils {
 	
 	private static void createMarketTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS MARKETS (\n"
-                + "Base character NOT NULL,\n"
-                + "Counter character NOT NULL,\n"
-                + "Exchange character NOT NULL,\n"
+                + "Symbol character NOT NULL,\n"
                 + "Date long NOT NULL,\n"
-                + " High decimal,\n"
-                + " Low decimal,\n"
-                + " Close decimal,\n"
-                + " Volume int\n"
+                + "High decimal,\n"
+                + "Low decimal,\n"
+                + "Close decimal,\n"
+                + "Volume int,\n"
+                + "H_L int,\n"
                 + ");";
         try {
         	Connection connection = DbUtils.connect(dbce);
@@ -107,9 +109,7 @@ public class DbUtils {
 	
 	private static void createEntryTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS ENTRY (\n"
-                + "Base character NOT NULL,\n"
-                + "Counter character NOT NULL,\n"
-                + "Exchange character NOT NULL,\n"
+                + "Symbol character NOT NULL,\n"
                 + "Date long NOT NULL,\n"
                 + "Close decimal NOT NULL,\n"
                 + "Volume decimal NOT NULL,\n"
@@ -137,9 +137,7 @@ public class DbUtils {
 	
 	public static void createTradeTable(DbConnectionEnum dbce){
 		String strSql = "CREATE TABLE IF NOT EXISTS trade (\n"
-                + "Base character NOT NULL,\n"
-                + "Counter character NOT NULL,\n"
-                + "Exchange character NOT NULL,\n"
+                + "Symbol character NOT NULL,\n"
                 + "Date long NOT NULL,\n"
                 + "Close decimal NOT NULL,\n"
                 + "Volume decimal NOT NULL,\n"
@@ -170,7 +168,7 @@ public class DbUtils {
 	/* ---------- START CREATE INDEX ------------- */
 	
 	public static void createCloseIndex(DbConnectionEnum dbce) throws SpecDbException {
-		String strSql = "CREATE INDEX IF NOT EXISTS IDXCLOSE on MARKETS (Base,Counter,Exchange,Date,Close)";
+		String strSql = "CREATE INDEX IF NOT EXISTS IDXCLOSE on MARKETS (Symbol,Date,Close)";
         try {
         	Connection connection = DbUtils.connect(dbce);
             Statement tmpStatement = connection.createStatement();
@@ -193,14 +191,13 @@ public class DbUtils {
 	
 	public static List<Market> getMarketHighs(DbConnectionEnum dbce,int days){
 		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
-		String sqlCommand = "SELECT m.BASE,m.COUNTER,m.EXCHANGE,m.DATE,m.CLOSE" 
+		String sqlCommand = "SELECT m.SYMBOL,m.DATE,m.CLOSE" 
 					  + " FROM MARKETS AS m "
-					  + " JOIN (SELECT BASE,COUNTER,EXCHANGE,Max(Close) Close"
+					  + " JOIN (SELECT SYMBOL,Max(Close) Close"
 					  + " FROM MARKETS"
 					  + " WHERE DATE >= " + fromDateMidnight
-					  + " GROUP BY BASE,COUNTER,EXCHANGE) AS t"
-					  + " ON m.BASE = t.BASE"
-					  + " AND m.COUNTER = t.COUNTER"
+					  + " GROUP BY SYMBOL) AS t"
+					  + " ON m.SYMBOL = t.SYMBOL"
 					  + " AND m.CLOSE >= t.CLOSE"
 					  + " WHERE DATE = (SELECT Max(DATE) FROM MARKETS)";
         try {
@@ -209,8 +206,9 @@ public class DbUtils {
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             List<Market> marketList = new ArrayList<>();
             while(resultSet.next()){
-            	Market m = new Market(resultSet.getString(1),resultSet.getString(2),
-            			              resultSet.getString(3));
+            	Symbol s = new Symbol(resultSet.getString(1));
+            	Market m = new Market(s,resultSet.getLong(2),
+			              resultSet.getBigDecimal(3));
             	marketList.add(m);
             }
             tmpStatement.close();
@@ -227,14 +225,13 @@ public class DbUtils {
 	
 	public static List<Market> getMarketLows(DbConnectionEnum dbce,int days){
 		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
-		String sqlCommand = "SELECT m.BASE,m.COUNTER,m.EXCHANGE,m.DATE,m.CLOSE" 
+		String sqlCommand = "SELECT m.SYMBOL,m.DATE,m.CLOSE" 
 					  + " FROM MARKETS AS m "
-					  + " JOIN (SELECT BASE,COUNTER,EXCHANGE,Min(Close) Close"
+					  + " JOIN (SELECT SYMBOL,Min(Close) Close"
 					  + " FROM MARKETS"
 					  + " WHERE DATE >= " + fromDateMidnight
-					  + " GROUP BY BASE,COUNTER,EXCHANGE) AS t"
-					  + " ON m.BASE = t.BASE"
-					  + " AND m.COUNTER = t.COUNTER"
+					  + " GROUP BY SYMBOL) AS t"
+					  + " ON m.SYMBOL = t.SYMBOL"
 					  + " AND m.CLOSE <= t.CLOSE"
 					  + " WHERE DATE = (SELECT Max(DATE) FROM MARKETS)";
         try {
@@ -243,8 +240,9 @@ public class DbUtils {
             ResultSet resultSet = tmpStatement.executeQuery(sqlCommand);
             List<Market> marketList = new ArrayList<>();
             while(resultSet.next()){
-            	Market m = new Market(resultSet.getString(1),resultSet.getString(2),
-            			              resultSet.getString(3));
+            	Symbol s = new Symbol(resultSet.getString(1));
+            	Market m = new Market(s,resultSet.getLong(2),
+            			              resultSet.getBigDecimal(3));
             	marketList.add(m);
             }
             tmpStatement.close();
@@ -261,7 +259,7 @@ public class DbUtils {
 	
 	public static List<Entry> getNewEntries(DbConnectionEnum dbce,int days){
 		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
-		String sqlCommand = "SELECT Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L" + 
+		String sqlCommand = "SELECT SYMBOL,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L" + 
 				" FROM entry WHERE DATE >= " + fromDateMidnight
 				+ " ORDER BY DATE DESC";
         try {
@@ -271,18 +269,16 @@ public class DbUtils {
             List<Entry> entryList = new ArrayList<>();
             while(resultSet.next()){
             	Entry e = new Entry();
-            	e.setBase(resultSet.getString(1));
-            	e.setCounter(resultSet.getString(2));
-            	e.setExchange(resultSet.getString(3));
-            	e.setDate(resultSet.getLong(4));
-            	e.setClose(resultSet.getBigDecimal(5));
-            	e.setVolumeFromDb(resultSet.getInt(6));
-            	e.setATR(resultSet.getBigDecimal(7));
-            	e.setAmount(resultSet.getBigDecimal(8));
-            	e.setTotal(resultSet.getBigDecimal(9));
-            	e.setDirection(resultSet.getString(10));
-            	e.setStop(resultSet.getBigDecimal(11));
-            	e.setHighLow(resultSet.getInt(12));
+            	e.setSymbol(new Symbol(resultSet.getString(1)));
+            	e.setDate(resultSet.getLong(2));
+            	e.setClose(resultSet.getBigDecimal(3));
+            	e.setVolumeFromDb(resultSet.getInt(4));
+            	e.setATR(resultSet.getBigDecimal(5));
+            	e.setAmount(resultSet.getBigDecimal(6));
+            	e.setTotal(resultSet.getBigDecimal(7));
+            	e.setDirection(resultSet.getString(8));
+            	e.setStop(resultSet.getBigDecimal(9));
+            	e.setHighLow(resultSet.getInt(10));
             	entryList.add(e);
             }
             tmpStatement.close();
@@ -298,7 +294,7 @@ public class DbUtils {
 	}
 	
 	public static List<AccountBalance> getLatestAccountBalances(DbConnectionEnum dbce) throws SpecDbException {
-		String sqlCommand = "SELECT DATE,COUNTER,EXCHANGE,AMOUNT"
+		String sqlCommand = "SELECT SYMBOL,DATE,AMOUNT"
 						  + " FROM ACCOUNT_BAL WHERE DATE = (SELECT Max(DATE) AS DATE FROM ACCOUNT_BAL)";
         try {
         	Connection conn = DbUtils.connect(dbce);
@@ -307,8 +303,8 @@ public class DbUtils {
             List<AccountBalance> balanceList = new ArrayList<>();
             AccountBalance ab;
             while(resultSet.next()){
-            	ab = new AccountBalance(resultSet.getLong(1),resultSet.getString(2),
-            											resultSet.getString(3),resultSet.getBigDecimal(4));
+            	Symbol s = new Symbol(resultSet.getString(1));
+            	ab = new AccountBalance(s,resultSet.getLong(2),resultSet.getBigDecimal(3));
             	balanceList.add(ab);
             }
             tmpStatement.close();
@@ -326,7 +322,6 @@ public class DbUtils {
 	public static List<Long> getDistinctDates(DbConnectionEnum dbce, int days, String exchange) throws SpecDbException {
 		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
 		String sqlCommand = "SELECT DISTINCT(DATE) FROM MARKETS WHERE DATE >= " + fromDateMidnight
-						  + " AND EXCHANGE = '"+exchange+"'"
 						  + " ORDER BY DATE ASC";
         try {
         	Connection conn = DbUtils.connect(dbce);
@@ -361,14 +356,8 @@ public class DbUtils {
 	        	for(int z = 1; z <= i;z++){
 	        		String col_name = rsmd.getColumnName(z).toUpperCase();
 	        		switch(col_name){
-	        		case "BASE":
-	        			market.setBase(resultSet.getString(z));
-	        			break;
-	        		case "COUNTER":
-	        			market.setCounter(resultSet.getString(z));
-	        			break;	
-	        		case "EXCHANGE":
-	        			market.setExchange(resultSet.getString(z));
+	        		case "SYMBOL":
+	        			market.setSymbol(new Symbol(resultSet.getString(z)));
 	        			break;
 	        		case "DATE":
 	        			market.setDate(resultSet.getLong(z));
@@ -473,20 +462,18 @@ public class DbUtils {
 	/* ---------- START INSERTS ------------- */
 
 	public static void insertMarkets(DbConnectionEnum dbce, List<Market> marketList){
-		String sqlCommand = "INSERT INTO markets(Base,Counter,Exchange,Date,High,Low,Close,Volume) VALUES(?,?,?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO markets(SYMBOL,Date,High,Low,Close,Volume) VALUES(?,?,?,?,?,?)";
 	    try {
 	    	Connection connection = DbUtils.connect(dbce);
 	        PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
 	        for(int i = 0; i < marketList.size();i++){
 	    		Market m = marketList.get(i);
-	    		tmpStatement.setString(1, m.getBase());
-	    		tmpStatement.setString(2, m.getCounter());
-	    		tmpStatement.setString(3, m.getExchange());
-	    		tmpStatement.setLong(4,m.getDate());
-	    		tmpStatement.setBigDecimal(5, m.getHigh());
-	    		tmpStatement.setBigDecimal(6, m.getLow());
-	    		tmpStatement.setBigDecimal(7, m.getClose());
-	    		tmpStatement.setInt(8,m.getVolume());
+	    		tmpStatement.setString(1, m.getSymbol().toString());
+	    		tmpStatement.setLong(2,m.getDate());
+	    		tmpStatement.setBigDecimal(3, m.getHigh());
+	    		tmpStatement.setBigDecimal(4, m.getLow());
+	    		tmpStatement.setBigDecimal(5, m.getClose());
+	    		tmpStatement.setInt(6,m.getVolume());
 	    		tmpStatement.addBatch();
 	    	if((i % 10000 == 0 && i != 0) || i == marketList.size() - 1){
 	    		specLogger.logp(Level.INFO, DbUtils.class.getName(),"insertMarkets", "Adding batch: " + i);
@@ -510,7 +497,7 @@ public class DbUtils {
 	}
 	
 	public static void insertUpdatedAccountBalances(DbConnectionEnum dbce, List<AccountBalance> balanceList) {
-		String sqlCommand = "INSERT INTO ACCOUNT_BAL(DATE,EXCHANGE,COUNTER,AMOUNT) "
+		String sqlCommand = "INSERT INTO ACCOUNT_BAL(DATE,SYMBOL,AMOUNT) "
 							+ "VALUES(?,?,?,?)";
         try {
         	Connection connection = DbUtils.connect(dbce);
@@ -518,9 +505,8 @@ public class DbUtils {
 	        for(int i = 0; i < balanceList.size();i++){
         		AccountBalance ab = balanceList.get(i);
         		tmpStatement.setLong(1, ab.getDate());
-        		tmpStatement.setString(2, ab.getExchange());
-        		tmpStatement.setString(3, ab.getCounter());
-        		tmpStatement.setBigDecimal(4, ab.getAmount());
+        		tmpStatement.setString(2, ab.getSymbol().toString());
+        		tmpStatement.setBigDecimal(3, ab.getAmount());
         		tmpStatement.addBatch();
 	        }
     		long start = System.currentTimeMillis();
@@ -542,25 +528,23 @@ public class DbUtils {
 	}
 	
 	public static void insertNewEntries(DbConnectionEnum dbce, List<Entry> entriesList) {
-		String sqlCommand = "INSERT INTO entry(Base,Counter,Exchange,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L) "
-							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO entry(Symbol,Date,Close,Volume,ATR,Amount,Total,Direction,Stop,H_L) "
+							+ "VALUES(?,?,?,?,?,?,?,?,?)";
         try {
         	Connection connection = DbUtils.connect(dbce);
             PreparedStatement tmpStatement = connection.prepareStatement(sqlCommand);
 	        for(int i = 0; i < entriesList.size();i++){
         		Entry e = entriesList.get(i);
-        		tmpStatement.setString(1, e.getBase());
-        		tmpStatement.setString(2,e.getCounter());
-        		tmpStatement.setString(3, e.getExchange());
-        		tmpStatement.setLong(4, SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()));
-        		tmpStatement.setBigDecimal(5, e.getClose());
-        		tmpStatement.setInt(6, e.getVolume());
-        		tmpStatement.setBigDecimal(7, e.getATR());
-        		tmpStatement.setBigDecimal(8, e.getAmount());
-        		tmpStatement.setBigDecimal(9, e.getTotal());
-        		tmpStatement.setString(10, e.getDirection());
-        		tmpStatement.setBigDecimal(11, e.getStop());
-        		tmpStatement.setInt(12, e.getHighLow());
+        		tmpStatement.setString(1, e.getSymbol().toString());
+        		tmpStatement.setLong(2, SpecDbDate.getLastSixHourSeconds(StandardMode.getStartRunTS()));
+        		tmpStatement.setBigDecimal(3, e.getClose());
+        		tmpStatement.setInt(4, e.getVolume());
+        		tmpStatement.setBigDecimal(5, e.getATR());
+        		tmpStatement.setBigDecimal(6, e.getAmount());
+        		tmpStatement.setBigDecimal(7, e.getTotal());
+        		tmpStatement.setString(8, e.getDirection());
+        		tmpStatement.setBigDecimal(9, e.getStop());
+        		tmpStatement.setInt(10, e.getHighLow());
         		tmpStatement.addBatch();
 	        }
     		long start = System.currentTimeMillis();
@@ -582,5 +566,22 @@ public class DbUtils {
 	}
 	
 	/* ---------- END INSERTS ------------- */
+	
+	/* ---- PROTO ---- */
+	
+	public static void loadMarketsFromCsv(String fileName) throws SQLException{
+        ResultSet rs = new Csv().read(fileName, null, null);
+        List<Market> markets = new ArrayList<>();
+        while (rs.next()) {
+            	Symbol s = new Symbol(rs.getString(1),rs.getString(2),rs.getString(3));
+            	Market m = new Market(s,rs.getLong(4),rs.getBigDecimal(5),rs.getBigDecimal(6),
+            			rs.getBigDecimal(8),rs.getInt(9));
+            	markets.add(m);
+        }
+        rs.close();
+        
+        DbUtils.insertMarkets(DbConnectionEnum.H2_MAIN, markets);
+        
+	}
 
 }

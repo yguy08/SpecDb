@@ -24,58 +24,7 @@ public class AccountDAO {
 	private static BigDecimal accountBal;
 	
 	public AccountDAO(DbConnectionEnum dbce) throws SpecDbException{
-		//update account balance
-		try{
-			updateAccountBalance(dbce);
-	    	specLogger.logp(Level.INFO, AccountDAO.class.getName(),"AccountDAO","Acocunt balance update successfully!");
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, AccountDAO.class.getName(),"AccountDAO","Error updating account balance");
-			throw new SpecDbException(e.getMessage());
-		}		
-	}
-	
-	public void updateAccountBalance(DbConnectionEnum dbce) throws SpecDbException{
-		long todayMidnight = SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
-		List<AccountBalance> balanceList = new ArrayList<>();
-		//Poloniex
-		try{
-			balanceList.addAll(new PoloniexDAO().getAccountBalance(dbce));
-			specLogger.logp(Level.INFO, AccountDAO.class.getName(),"updateAccountBalance","Got polo balances");
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, AccountDAO.class.getName(),"AccountDAO","Error updating polo account balance");
-			throw new SpecDbException(e.getMessage());
-		}
-		
-		//Bittrex
-		try{
-			balanceList.addAll(new BittrexDAO().getAccountBalance(dbce));
-		}catch(Exception e){
-			specLogger.logp(Level.SEVERE, AccountDAO.class.getName(),"AccountDAO","Error updating polo account balance");
-			throw new SpecDbException(e.getMessage());			
-		}
-		
-		//Clean up old ones from today
-		DbUtils.accountBalCleanUp(dbce,todayMidnight);
-		
-		//Insert updated balances
-		DbUtils.insertUpdatedAccountBalances(dbce,balanceList);
-		
-		//update static variable
-		List<AccountBalance> accountBalList = DbUtils.getLatestAccountBalances(dbce);
-		BigDecimal bal = new BigDecimal(0.00);
-		List<Symbol> symbolList = AccountBalance.getSymbolsListAccBalList(accountBalList);
-		TreeMap<Symbol, List<Market>> closeMap = MarketDAO.getSelectMarketMap(dbce, 0, symbolList);
-		for(AccountBalance ab : accountBalList){
-			if(!ab.getCounter().equalsIgnoreCase("BTC")){
-				BigDecimal btc_price = closeMap.get(new Symbol(ab.getCounter(),"BTC",ab.getExchange())).get(0).getClose();
-				BigDecimal btc_value = btc_price.multiply(ab.getAmount());
-				bal = bal.add(btc_value);
-			}else{
-				bal = bal.add(ab.getAmount());
-			}			
-		}
-		accountBal = bal;
-        specLogger.logp(Level.INFO, AccountDAO.class.getName(), "getAccountBalance", "Updated account balance!");		
+				
 	}
 	
 	public static BigDecimal getCurrentAccountBalance(DbConnectionEnum dbce) throws SpecDbException {
@@ -84,8 +33,8 @@ public class AccountDAO {
 		List<Symbol> symbolList = AccountBalance.getSymbolsListAccBalList(accountBalList);
 		TreeMap<Symbol, List<Market>> closeMap = MarketDAO.getSelectMarketMap(dbce, 0, symbolList);
 		for(AccountBalance ab : accountBalList){
-			if(!ab.getCounter().equalsIgnoreCase("BTC")){
-				BigDecimal btc_price = closeMap.get(new Symbol(ab.getCounter(),"BTC",ab.getExchange())).get(0).getClose();
+			if(!ab.getSymbol().getCounter().equalsIgnoreCase("BTC")){
+				BigDecimal btc_price = closeMap.get(new Symbol(ab.getSymbol().getCounter(),"BTC",ab.getSymbol().getExchange())).get(0).getClose();
 				BigDecimal btc_value = btc_price.multiply(ab.getAmount());
 				bal = bal.add(btc_value);
 			}else{
@@ -97,7 +46,28 @@ public class AccountDAO {
 	}
 	
 	public static BigDecimal getCurrentAccountBalance(){
-		return accountBal;		
+		DbConnectionEnum dbce = DbConnectionEnum.H2_MAIN;
+		List<AccountBalance> accountBalList = new ArrayList<>();
+		try {
+			accountBalList = DbUtils.getLatestAccountBalances(dbce);
+		} catch (SpecDbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BigDecimal bal = new BigDecimal(0.00);
+		List<Symbol> symbolList = AccountBalance.getSymbolsListAccBalList(accountBalList);
+		TreeMap<Symbol, List<Market>> closeMap = MarketDAO.getSelectMarketMap(dbce, 0, symbolList);
+		for(AccountBalance ab : accountBalList){
+			if(!ab.getSymbol().getCounter().equalsIgnoreCase("BTC")){
+				BigDecimal btc_price = closeMap.get(new Symbol(ab.getSymbol().getCounter(),"BTC",ab.getSymbol().getExchange())).get(0).getClose();
+				BigDecimal btc_value = btc_price.multiply(ab.getAmount());
+				bal = bal.add(btc_value);
+			}else{
+				bal = bal.add(ab.getAmount());
+			}			
+		}		
+        specLogger.logp(Level.INFO, AccountDAO.class.getName(), "getAccountBalance", "Got account balance!");        
+		return bal.setScale(8,RoundingMode.DOWN);		
 	}
 
 }

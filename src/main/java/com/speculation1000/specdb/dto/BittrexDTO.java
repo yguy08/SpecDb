@@ -30,6 +30,7 @@ import org.knowm.xchange.service.account.AccountService;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.ExchangeEnum;
 import com.speculation1000.specdb.market.Market;
+import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
 import com.speculation1000.specdb.start.StandardMode;
@@ -73,9 +74,10 @@ public class BittrexDTO implements ExchangeDTO {
 		for(Map.Entry<CurrencyPair, BittrexTicker> e : bittrexChartData.entrySet()){
 				Market market = new Market();
 				BittrexTicker t = e.getValue();
-				market.setBase(e.getKey().base.toString());
-				market.setCounter(e.getKey().counter.toString());
-				market.setExchange(ExchangeEnum.BITTREX.getExchangeSymbol());
+				String base = e.getKey().base.toString();
+				String counter = e.getKey().counter.toString();
+				String exchange = ExchangeEnum.BITTREX.getExchangeSymbol();
+				market.setSymbol(new Symbol(base,counter,exchange));
 				market.setDate(todayMidnight);
 				market.setHigh(t.getHigh());
 				market.setLow(t.getLow());
@@ -189,9 +191,10 @@ public class BittrexDTO implements ExchangeDTO {
 			for(Map.Entry<CurrencyPair, List<BittrexChartData>> e : trexData.entrySet()){
 				for(BittrexChartData bcd : e.getValue()){
 					Market market = new Market();
-					market.setBase(e.getKey().base.toString());
-					market.setCounter(e.getKey().counter.toString());
-					market.setExchange(ExchangeEnum.BITTREX.getExchangeSymbol());
+					String base = e.getKey().base.toString();
+					String counter = e.getKey().counter.toString();
+					String exchange = ExchangeEnum.BITTREX.getExchangeSymbol();
+					market.setSymbol(new Symbol(base,counter,exchange));
 					market.setDate(SpecDbDate.getTodayMidnightEpochSeconds(Instant.ofEpochMilli(bcd.getTimeStamp().getTime())));
 					market.setHigh(bcd.getHigh());
 					market.setLow(bcd.getLow());

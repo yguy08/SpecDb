@@ -938,3 +938,273 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/wya
 	at org.h2.mvstore.FileStore.open(FileStore.java:173)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
 	... 23 more
+2017-10-03 21:00:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':[*]',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42001-196]
+2017-10-03 21:01:42 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,\'/[*]\',COUNTER,\':\',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,\'/\',COUNTER,\':\',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42000-196]
+2017-10-03 21:02:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'[*]\/',COUNTER,'\:',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'\/',COUNTER,'\:',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42000-196]
+2017-10-03 21:03:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':[*]',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42001-196]
+2017-10-03 21:03:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,'[*]\:',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,'\:',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42000-196]
+2017-10-03 21:03:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':[*]',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42001-196]
+2017-10-03 21:03:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':[*]\',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC')"; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,':\',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [42001-196]
+2017-10-03 21:04:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Feature not supported: "VARCHAR /"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,'',EXCHANGE) AS SYMBOL,DATE,HIGH,LOW,CLOSE,VOLUME FROM MARKETS ORDER BY DATE DESC') [50100-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.getUnsupportedException(DbException.java:216)
+	at org.h2.value.Value.throwUnsupportedExceptionForType(Value.java:1185)
+	at org.h2.value.Value.divide(Value.java:514)
+	at org.h2.expression.Operation.getValue(Operation.java:160)
+	at org.h2.expression.Operation.optimize(Operation.java:326)
+	at org.h2.expression.Function.optimize(Function.java:2311)
+	at org.h2.command.dml.Call.prepare(Call.java:80)
+	at org.h2.command.Parser.prepareCommand(Parser.java:263)
+	at org.h2.engine.Session.prepareLocal(Session.java:578)
+	at org.h2.engine.Session.prepareCommand(Session.java:519)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1204)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:176)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-10-03 21:05:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Column "BASE" not found; SQL statement:
+SELECT CONCAT(BASE,COUNTER,EXCHANGE) AS SYMBOL [42122-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.expression.Function.optimize(Function.java:2311)
+	at org.h2.expression.Alias.optimize(Alias.java:51)
+	at org.h2.command.dml.Select.prepare(Select.java:839)
+	at org.h2.command.Parser.prepareCommand(Parser.java:263)
+	at org.h2.engine.Session.prepareLocal(Session.java:578)
+	at org.h2.engine.Session.prepareCommand(Session.java:519)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1204)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:73)
+	at org.h2.tools.Csv.write(Csv.java:166)
+	at org.h2.expression.Function.getValueWithArgs(Function.java:1604)
+	at org.h2.expression.Function.getValue(Function.java:591)
+	at org.h2.command.dml.Call.query(Call.java:65)
+	at org.h2.command.CommandContainer.query(CommandContainer.java:113)
+	at org.h2.command.Command.executeQuery(Command.java:201)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:186)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-10-03 21:05:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Column "BASE" not found; SQL statement:
+SELECT CONCAT(BASE,COUNTER,EXCHANGE) AS SYMBOL [42122-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.expression.Function.optimize(Function.java:2311)
+	at org.h2.expression.Alias.optimize(Alias.java:51)
+	at org.h2.command.dml.Select.prepare(Select.java:839)
+	at org.h2.command.Parser.prepareCommand(Parser.java:263)
+	at org.h2.engine.Session.prepareLocal(Session.java:578)
+	at org.h2.engine.Session.prepareCommand(Session.java:519)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1204)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:73)
+	at org.h2.tools.Csv.write(Csv.java:166)
+	at org.h2.expression.Function.getValueWithArgs(Function.java:1604)
+	at org.h2.expression.Function.getValue(Function.java:591)
+	at org.h2.command.dml.Call.query(Call.java:65)
+	at org.h2.command.CommandContainer.query(CommandContainer.java:113)
+	at org.h2.command.Command.executeQuery(Command.java:201)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:186)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-10-03 21:05:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Feature not supported: "VARCHAR /"; SQL statement:
+CALL CSVWRITE('markets.csv', 'SELECT CONCAT(BASE,'/',COUNTER,EXCHANGE) AS SYMBOL FROM MARKETS') [50100-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.getUnsupportedException(DbException.java:216)
+	at org.h2.value.Value.throwUnsupportedExceptionForType(Value.java:1185)
+	at org.h2.value.Value.divide(Value.java:514)
+	at org.h2.expression.Operation.getValue(Operation.java:160)
+	at org.h2.expression.Operation.optimize(Operation.java:326)
+	at org.h2.expression.Function.optimize(Function.java:2311)
+	at org.h2.command.dml.Call.prepare(Call.java:80)
+	at org.h2.command.Parser.prepareCommand(Parser.java:263)
+	at org.h2.engine.Session.prepareLocal(Session.java:578)
+	at org.h2.engine.Session.prepareCommand(Session.java:519)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1204)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:176)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-10-03 21:09:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Column may be referenced by "PUBLIC.IDXCLOSE"; SQL statement:
+ALTER TABLE MARKETS DROP Base,Counter,Exchange [90083-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.table.Table.dropMultipleColumnsConstraintsAndIndexes(Table.java:604)
+	at org.h2.command.ddl.AlterTableAlterColumn.update(AlterTableAlterColumn.java:192)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:101)
+	at org.h2.command.Command.executeUpdate(Command.java:260)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:192)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-10-03 21:10:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "ALTER INDEX IDXCLOSE[*]"; expected "., RENAME"; SQL statement:
+ALTER INDEX IDXCLOSE [42001-196]
+2017-10-03 21:10:15 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "ALTER INDEX DROP IDXCLOSE[*]"; expected "., RENAME"; SQL statement:
+ALTER INDEX DROP IDXCLOSE [42001-196]
+2017-10-03 21:45:36 database: flush
+org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:295)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:95)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:378)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:361)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2930)
+	at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:155)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:100)
+	at org.h2.engine.Database.getPageStore(Database.java:2476)
+	at org.h2.engine.Database.open(Database.java:697)
+	at org.h2.engine.Database.openDatabase(Database.java:276)
+	at org.h2.engine.Database.<init>(Database.java:270)
+	at org.h2.engine.Engine.openSession(Engine.java:64)
+	at org.h2.engine.Engine.openSession(Engine.java:176)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:154)
+	at org.h2.engine.Engine.createSession(Engine.java:137)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:148)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.h2.jdbc.JdbcSQLException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	... 18 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:765)
+	at org.h2.mvstore.FileStore.open(FileStore.java:173)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
+	... 13 more
+2017-10-03 21:54:48 database: flush
+org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:295)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:95)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:378)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:361)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2930)
+	at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:155)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:100)
+	at org.h2.engine.Database.getPageStore(Database.java:2476)
+	at org.h2.engine.Database.open(Database.java:697)
+	at org.h2.engine.Database.openDatabase(Database.java:276)
+	at org.h2.engine.Database.<init>(Database.java:270)
+	at org.h2.engine.Engine.openSession(Engine.java:64)
+	at org.h2.engine.Engine.openSession(Engine.java:176)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:154)
+	at org.h2.engine.Engine.createSession(Engine.java:137)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:148)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.h2.jdbc.JdbcSQLException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	... 18 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:765)
+	at org.h2.mvstore.FileStore.open(FileStore.java:173)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
+	... 13 more
+2017-10-03 21:54:58 database: flush
+org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:295)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:95)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:378)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:361)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2930)
+	at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:155)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:100)
+	at org.h2.engine.Database.getPageStore(Database.java:2476)
+	at org.h2.engine.Database.open(Database.java:697)
+	at org.h2.engine.Database.openDatabase(Database.java:276)
+	at org.h2.engine.Database.<init>(Database.java:270)
+	at org.h2.engine.Engine.openSession(Engine.java:64)
+	at org.h2.engine.Engine.openSession(Engine.java:176)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:154)
+	at org.h2.engine.Engine.createSession(Engine.java:137)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:148)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.h2.jdbc.JdbcSQLException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	... 18 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:765)
+	at org.h2.mvstore.FileStore.open(FileStore.java:173)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
+	... 13 more
+2017-10-03 21:55:15 database: flush
+org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:295)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:95)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:378)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:361)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2930)
+	at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:155)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:100)
+	at org.h2.engine.Database.getPageStore(Database.java:2476)
+	at org.h2.engine.Database.open(Database.java:697)
+	at org.h2.engine.Database.openDatabase(Database.java:276)
+	at org.h2.engine.Database.<init>(Database.java:270)
+	at org.h2.engine.Engine.openSession(Engine.java:64)
+	at org.h2.engine.Engine.openSession(Engine.java:176)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:154)
+	at org.h2.engine.Engine.createSession(Engine.java:137)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:148)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.h2.jdbc.JdbcSQLException: General error: "java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]" [50000-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	... 18 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:/Users/Wyatt/SpecDb/db/Speculation1000-H2.mv.db [1.4.196/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:765)
+	at org.h2.mvstore.FileStore.open(FileStore.java:173)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
+	... 13 more

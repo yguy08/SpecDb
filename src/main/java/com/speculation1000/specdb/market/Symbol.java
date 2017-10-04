@@ -10,22 +10,37 @@ public class Symbol implements Comparable<Symbol> {
 	
 	private String exchange;
 	
+	private final String UNKNOWN = "UNKNOWN";
+	
 	public Symbol(Market market){
-		base = market.getBase();
-		counter = market.getCounter();
-		exchange = market.getExchange();
-		symbol = market.getBase()+market.getCounter()+":"+market.getExchange();
+		symbol = market.getSymbol().toString();
 	}
 	
 	public Symbol(String base, String counter, String exchange){
 		this.base = base;
 		this.counter = counter;
 		this.exchange = exchange;
-		symbol = base+counter+":"+exchange;
+		symbol = base+"/"+counter+":"+exchange;
 	}
 	
 	public Symbol(String symbol){
-		this.symbol = symbol;
+		if(symbol!=null && !symbol.isEmpty()){
+			int base = symbol.indexOf("/");
+			int counter = symbol.indexOf(":");
+			if(base != -1 && counter != -1){
+				this.base = symbol.substring(0,base);
+				this.counter = symbol.substring(base,counter);
+				this.exchange = symbol.substring(counter);
+				this.symbol = symbol;
+			}else{
+				this.base = UNKNOWN;
+				this.counter = UNKNOWN;
+				this.exchange = UNKNOWN;
+				this.symbol = UNKNOWN;
+			}
+		}else{
+			this.symbol = UNKNOWN;
+		}
 	}
 	
 	public String getBase(){

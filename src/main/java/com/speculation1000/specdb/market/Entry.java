@@ -52,11 +52,11 @@ public class Entry extends Market {
 	}
 	
 	public void setVolume(int volume) {
-		Symbol btc = new Symbol("BTC","USDT",super.getExchange());
-		Symbol eth = new Symbol("ETH","USDT",super.getExchange());
+		Symbol btc = new Symbol("BTC","USDT",super.getSymbol().getExchange());
+		Symbol eth = new Symbol("ETH","USDT",super.getSymbol().getExchange());
 		BigDecimal btc_price = MarketDAO.getCurrentPrice(btc);
 		BigDecimal eth_price = MarketDAO.getCurrentPrice(eth);
-		switch(super.getCounter()) {
+		switch(super.getSymbol().getCounter()) {
 		case "BTC":
 			super.setVolume((new BigDecimal(volume).multiply(btc_price)).intValue());
 			break;
@@ -81,7 +81,7 @@ public class Entry extends Market {
 			passFilter = false;
 		}else if(marketList.get(0).getHigh().compareTo(marketList.get(0).getLow())==0){
 			passFilter = false;
-		}else if(SupportedCurrenciesEnum.getCounterList().indexOf(super.getCounter())!=-1) {
+		}else if(SupportedCurrenciesEnum.getCounterList().indexOf(super.getSymbol().getCounter())!=-1) {
 			passFilter = true;
 		}else{
 			passFilter = false;
