@@ -13,15 +13,11 @@ import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.Symbol;
 import com.speculation1000.specdb.start.SpecDbException;
-import com.speculation1000.specdb.start.StandardMode;
-import com.speculation1000.specdb.utils.SpecDbDate;
 import com.speculation1000.specdb.utils.SpecDbLogger;
 
 public class AccountDAO {
 	
 	private static final SpecDbLogger specLogger = SpecDbLogger.getSpecDbLogger();
-	
-	private static BigDecimal accountBal;
 	
 	public AccountDAO(DbConnectionEnum dbce) throws SpecDbException{
 				
@@ -51,7 +47,6 @@ public class AccountDAO {
 		try {
 			accountBalList = DbUtils.getLatestAccountBalances(dbce);
 		} catch (SpecDbException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		BigDecimal bal = new BigDecimal(0.00);
