@@ -26,8 +26,8 @@ import org.knowm.xchange.poloniex.service.PoloniexMarketDataServiceRaw;
 import org.knowm.xchange.poloniex.service.PoloniexTradeService;
 import org.knowm.xchange.service.trade.TradeService;
 
+import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.market.AccountBalance;
-import com.speculation1000.specdb.market.ExchangeEnum;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.start.Config;
 import com.speculation1000.specdb.start.SpecDbException;
@@ -130,8 +130,11 @@ public class PoloniexDTO implements ExchangeDTO {
 			AccountBalance balance;
 			for(Balance b : accountService.getWallets()) {
 				if(b.getTotal().compareTo(new BigDecimal(0.00)) > 0) {
-					balance = new AccountBalance(SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS()),
-												b.getCurrency().toString(),"POLO",b.getTotal());
+					String base 		= b.getCurrency().toString();
+					String exchange 	= ExchangeEnum.POLONIEX.getExchangeSymbol();
+					long date 			= SpecDbDate.getTodayMidnightEpochSeconds(StandardMode.getStartRunTS());
+					BigDecimal total	= b.getTotal();
+					balance = new AccountBalance(base,exchange,date,total);
 					balanceList.add(balance);
 				}
 			}			
