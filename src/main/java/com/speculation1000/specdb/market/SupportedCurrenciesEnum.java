@@ -2,8 +2,11 @@ package com.speculation1000.specdb.market;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
-public enum SupportedCurrenciesEnum {
+import com.speculation1000.specdb.exchange.ExchangeEnum;
+
+public enum SupportedCurrencyEnum {
 	
 	BTC("BTC"),
 	USDT("USDT"),
@@ -12,7 +15,7 @@ public enum SupportedCurrenciesEnum {
 	
 	private String counter;
 	
-	SupportedCurrenciesEnum(String counter){
+	SupportedCurrencyEnum(String counter){
 		this.counter = counter;
 	}
 	
@@ -25,13 +28,21 @@ public enum SupportedCurrenciesEnum {
 	
 	static {
 		counterList = new ArrayList<>();
-		for(SupportedCurrenciesEnum s : values()) {
+		for(SupportedCurrencyEnum s : values()) {
 			counterList.add(s.getCounter());
 		}
 	}
 	
 	public static List<String> getCounterList(){
 		return counterList;
+	}
+	
+	public static String supportedCurrencyStr(){
+		StringJoiner sj = new StringJoiner(":", "[", "]");
+		for(SupportedCurrencyEnum sce : values()){
+			sj.add(sce.getCounter());
+		}
+		return sj.toString();
 	}
 
 }
