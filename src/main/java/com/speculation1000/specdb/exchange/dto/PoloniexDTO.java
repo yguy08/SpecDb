@@ -1,4 +1,4 @@
-package com.speculation1000.specdb.dto;
+package com.speculation1000.specdb.exchange.dto;
 
 import java.io.IOException;
 import java.math.BigDecimal;

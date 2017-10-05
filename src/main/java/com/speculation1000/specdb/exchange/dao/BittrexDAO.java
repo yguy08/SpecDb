@@ -11,7 +11,7 @@ import com.speculation1000.specdb.utils.SpecDbLogger;
 import com.speculation1000.specdb.account.AccountBalance;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
-import com.speculation1000.specdb.dto.BittrexDTO;
+import com.speculation1000.specdb.exchange.dto.BittrexDTO;
 import com.speculation1000.specdb.market.Market;
 
 public class BittrexDAO implements ExchangeDAO {

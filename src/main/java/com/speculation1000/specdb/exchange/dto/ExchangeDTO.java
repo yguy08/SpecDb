@@ -1,4 +1,4 @@
-package com.speculation1000.specdb.dto;
+package com.speculation1000.specdb.exchange.dto;
 
 import java.util.List;
 
