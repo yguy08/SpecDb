@@ -323,6 +323,7 @@ public class DbUtils {
 	public static List<Long> getDistinctDates(DbConnectionEnum dbce, int days, String exchange) throws SpecDbException {
 		long fromDateMidnight = SpecDbDate.getTodayMidnightEpochSeconds(Instant.now().minusSeconds(86400 * days));
 		String sqlCommand = "SELECT DISTINCT(DATE) FROM MARKETS WHERE DATE >= " + fromDateMidnight
+						  + " AND SYMBOL LIKE '%"+exchange+"'" 
 						  + " ORDER BY DATE ASC";
         try {
         	Connection conn = DbUtils.connect(dbce);
