@@ -5,20 +5,22 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.stream.IntStream;
 
+import com.speculation1000.specdb.account.AccountBalance;
+import com.speculation1000.specdb.criteria.CriteriaLiquidMarket;
+import com.speculation1000.specdb.criteria.CriteriaOldMarket;
 import com.speculation1000.specdb.criteria.CriteriaSupportedCurrency;
 import com.speculation1000.specdb.dao.MarketDAO;
 import com.speculation1000.specdb.db.DbConnectionEnum;
 import com.speculation1000.specdb.db.DbUtils;
 import com.speculation1000.specdb.exchange.ExchangeEnum;
 import com.speculation1000.specdb.exchange.ExchangeFcty;
-import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
-import com.speculation1000.specdb.market.SupportedCurrencyEnum;
 import com.speculation1000.specdb.ticker.Ticker;
 import com.speculation1000.specdb.utils.SpecDbDate;
 import com.speculation1000.specdb.utils.SpecDbLogger;
@@ -77,11 +79,6 @@ public class StandardMode implements Runnable {
         		if(markets.size()>0){
         			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Markets retrieved: " + markets.size());
         			
-        			//Filter for supported currencies
-        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Filter markets for supported currencies: "+SupportedCurrencyEnum.supportedCurrencyStr());
-        			List<Market> supportedMarkets = new CriteriaSupportedCurrency().meetCriteria(markets);
-        			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Markets not supported: "+(markets.size()-supportedMarkets.size()));
-        			
         			int sum = 0;
         			//Pulling markets every hour so clean up old ones from today
     				specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","Cleaning up markets for today: " + todayMidnight);
@@ -97,9 +94,8 @@ public class StandardMode implements Runnable {
         			specLogger.logp(Level.INFO,StandardMode.class.getName(),"run","No new markets loaded! Something went wrong");
         		}    			
     		}catch(Exception e){
-    			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Something went wrong: "+e.getMessage());
-    		}
-    		
+    			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Failed to get latest markets "+e.getMessage());
+    		}    		
     		
     		//restore any missing days in last 100
     		try{
@@ -140,8 +136,34 @@ public class StandardMode implements Runnable {
 			for(StackTraceElement ste : e.getStackTrace()){
 				specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", ste.toString());
 			}
-			//next update in...
     	}
+    	
+    	List<Market> markets = Ticker.getTickerList();
+    	
+    	StringJoiner sj1 = new StringJoiner("...", "[", "]");
+    	
+    	//unfiltered
+    	markets.forEach(item->sj1.add(item.toString()));
+    	specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Unfiltered ("+markets.size()+"):"+sj1.toString());
+    	
+    	StringJoiner sj2 = new StringJoiner("...", "[", "]");
+    	//Supported currencies
+    	markets = new CriteriaSupportedCurrency().meetCriteria(markets);
+    	markets.forEach(item->sj2.add(item.toString()));
+    	specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Supported Currencies ("+markets.size()+"):"+sj2.toString());
+    	
+    	StringJoiner sj3 = new StringJoiner("...", "[", "]");
+    	//old markets
+    	markets = new CriteriaOldMarket().meetCriteria(markets);
+    	markets.forEach(item->sj3.add(item.toString()));
+    	specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Old Markets ("+markets.size()+"):"+sj3.toString());
+    	
+    	StringJoiner sj4 = new StringJoiner("...", "[", "]");
+    	//liquid markets...
+    	markets = new CriteriaLiquidMarket().meetCriteria(markets);
+    	markets.forEach(item->sj4.add(item.toString()));
+    	specLogger.logp(Level.INFO, StartApp.class.getName(), "StartApp", "Liquid Markets ("+markets.size()+"):"+sj4.toString());
+    	
 		
     }
 
