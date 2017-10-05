@@ -24,7 +24,7 @@ public class Market implements Comparable<Market> {
 		
 	}
 	
-	public Market(String base, String counter, String exchange, long date, BigDecimal close, BigDecimal high, BigDecimal low, int volume){
+	public Market(String base, String counter, String exchange, long date, BigDecimal close,BigDecimal high, BigDecimal low, int volume){
 		this.symbol = new Symbol(base,counter,exchange);
 		this.date = date;
 		this.close = close;
@@ -110,6 +110,10 @@ public class Market implements Comparable<Market> {
 	
 	public void setVolume(int volume){
 		this.volume = volume;
+	}
+	
+	public void setHistorical(List<Market> markets){
+		this.historical = markets;
 	}
 	
 	public List<Market> getHistorical(){

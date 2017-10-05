@@ -42,7 +42,7 @@ public class Symbol implements Comparable<Symbol> {
 			int counter = symbol.indexOf(":");
 			if(base != -1 && counter != -1){
 				this.base = symbol.substring(0,base);
-				this.counter = symbol.substring(base,counter);
+				this.counter = symbol.substring(base+1,counter);
 				this.exchange = symbol.substring(counter);
 				this.symbol = symbol;
 			}else{

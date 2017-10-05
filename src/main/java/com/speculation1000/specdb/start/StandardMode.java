@@ -19,6 +19,7 @@ import com.speculation1000.specdb.exchange.ExchangeFcty;
 import com.speculation1000.specdb.market.AccountBalance;
 import com.speculation1000.specdb.market.Market;
 import com.speculation1000.specdb.market.SupportedCurrencyEnum;
+import com.speculation1000.specdb.ticker.Ticker;
 import com.speculation1000.specdb.utils.SpecDbDate;
 import com.speculation1000.specdb.utils.SpecDbLogger;
 import com.speculation1000.specdb.utils.SpecDbTime;
@@ -125,6 +126,16 @@ public class StandardMode implements Runnable {
     			specLogger.logp(Level.SEVERE, MarketDAO.class.getName(),"run","Failed to get account balances: "+e.getMessage());
     		}
     		
+    	}catch(Exception e){
+			for(StackTraceElement ste : e.getStackTrace()){
+				specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", ste.toString());
+			}
+			//next update in...
+    	}
+    	
+    	try{
+        	//ticker, update ticker
+        	Ticker.updateTicker();
     	}catch(Exception e){
 			for(StackTraceElement ste : e.getStackTrace()){
 				specLogger.logp(Level.SEVERE, StartApp.class.getName(), "StartApp", ste.toString());

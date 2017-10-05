@@ -1,49 +1,75 @@
-Oct 04, 2017 8:03:53 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: 
 ********** SpecDb ************** 
 [ Digital Asset Price Database ]
 ********************************
 * Start Up: 
-* At: 2017-10-04T12:03:53.718Z[Etc/UTC]
+* At: 2017-10-05T00:52:22.029Z[Etc/UTC]
 ********************************
 
-Oct 04, 2017 8:03:53 AM com.speculation1000.specdb.start.DbServer startDb
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.DbServer startDb
 INFO: H2 DbServer started
-Oct 04, 2017 8:03:53 AM com.speculation1000.specdb.start.StartApp StartApp
-INFO: H2 server start up successful
-Oct 04, 2017 8:03:54 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StartApp StartApp
+INFO: Db start up successful: H2_MAIN
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: Able to connect to db and create tables.
-Oct 04, 2017 8:03:54 AM com.speculation1000.specdb.db.DbUtils createCloseIndex
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.db.DbUtils createCloseIndex
 INFO: Close index created (if it didn't already exist)
-Oct 04, 2017 8:03:54 AM com.speculation1000.specdb.start.StartApp StartApp
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StartApp StartApp
 INFO: Close index created
-Oct 04, 2017 8:03:54 AM com.speculation1000.specdb.start.StandardMode startApp
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StandardMode startApp
 INFO: * Next update in 0 seconds
-Oct 04, 2017 8:03:54 AM com.speculation1000.specdb.start.StartApp getStartRunMessage
-INFO: [STANDARDMODE] - @2017-10-04T12:03:54.051Z[Etc/UTC]
-Oct 04, 2017 8:03:55 AM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StandardMode run
+INFO: [STANDARDMODE] - @2017-10-05T00:52:22.639Z[Etc/UTC]
+Oct 04, 2017 8:52:22 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Getting latest markets from: [POLO:TREX]
+Oct 04, 2017 8:52:24 PM com.speculation1000.specdb.dto.PoloniexDTO getPoloniexChartData
 INFO: Loading Polo markets from Polo API...
-Oct 04, 2017 8:04:02 AM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
-INFO: Fetched latest Polo markets for: 2017-10-04T00:00:00Z[Etc/UTC]
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.dto.PoloniexDTO getLatestMarketList
+INFO: Fetched latest Polo markets for: 2017-10-05T00:00:00Z[Etc/UTC]
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Got latest markets from: POLO
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.dto.BittrexDTO getLatestMarketList
 INFO: Got Bittrex Chart Data
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.dao.BittrexDAO getLatestMarkets
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.exchange.dao.BittrexDAO getLatestMarkets
 INFO: Got latest bittrex markets
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.db.DbUtils insertMarkets
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Got latest markets from: TREX
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Markets retrieved: 360
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Filter markets for supported currencies: [BTC:USDT:USD:ETH]
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Markets not supported: 8
+Oct 04, 2017 8:52:33 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Cleaning up markets for today: 1507161600
+Oct 04, 2017 8:52:34 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Cleaned up 360 markets
+Oct 04, 2017 8:52:34 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Adding new markets..
+Oct 04, 2017 8:52:34 PM com.speculation1000.specdb.db.DbUtils insertMarkets
 INFO: Adding batch: 359
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.db.DbUtils insertMarkets
-INFO: total time taken to insert the batch = 96 ms
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.db.DbUtils insertMarkets
+INFO: total time taken to insert the batch = 204 ms
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.start.StandardMode run
+INFO: Added 360 new markets
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.exchange.dao.PoloniexDAO restoreMarkets
 INFO: Starting polo market restore
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.dao.PoloniexDAO restoreMarkets
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.exchange.dao.PoloniexDAO restoreMarkets
 INFO: No markets missing
-Oct 04, 2017 8:04:03 AM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.start.StandardMode run
+INFO: POLO: restored 0
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.exchange.dao.BittrexDAO restoreMarkets
 INFO: Starting trex market restore
-Oct 04, 2017 8:04:04 AM com.speculation1000.specdb.dao.BittrexDAO restoreMarkets
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.exchange.dao.BittrexDAO restoreMarkets
 INFO: No markets missing
-Oct 04, 2017 8:04:04 AM com.speculation1000.specdb.dao.PoloniexDAO getAccountBalance
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.start.StandardMode run
+INFO: TREX: restored 0
+Oct 04, 2017 8:52:35 PM com.speculation1000.specdb.exchange.dao.PoloniexDAO getAccountBalance
 INFO: AccountBalance
-Oct 04, 2017 8:04:04 AM com.speculation1000.specdb.dao.BittrexDAO getAccountBalance
+Oct 04, 2017 8:52:36 PM com.speculation1000.specdb.exchange.dao.BittrexDAO getAccountBalance
 INFO: Got Trex Account Balance
-Oct 04, 2017 8:04:24 AM com.speculation1000.specdb.db.DbUtils insertUpdatedAccountBalances
-INFO: total time taken to insert the batch = 0 ms
+Oct 04, 2017 8:52:36 PM com.speculation1000.specdb.db.DbUtils insertUpdatedAccountBalances
+INFO: total time taken to insert the batch = 4 ms
+Oct 04, 2017 8:52:36 PM MarketDAO getMarketList
+INFO: Getting market list..
