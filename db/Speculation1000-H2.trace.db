@@ -1264,3 +1264,31 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/wya
 	at org.h2.mvstore.FileStore.open(FileStore.java:173)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:347)
 	... 13 more
+2017-10-07 11:02:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT DISTINCT(*[*]) FROM MARKETS WHERE SYMBOL LIKE '%BTC:TREX' AND VOLUME > 1000000 ORDER BY DATE DESC"; expected "), NOT, EXISTS, INTERSECTS, SELECT, FROM, WITH"; SQL statement:
+SELECT DISTINCT(*) FROM MARKETS WHERE SYMBOL LIKE '%BTC:TREX' AND VOLUME > 1000000 ORDER BY DATE DESC [42001-196]
+2017-10-07 11:02:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Order by expression "DATE" must be in the result list in this case; SQL statement:
+SELECT DISTINCT(1) FROM MARKETS WHERE SYMBOL LIKE '%BTC:TREX' AND VOLUME > 1000000 ORDER BY DATE DESC [90068-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.dml.Query.initOrder(Query.java:482)
+	at org.h2.command.dml.Select.init(Select.java:750)
+	at org.h2.command.Parser.parseSelect(Parser.java:1749)
+	at org.h2.command.Parser.parsePrepared(Parser.java:449)
+	at org.h2.command.Parser.parse(Parser.java:321)
+	at org.h2.command.Parser.parse(Parser.java:293)
+	at org.h2.command.Parser.prepareCommand(Parser.java:258)
+	at org.h2.engine.Session.prepareLocal(Session.java:578)
+	at org.h2.engine.Session.prepareCommand(Session.java:519)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1204)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:176)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:164)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1380)
+	at org.h2.server.web.WebApp.query(WebApp.java:1053)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1015)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1002)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:748)
